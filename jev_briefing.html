@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jev ― エンジニア向け勉強会</title>
+<style>
+/* =========================================================
+   完全オフライン。外部リソース参照ゼロ。
+   フォントはWindows/Mac標準搭載のもののみ。
+   投影前提のため文字サイズは vw と vh の小さい方に追従させ、
+   16:9 の短い画面でも1枚に収まるようにしている。
+   ========================================================= */
+:root{
+  --ink:#1d1d1f;
+  --ink-2:#6e6e73;
+  --line:#d2d2d7;
+  --bg:#ffffff;
+  --bg-2:#f5f5f7;
+  --blue:#0066cc;
+  --blue-soft:#b8d4f0;
+  --amber:#8a6d1f;
+  --amber-bg:#fdf9ef;
+  --amber-line:#d9b85c;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:"Yu Gothic Medium","Yu Gothic",YuGothic,"Hiragino Sans","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+  overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+  scroll-behavior:smooth;
+}
+section{
+  height:100vh;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:3.4vh 5vw;
+  position:relative;
+  overflow:hidden;
+}
+.wrap{width:100%;max-width:1240px;}
+    /* 行末に1文字だけ残る折り返しを避ける。語中で切りたくない語句は .nb で囲む */
+    p,td,th,li{text-wrap:pretty;}
+    .nb{white-space:nowrap;}
+.center{text-align:center;}
+
+/* ---------- タイポ ---------- */
+h2{
+  font-size:clamp(26px,min(3.15vw,5.35vh),52px);
+  line-height:1.25;
+  letter-spacing:-0.02em;
+  margin:0 0 .38em;
+  font-weight:700;
+}
+.kicker{
+  font-size:clamp(13px,min(1.12vw,1.9vh),19px);
+  letter-spacing:0.18em;
+  color:var(--ink-2);
+  margin:0 0 .6em;
+  font-weight:600;
+}
+.lead{font-size:clamp(16px,min(1.45vw,2.45vh),26px);line-height:1.65;color:var(--ink-2);margin:0;}
+.pop{color:var(--blue);}
+.tight{letter-spacing:-0.03em;}
+
+/* ---------- Hero ---------- */
+.hero{background:#000;color:#fff;}
+.hero .huge{
+  font-size:clamp(40px,min(8.6vw,15vh),132px);
+  font-weight:700;
+  letter-spacing:-0.045em;
+  line-height:1;
+  margin:0;
+  white-space:nowrap;
+}
+.hero .arrowbig{color:#5a5a5f;padding:0 .12em;}
+.hero .sub{
+  font-size:clamp(16px,min(1.72vw,2.92vh),30px);
+  color:#a1a1a6;
+  margin-top:1em;
+  letter-spacing:.02em;
+  line-height:1.6;
+}
+.hero .ctx{
+  font-size:clamp(13px,min(1.1vw,1.88vh),19px);
+  color:#6e6e73;
+  margin-top:2.4em;
+  line-height:1.8;
+}
+/* 表紙 */
+    .hero .cover-kicker{font-size:clamp(12px,min(1.1vw,1.88vh),20px);color:#6e6e73;letter-spacing:.2em;font-weight:600;margin:0 0 1.7em;}
+    .hero .cover-title{font-size:clamp(30px,min(5.2vw,8.8vh),92px);font-weight:700;letter-spacing:-.035em;line-height:1.18;margin:0;}
+    .hero .cover-lead{font-size:clamp(14px,min(1.5vw,2.55vh),26px);color:#a1a1a6;line-height:1.75;margin:1.9em auto 0;max-width:42em;font-weight:500;}
+    .hero .q{
+  font-size:clamp(17px,min(1.82vw,3.1vh),32px);
+  color:#a1a1a6;font-weight:700;line-height:1.5;margin:0 0 1.2em;
+}
+.scrollhint{
+  position:absolute;bottom:4vh;left:50%;transform:translateX(-50%);
+  color:#6e6e73;font-size:13px;letter-spacing:.1em;
+  animation:bob 2.2s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,7px);}}
+
+/* ---------- 汎用パーツ ---------- */
+.alt{background:var(--bg-2);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,36px);align-items:stretch;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(11px,1.5vw,24px);align-items:stretch;}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:clamp(12px,min(1.45vw,2.45vh),22px);
+}
+.card h3{font-size:clamp(16px,min(1.42vw,2.42vh),25px);margin:0 0 .6em;font-weight:700;}
+.card p{margin:0;font-size:clamp(14px,min(1.15vw,1.95vh),22px);line-height:1.7;color:var(--ink-2);}
+/* .card p より詳細度を上げる（これが無いと大きい数字が本文サイズに潰れる） */
+.big-num,.card p.big-num{
+  font-size:clamp(32px,min(4.3vw,7.3vh),72px);font-weight:700;letter-spacing:-0.03em;line-height:1;
+  color:var(--ink);
+}
+.unit{font-size:.42em;font-weight:600;color:var(--ink-2);margin-left:.15em;}
+.foot{
+  margin-top:.85em;font-size:clamp(12px,min(.95vw,1.6vh),18px);color:#86868b;line-height:1.7;
+}
+/* 入れ子カード（1枚に複数情報を載せる密度用） */
+.mini{padding:clamp(9px,min(1vw,1.7vh),15px);}
+.mini .big-num,.mini p.big-num{font-size:clamp(24px,min(3vw,5.1vh),48px);}
+.mini p{font-size:clamp(14px,min(1.2vw,2.05vh),22px);line-height:1.55;}
+
+/* ---------- ファネル図 ---------- */
+.funnel{display:flex;flex-direction:column;align-items:center;gap:6px;margin:.8em 0 .3em;}
+.funnel-band{
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  color:#fff;font-weight:700;border-radius:9px;padding:10px 14px;width:100%;
+  font-size:clamp(13px,min(1.12vw,1.9vh),19px);line-height:1.35;
+  opacity:0;transform:translateY(10px) scaleX(.94);transform-origin:center;
+  transition:opacity .5s ease,transform .5s cubic-bezier(.22,.9,.28,1);
+}
+.in .funnel-band{opacity:1;transform:translateY(0) scaleX(1);}
+.funnel-band small{display:block;font-weight:500;opacity:.85;font-size:.84em;margin-top:3px;}
+.funnel-arrow{color:var(--ink-2);font-size:13px;line-height:1;opacity:0;transition:opacity .4s ease .15s;}
+.in .funnel-arrow{opacity:1;}
+
+/* 大きい数字のカウントアップ */
+[data-count]{font-variant-numeric:tabular-nums;}
+
+/* ---------- バーチャート ---------- */
+.bars{display:flex;flex-direction:column;gap:clamp(7px,min(1vw,1.7vh),14px);}
+.bar{display:grid;grid-template-columns:minmax(120px,14vw) 1fr minmax(66px,6vw);align-items:center;gap:clamp(8px,1vw,16px);}
+.bar .nm{font-size:clamp(12px,min(1.08vw,1.85vh),19px);text-align:right;line-height:1.3;}
+.bar .nm small{display:block;color:var(--ink-2);font-size:.84em;font-weight:400;}
+.track{background:#e3e3e6;border-radius:99px;height:clamp(14px,min(1.7vw,2.9vh),28px);overflow:hidden;}
+.fill{
+  height:100%;border-radius:99px;background:var(--blue-soft);
+  width:0;transition:width 1.15s cubic-bezier(.22,.9,.28,1);
+}
+.fill.key{background:var(--blue);}
+.fill.nil{background:#9ea3ab;}
+/* 満点＝基準点の行。実測値ではないので塗らず、破線の枠だけで示す */
+    .bar.ref .track{background:transparent;border:1px dashed #b9b9c0;}
+    .bar.ref .nm,.bar.ref .vl{color:var(--ink-2);font-weight:500;}
+    /* Astra の2行を強調（この2本が本題なので、他社・人間の行と差をつける） */
+.bar.hl{background:rgba(0,102,204,.07);border-radius:9px;padding:5px 7px;margin:-5px -7px;}
+.bar.hl .nm{font-weight:700;color:var(--ink);}
+.bar.hl .nm small{color:var(--blue);font-weight:600;}
+.bar.hl .vl{color:var(--blue);}
+.bar .vl{font-size:clamp(15px,min(1.28vw,2.18vh),24px);font-weight:700;white-space:nowrap;}
+.in .fill{width:var(--w);}
+/* 半カラムに収める圧縮版 */
+.bars.compact .bar{grid-template-columns:minmax(80px,8vw) 1fr minmax(50px,4.6vw);gap:8px;}
+.bars.compact .nm{font-size:clamp(11px,min(.95vw,1.62vh),17px);}
+.bars.compact .vl{font-size:clamp(13px,min(1.12vw,1.92vh),21px);}
+.bars.compact .track{height:clamp(12px,min(1.4vw,2.4vh),22px);}
+
+/* ---------- 比較テーブル ---------- */
+table{width:100%;border-collapse:collapse;font-size:clamp(13px,min(1.1vw,1.88vh),21px);}
+th,td{padding:.5em .4em;border-bottom:1px solid var(--line);text-align:right;}
+th:first-child,td:first-child{text-align:left;}
+th{font-size:.85em;color:var(--ink-2);font-weight:600;border-bottom:1.5px solid #b9b9be;}
+td.g{color:var(--blue);font-weight:700;}
+/* 表内の見出し行（知識／自律作業の区切り） */
+tr.grp td{
+  font-size:.85em;font-weight:700;color:var(--ink-2);
+  padding-top:.95em;border-bottom:1px solid var(--line);text-align:left;
+}
+tr.grp td .hint2{font-weight:600;}
+/* 英語の評価名だけでは伝わらないため、下に日本語の補足を添える */
+td small,th small{display:block;color:var(--ink-2);font-size:.8em;font-weight:400;line-height:1.3;margin-top:.15em;}
+.tag{
+  display:inline-block;border:1px solid var(--line);border-radius:99px;
+  padding:.3em .85em;font-size:clamp(12px,min(1.05vw,1.8vh),19px);color:var(--ink-2);margin:.18em .2em;
+}
+
+/* ---------- 動画 ---------- */
+.vid{
+  position:relative;width:100%;aspect-ratio:16/10;border-radius:14px;overflow:hidden;
+  background:#111;border:1px solid #2a2a2e;
+}
+.vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.vid .hint{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  color:#8a8a90;font-size:clamp(12px,min(1.05vw,1.8vh),18px);line-height:1.9;text-align:center;padding:1em;
+}
+.vid .hint code{background:#1e1e22;color:#c9c9cf;padding:.15em .5em;border-radius:5px;font-size:.95em;}
+.caption{margin-top:.7em;font-size:clamp(14px,min(1.2vw,2.05vh),22px);line-height:1.55;}
+
+/* ---------- 制約セクション（トーン切替） ---------- */
+.warn{background:#17171a;color:#f5f5f7;}
+.warn h2{color:#fff;}
+.warn .kicker{color:#c8a24a;}
+.warn .card{background:#212126;border-color:#35353c;}
+.warn .card h3{color:#e8c979;}
+.warn .card p{color:#a1a1a6;}
+.warn .big-num,.warn .card p.big-num{color:#fff;}
+.warn .unit{color:#8a8a90;}
+.warn .foot{color:#75757c;}
+.warn .lead{color:#c7c7cc;}
+
+/* ---------- 予測セクション（意図的に未完成な見た目） ---------- */
+.fc .card.dash{border:2px dashed #b0b0b6;background:#fafafa;box-shadow:none;}
+.fc .card.dash h3{color:var(--ink-2);}
+.badge{
+  display:inline-block;background:#6e6e73;color:#fff;border-radius:7px;
+  padding:.24em .9em;font-size:clamp(12px,min(1.05vw,1.8vh),19px);font-weight:700;letter-spacing:.1em;
+  margin-bottom:.9em;
+}
+/* 62.7% と 99.9% の測り方の違いを説明する注記 */
+.numnote{
+  border:1px solid var(--line);border-radius:12px;background:var(--bg-2);
+  padding:clamp(9px,min(1.05vw,1.8vh),16px) clamp(12px,1.4vw,20px);
+  margin-top:clamp(7px,1.1vh,13px);
+}
+.numnote p{margin:0;font-size:clamp(12px,min(1.08vw,1.85vh),19px);line-height:1.7;color:var(--ink-2);}
+.numnote strong{color:var(--ink);}
+.numnote .k{color:var(--blue);font-weight:700;}
+
+/* 「予測ではなく事実」の枠。年月を左に揃えて並べ、進み方の速さを見せる */
+.factbox p{color:var(--ink);margin-top:.45em;}
+.factbox p:first-child{margin-top:0;}
+.factbox .when{color:var(--blue);font-weight:700;margin-right:.4em;}
+.factbox .cav{color:var(--ink-2);font-size:.9em;margin-top:.7em;line-height:1.6;}
+
+/* 締めの黒帯（冒頭の黒画面と呼応させる） */
+.closer{
+  background:#17171a;color:#fff;border-radius:14px;text-align:center;
+  padding:clamp(12px,min(1.5vw,2.6vh),24px) 1.2em;margin-top:clamp(12px,1.6vh,22px);
+}
+.closer p{margin:0;font-weight:700;line-height:1.45;font-size:clamp(18px,min(2.05vw,3.5vh),36px);}
+/* 締めは「変わらなかった側」と「変わった側」を対比させる */
+.closer .c1{font-size:clamp(13px,min(1.18vw,2vh),21px);color:#a1a1a6;font-weight:600;}
+.closer .c2{font-size:clamp(17px,min(1.85vw,3.15vh),32px);margin-top:.35em;}
+.closer .c3{font-size:clamp(15px,min(1.58vw,2.7vh),28px);margin-top:.6em;color:#c7c7cc;}
+.closer .num{font-size:.72em;font-weight:600;color:#8a8a90;margin-left:.4em;}
+
+/* ---------- 進行ドット ---------- */
+.dots{
+  position:fixed;right:20px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:11px;z-index:50;
+}
+.dots i{
+  width:7px;height:7px;border-radius:50%;background:#c7c7cc;display:block;
+  transition:.35s;cursor:pointer;
+}
+.dots i.on{background:var(--blue);transform:scale(1.55);}
+.dots.ondark i{background:#4a4a51;}
+.dots.ondark i.on{background:#fff;}
+
+/* ---------- 発表者ノート（既定OFF / Nキー） ---------- */
+#notes{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;
+  background:rgba(12,12,14,.95);color:#e8e8ed;padding:18px 26px;
+  font-size:15px;line-height:1.75;max-height:38vh;overflow:auto;
+  border-top:2px solid var(--blue);
+}
+#notes.show{display:block;}
+#notes b{color:#7ab5f0;}
+#notes .qa{display:block;margin-top:.7em;padding-top:.6em;border-top:1px solid #3a3a42;color:#9a9aa2;font-size:.93em;}
+/* 操作ヒントは投影中に映り込まないよう数秒で消す（マウスを動かすと再表示） */
+.helpkey{
+  position:fixed;left:16px;bottom:14px;z-index:55;color:#b8b8be;font-size:11.5px;
+  letter-spacing:.04em;transition:opacity .8s;pointer-events:none;
+}
+.helpkey.hide{opacity:0;}
+
+/* ---------- 印刷（PDFバックアップ用） ---------- */
+@media print{
+  body{overflow:visible;scroll-snap-type:none;}
+  section{height:auto;min-height:0;page-break-after:always;padding:26px 30px;}
+  .scrollhint,.dots,#notes,.helpkey{display:none!important;}
+  .hero,.warn{background:#fff!important;color:#000!important;}
+  .hero .huge,.hero .q,.warn h2,.warn .big-num{color:#000!important;}
+  .hero .sub,.hero .ctx,.warn .card p,.warn .lead{color:#444!important;}
+  .warn .card{background:#fff!important;border-color:#999!important;}
+  .closer{background:#fff!important;color:#000!important;border:1.5px solid #999;}
+  .closer p{color:#000!important;}
+  .fill{width:var(--w)!important;transition:none!important;}
+  .funnel-band,.funnel-arrow{opacity:1!important;transform:none!important;transition:none!important;}
+}
+@media (max-width:900px){
+  .grid2,.grid3{grid-template-columns:1fr;}
+  .bar{grid-template-columns:110px 1fr 58px;}
+}
+
+/* =========================================================
+   ここから下はエンジニア版で追加した分。
+   Harness の4分類（渡す／触らせる／確かめて直す／許す範囲）に
+   4色を割り当て、7枚目と9枚目で同じ色を使い回して
+   「同じ話をしている」ことを視覚的に繋いでいる。
+   ========================================================= */
+.hx1{--acc:#0066cc;} .hx2{--acc:#00875a;} .hx3{--acc:#b5540a;} .hx4{--acc:#6b3fa0;}
+
+/* 6枚目：同じモデルの2つの数字を正面から並べる */
+.vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:clamp(8px,1.8vw,30px);margin:.5em 0 .2em;}
+.vs .n{
+  font-size:clamp(34px,min(5.4vw,9.2vh),96px);font-weight:700;
+  letter-spacing:-.045em;line-height:1;margin:0;font-variant-numeric:tabular-nums;
+}
+.vs .cond{
+  display:block;margin-top:.7em;font-weight:600;color:var(--ink-2);line-height:1.5;
+  font-size:clamp(11px,min(1.05vw,1.8vh),19px);
+}
+.vs .mid{font-size:clamp(15px,min(1.5vw,2.55vh),26px);color:#b0b0b6;font-weight:700;padding-top:.6em;}
+.ask{
+  text-align:center;font-weight:700;color:var(--ink);line-height:1.45;
+  font-size:clamp(16px,min(1.72vw,2.92vh),30px);margin:.75em 0 0;
+}
+
+/* 5枚目：2つの経路を枠なしで対置する。
+   枠付きの比較表にすると、上の動画2本のキャプションに見えるし、
+   小さい箇条書きが並ぶとこの資料の作り（大きい文字・少ない枠）が壊れる。
+   詳細はすべて発表者ノートへ逃がしてある。 */
+.pair{display:flex;align-items:flex-start;justify-content:center;gap:clamp(12px,2.4vw,44px);margin:.85em 0 0;flex-wrap:wrap;}
+.pair .pl{font-weight:700;line-height:1.3;text-align:center;font-size:clamp(16px,min(1.72vw,2.92vh),31px);}
+.pair .mech{color:var(--blue);}
+.pair .gui{color:#6b3fa0;}
+.pair .pl em{display:block;font-style:normal;font-weight:600;color:var(--ink-2);
+  font-size:.52em;margin-top:.35em;letter-spacing:.02em;}
+.pair .pv{color:#c7c7cc;font-weight:700;font-size:clamp(15px,1.6vw,28px);line-height:1.3;}
+
+/* 6枚目：条件の違いを枠なしの2行で見せる */
+.cmp{margin:.9em auto 0;max-width:60em;}
+.cmp .r{display:grid;grid-template-columns:minmax(88px,9vw) 1fr;gap:clamp(10px,1.4vw,24px);
+  align-items:baseline;padding:.42em 0;font-size:clamp(13px,min(1.35vw,2.3vh),25px);line-height:1.5;}
+.cmp .r+.r{border-top:1px solid var(--line);}
+.cmp .r b{color:var(--ink-2);font-size:.8em;font-weight:700;text-align:right;letter-spacing:.04em;}
+.cmp .r span{color:var(--ink);font-weight:700;}
+
+/* 7枚目：4つの層を枠なしで並べる（上に色の罫だけ） */
+.layers{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,2vw,34px);margin-top:1.1em;}
+.layers .ly{border-top:4px solid var(--acc);padding-top:.65em;}
+.layers .ly .back{display:block;margin-top:.5em;color:var(--ink-2);font-size:.86em;font-weight:600;}
+    .layers .ly h3{margin:0 0 .35em;color:var(--acc);font-weight:700;
+  font-size:clamp(16px,min(1.62vw,2.75vh),29px);}
+.layers .ly p{margin:0;color:var(--ink-2);line-height:1.6;
+  font-size:clamp(12px,min(1.2vw,2.05vh),22px);}
+.layers .ly .en2{display:block;margin-top:.45em;color:#a8a8ae;font-weight:600;letter-spacing:.02em;
+  font-size:clamp(10px,min(.95vw,1.62vh),17px);}
+
+/* 参考スライド：Astra 自身の説明を引用として大きく見せる */
+.quote{margin:0;color:var(--ink);font-weight:700;line-height:1.7;
+  font-size:clamp(14px,min(1.42vw,2.42vh),26px);}
+.quote .mk2{color:var(--blue);}
+.quote .src{display:block;margin-top:.8em;padding-top:.6em;border-top:1px solid var(--line);
+  font-weight:600;color:var(--ink-2);font-size:.74em;line-height:1.6;}
+.playcue{margin:.85em 0 .3em;text-align:center;font-weight:700;color:var(--blue);
+  font-size:clamp(13px,min(1.28vw,2.18vh),23px);letter-spacing:.02em;}
+audio{width:100%;margin:0;height:clamp(30px,3.6vh,40px);}
+
+/* 追加分の印刷・狭幅対応（既存の @media より後ろに置いて上書きする） */
+@media print{
+  .layers .ly{break-inside:avoid;}
+}
+@media (max-width:900px){
+  .vs{grid-template-columns:1fr;}
+  .vs .mid{display:none;}
+  .layers{grid-template-columns:1fr 1fr;}
+  .pair{gap:14px;}
+}
+
+/* 9枚目のチェックリストで4分類の色を再利用する */
+.ck1{color:#0066cc;} .ck2{color:#00875a;} .ck3{color:#b5540a;} .ck4{color:#6b3fa0;}
+/* =========================================================
+   Jev 版で追加した部品
+   ========================================================= */
+.code{
+  background:#17171a;color:#e8e8ed;border-radius:12px;padding:clamp(10px,min(1.2vw,2vh),18px) clamp(12px,1.4vw,22px);
+  font-family:"SF Mono",Menlo,Consolas,"Courier New",monospace;white-space:pre;overflow:hidden;min-width:0;
+  font-size:clamp(11px,min(1.02vw,1.75vh),18px);line-height:1.6;
+}
+.code .c{color:#7d8590;}
+.code .k{color:#7ab5f0;}
+.card.dash{background:#fafafa;border:2px dashed #b0b0b6;}
+
+/* 位置づけの 2×2（縦＝入力、横＝出力）。Jev のマスだけ青で強調する */
+.matrix{display:grid;grid-template-columns:auto 1fr 1fr;grid-template-rows:1fr 1fr auto;
+  gap:clamp(8px,1vw,14px);margin-top:1em;}
+.matrix .ax{display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--ink-2);
+  font-size:clamp(12px,min(1.05vw,1.8vh),19px);}
+.matrix .ay{writing-mode:vertical-rl;letter-spacing:.2em;padding:0 .2em;}
+.matrix .q{border-radius:16px;border:1px solid var(--line);background:#fff;
+  padding:clamp(12px,min(1.4vw,2.4vh),22px);min-height:clamp(96px,17vh,170px);}
+.matrix .q h3{margin:0 0 .35em;font-size:clamp(20px,min(2vw,3.4vh),34px);font-weight:700;}
+.matrix .q .io{font-size:clamp(12px,min(1vw,1.7vh),17px);color:var(--ink-2);font-weight:600;letter-spacing:.04em;}
+.matrix .q p{margin:.45em 0 0;font-size:clamp(14px,min(1.2vw,2.05vh),22px);line-height:1.55;color:var(--ink);}
+.matrix .q.jev{border:2px solid var(--blue);background:#f2f7fd;}
+.matrix .q.jev h3{color:var(--blue);}
+.matrix .q.off{background:transparent;border-style:dashed;display:flex;align-items:center;justify-content:center;color:#b0b0b6;}
+
+/* 処理時間のタイムライン（LLM は decode が続く／Jev は1回で終わる） */
+.tl{display:flex;flex-direction:column;gap:clamp(10px,1.6vh,18px);margin-top:1em;}
+.tl .row{display:grid;grid-template-columns:minmax(90px,8vw) 1fr;align-items:center;gap:clamp(10px,1.2vw,18px);}
+.tl .nm{font-weight:700;text-align:right;font-size:clamp(14px,min(1.25vw,2.1vh),22px);}
+.tl .nm small{display:block;color:var(--ink-2);font-weight:500;font-size:.72em;}
+.tl .seq{display:flex;gap:3px;height:clamp(26px,4.4vh,40px);}
+.tl .seg{border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
+  font-size:clamp(10px,min(.9vw,1.5vh),15px);white-space:nowrap;overflow:hidden;
+  opacity:0;transform:scaleX(.2);transform-origin:left;transition:opacity .35s ease,transform .35s ease;}
+.in .tl .seg{opacity:1;transform:scaleX(1);}
+.tl .pre{background:#4a84d1;width:18%;}
+.tl .dec{background:#b9b9c0;width:4.6%;}
+.tl .head{background:var(--blue);width:3%;}
+.tl .end{align-self:center;margin-left:.6em;font-weight:700;color:var(--blue);font-size:clamp(12px,min(1.05vw,1.8vh),18px);white-space:nowrap;
+  opacity:0;transition:opacity .4s ease 1s;}
+.in .tl .end{opacity:1;}
+.tl .legend{display:flex;gap:1.4em;justify-content:flex-end;font-size:clamp(11px,min(.95vw,1.6vh),16px);color:var(--ink-2);}
+.tl .legend i{display:inline-block;width:.9em;height:.9em;border-radius:3px;margin-right:.35em;vertical-align:-.1em;}
+
+/* 設計パターンのフロー（入力 → Jev → 信頼度で3分岐） */
+.flow{display:grid;grid-template-columns:1fr auto 1.2fr auto 1.5fr;align-items:center;gap:clamp(8px,1.2vw,18px);margin-top:1.2em;}
+.flow .box{border-radius:14px;border:1px solid var(--line);background:#fff;text-align:center;
+  padding:clamp(12px,min(1.4vw,2.4vh),22px) .8em;font-weight:700;font-size:clamp(15px,min(1.4vw,2.4vh),25px);line-height:1.4;}
+.flow .box small{display:block;font-weight:500;color:var(--ink-2);font-size:.66em;margin-top:.3em;}
+.flow .box.jev{border:2px solid var(--blue);color:var(--blue);background:#f2f7fd;}
+.flow .arr{color:#b0b0b6;font-weight:700;font-size:clamp(20px,min(2vw,3.4vh),34px);}
+.flow .br{display:flex;flex-direction:column;gap:clamp(6px,1vh,12px);}
+.flow .br div{border-radius:12px;padding:.6em .9em;font-weight:700;font-size:clamp(13px,min(1.2vw,2.05vh),22px);
+  border-left:6px solid var(--acc);background:#fff;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);}
+.flow .br div span{color:var(--acc);margin-right:.5em;font-variant-numeric:tabular-nums;}
+
+/* 較正の概念図 */
+.calib{width:100%;max-width:360px;height:auto;display:block;margin:0 auto;}
+.calib text{font-family:inherit;}
+
+@media (max-width:900px){
+  .flow{grid-template-columns:1fr;}
+  .flow .arr{transform:rotate(90deg);text-align:center;}
+}
+
+/* ---------- 答案用紙のたとえ（記述式／マークシート） ---------- */
+.sheet{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 22px rgba(0,0,0,.07);
+  padding:clamp(12px,min(1.4vw,2.4vh),22px) clamp(14px,1.6vw,26px);position:relative;}
+.sheet .sh-h{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid var(--ink);
+  padding-bottom:.35em;margin-bottom:.7em;font-weight:700;font-size:clamp(15px,min(1.4vw,2.4vh),25px);}
+.sheet .sh-h small{font-weight:600;color:var(--ink-2);font-size:.62em;letter-spacing:.06em;}
+.sheet .q1{font-weight:700;font-size:clamp(13px,min(1.15vw,1.95vh),20px);margin:0 0 .6em;}
+.sheet.lined .ans{
+  background:repeating-linear-gradient(transparent 0,transparent calc(2em - 1px),#d9d9de calc(2em - 1px),#d9d9de 2em);
+  line-height:2em;min-height:6em;color:#3a3a3f;font-size:clamp(13px,min(1.15vw,1.95vh),20px);}
+.sheet.lined .ans b{color:var(--ink);}
+.bub{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.7em;margin:.45em 0;
+  font-weight:700;font-size:clamp(15px,min(1.4vw,2.4vh),25px);}
+.bub i{width:1.3em;height:1.3em;border-radius:50%;border:2px solid var(--ink);position:relative;display:block;}
+.bub i::after{content:"";position:absolute;inset:2px;border-radius:50%;background:var(--blue);opacity:var(--p);}
+.bub .pc{color:var(--blue);font-variant-numeric:tabular-nums;}
+.bub.lo{color:var(--ink-2);} .bub.lo .pc{color:var(--ink-2);}
+.sheet .stamp{position:absolute;top:-.9em;right:1em;background:var(--ink);color:#fff;border-radius:99px;
+  padding:.25em .9em;font-size:clamp(11px,min(.95vw,1.6vh),16px);font-weight:700;letter-spacing:.06em;}
+.sheet.jev .stamp{background:var(--blue);}
+.cursor{display:inline-block;width:.5em;height:1.05em;background:#555;vertical-align:-.15em;margin-left:.1em;animation:blinkc .9s infinite;}
+@keyframes blinkc{50%{opacity:0}}
+
+/* タイムラインの中にトークン名を出す */
+.tl .dec{font-weight:600;color:#fff;}
+.tl .seg.read{background:#4a84d1;width:15%;}
+.tl .seg.mark{background:var(--blue);width:4%;}
+
+/* ---------- 中身のパイプライン ---------- */
+.chain{display:grid;grid-template-columns:1.1fr auto 1.2fr auto 1.2fr auto .9fr;align-items:stretch;gap:clamp(6px,.9vw,14px);margin-top:1.1em;}
+.chain .st{border-radius:14px;border:1px solid var(--line);background:#fff;padding:clamp(10px,min(1.2vw,2vh),18px);
+  display:flex;flex-direction:column;justify-content:center;}
+.chain .st h3{margin:0 0 .35em;font-size:clamp(15px,min(1.4vw,2.4vh),25px);font-weight:700;}
+.chain .st p{margin:0;color:var(--ink-2);font-size:clamp(12px,min(1.08vw,1.85vh),19px);line-height:1.55;}
+.chain .st .en2{display:block;margin-top:.5em;color:#a8a8ae;font-weight:600;font-size:clamp(10px,min(.9vw,1.55vh),15px);}
+.chain .st.key{border:2px solid var(--blue);background:#f2f7fd;}
+.chain .st.key h3{color:var(--blue);}
+.chain .ar{align-self:center;color:#b0b0b6;font-weight:700;font-size:clamp(18px,min(1.8vw,3vh),30px);}
+.chain .out .bub{font-size:clamp(13px,min(1.2vw,2vh),21px);margin:.25em 0;}
+
+/* デモ動画枠：高さ基準で 16:9 に収める */
+.vid.demo{max-width:calc(56vh * 16 / 9);margin:0 auto;}
+.fillin{display:inline-block;border-bottom:2px dashed #b0b0b6;min-width:3.2em;text-align:center;color:var(--blue);font-weight:700;}
+
+@media (max-width:900px){
+  .chain{grid-template-columns:1fr;}
+  .chain .ar{transform:rotate(90deg);text-align:center;}
+}
+
+/* ---------- Jev と Kev を色で分ける（Jev＝青、Kev＝緑） ---------- */
+.kev{color:#00875a;}
+.sheet.kev .stamp{background:#00875a;}
+.sheet.kev .bub i::after{background:#00875a;}
+.sheet.kev .bub .pc{color:#00875a;}
+.jk{width:100%;border-collapse:separate;border-spacing:0;font-size:clamp(13px,min(1.2vw,2.05vh),22px);}
+.jk th,.jk td{padding:.55em .8em;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;}
+.jk th{font-size:clamp(20px,min(2vw,3.4vh),34px);font-weight:700;border-bottom:3px solid currentColor;}
+.jk th.j{color:var(--blue);} .jk th.k{color:#00875a;}
+.jk td:first-child{color:var(--ink-2);font-weight:700;font-size:.85em;white-space:nowrap;width:8em;}
+.jk tr.same td{background:#f5f5f7;font-weight:700;text-align:center;}
+.jk tr.same td:first-child{text-align:left;}
+
+/* ---------- 具体例カード ---------- */
+.ex{display:flex;flex-direction:column;gap:.35em;}
+.ex h3{margin:0 !important;}
+.ex .in{background:var(--bg-2);border-radius:8px;padding:.35em .6em;font-size:clamp(12px,min(1.02vw,1.75vh),18px);color:#3a3a3f;line-height:1.5;}
+.ex .in code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.95em;}
+.ex .qq{font-weight:700;font-size:clamp(13px,min(1.12vw,1.9vh),20px);color:var(--ink);}
+.ex .aa{font-weight:700;color:var(--blue);font-size:clamp(13px,min(1.12vw,1.9vh),20px);}
+.ex .aa small{color:var(--ink-2);font-weight:600;font-size:.82em;margin-left:.4em;}
+.ex .ty{font-size:clamp(10px,min(.85vw,1.45vh),14px);color:#a8a8ae;font-weight:700;letter-spacing:.06em;}
+
+/* ---------- 「判断だけで、ここまで」 ---------- */
+.wow .card h3{color:var(--ink-2);font-size:clamp(14px,min(1.2vw,2.05vh),21px);}
+.wow .big-num{color:var(--blue);}
+.loop{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.3em;margin:.6em 0 .2em;
+  font-weight:700;font-size:clamp(12px,min(1.05vw,1.8vh),18px);}
+.loop span{background:var(--bg-2);border-radius:99px;padding:.25em .7em;}
+.loop span.k{background:#e8f2fd;color:var(--blue);}
+.loop b{color:#b0b0b6;}
+.chain.kevc .st.key{border-color:#00875a;background:#eef8f3;}
+.chain.kevc .st.key h3{color:#00875a;}
+.chain.kevc .bub i::after{background:#00875a;}
+.chain.kevc .bub .pc{color:#00875a;}
+</style>
+</head>
+<body>
+
+<!-- ============ 1. 表紙 ============ -->
+<section id="s0" class="hero" data-note="<b>【約25秒】</b>本日は、TypeSafe AI が9月15日に公開した Jev というモデルの話をします。一言でいうと、<b>AI の答え方を、記述式からマークシートに変えた</b>モデルです。今日は、日銀の声明文を『タカ・中立・ハト』に分類する、という1つの例で最後まで通します。なぜ速いのか、中身はどうなっているのか、そして我々の設計がどう変わるかを扱います。">
+  <div class="wrap center">
+    <p class="cover-kicker">エンジニア勉強会　／　2026年9月</p>
+    <h1 class="cover-title">Jev は、AI の答案を<br>「マークシート」にした</h1>
+    <p class="cover-lead">日銀の声明文を「タカ・中立・ハト」に分類する ― この1つの例で、<br>なぜ速いのか、中身は何か、設計がどう変わるかを最後まで通します。</p>
+  </div>
+  <div class="scrollhint">↓ &nbsp; SCROLL</div>
+</section>
+
+<!-- ============ 2. デモ ============ -->
+<section id="s1" data-note="<b>【約60秒】</b>まず見てください。同じ日銀の声明文を、左は普通の LLM、右は Kev に分類させています。<b>Kev は Jev ではありません</b>。Jev と同じ答え方をする、別のオープンなモデルで、社内環境で動かしています。違いは6枚目で説明します。<br>（動画を流す）<br>左は理由を<b>文章で書いてから</b>結論を出します。右は<b>文章を一切書かず</b>、タカ・中立・ハトの確率だけを返して終わりです。<br>今日はこの差が<b>どこから来るのか</b>を分解していきます。<span class=qa>想定質問：LLM は何を使った？→（動画の条件を記入）。</span>">
+  <div class="wrap">
+    <p class="kicker">デモ｜日銀の声明文を「タカ・中立・ハト」に分類</p>
+    <h2>同じ判断を、<span class="pop">書いて</span>答えるか、<span class="pop">塗って</span>答えるか</h2>
+    <div class="vid demo" style="aspect-ratio:16/9;margin-top:.8em">
+      <div class="hint">動画をここに<br><code>assets/demo_llm_vs_kev.mp4</code><br><span style="font-size:.9em">左：LLM ／ 右：Kev（社内環境）で同じ声明文を分類</span></div>
+      <video src="assets/demo_llm_vs_kev.mp4" muted loop playsinline preload="auto"></video>
+    </div>
+    <div class="grid2" style="margin-top:.7em">
+      <p class="caption center"><strong>LLM</strong>　理由を書いてから結論　<span class="fillin">◯.◯</span> 秒</p>
+      <p class="caption center"><strong class="kev">Kev</strong>　3つの確率だけ　<span class="fillin">◯.◯</span> 秒</p>
+    </div>
+    <p class="foot center"><strong class="kev">Kev は Jev ではない</strong>。Jev と同じ答え方をする別のオープンなモデル（社内環境で実行）→ 6枚目。</p>
+  </div>
+</section>
+
+<!-- ============ 3. 数字 ============ -->
+<section id="s2" class="hero" data-note="<b>【約30秒】</b>いまの差を、Jev を作った TypeSafe 自身は『LLM より40〜200倍速い』と言っています。応答は70〜500ミリ秒、料金は入力トークンにしかかかりません。<br>この数字の読み方にはあとで戻ってきます（13枚目）。まずは、<b>なぜこんなに違うのか</b>から始めます。">
+  <div class="wrap center">
+    <p class="q">「なぜ、こんなに違うの？」</p>
+    <p class="huge tight">40<span class="arrowbig">〜</span>200×</p>
+    <p class="sub">TypeSafe は、LLM より<span style="color:#5aa9f5;font-weight:700">これだけ速い</span>と言う</p>
+    <p class="ctx">
+      Jev ／ TypeSafe AI が 2026年9月15日に限定公開した「System One モデル」<br>
+      応答 70〜500ms（多くは約100ms）　入力 $0.042 / 100万トークン、出力は無料<br>※ 会社発表の値。この数字の読み方は13枚目で
+    </p>
+  </div>
+  <div class="scrollhint">↓ &nbsp; SCROLL</div>
+</section>
+
+<!-- ============ 4. 記述式とマークシート ============ -->
+<section id="s3" class="alt" data-note="<b>【約80秒】</b>一番大事なたとえです。<b>LLM は記述式の試験、Jev はマークシートの試験</b>です。<br>左の LLM は、答えを<b>文章で書きます</b>。何でも書けるので自由ですが、書くのに時間がかかり、書き方も毎回揺れます。<br>右の Jev は、<b>選択肢を塗るだけ</b>です。ただし普通のマークシートと違って、1つを塗りつぶすのではなく、<b>全部の選択肢を、自信の分だけ濃く塗って</b>返します。その濃さが確率で、タカ82%、中立15%、ハト3%、という形で返ってきます。選択肢の外は塗れないので、存在しない答えを返すことはありません。<br>ポイントは、<b>問題も選択肢も、その場で配れる</b>ことです。今日はタカ・ハト、明日は別の問いを、追加学習なしで渡せる。<br>昔ながらの分類モデルも答えはマークシートですが、あちらは<b>問題と選択肢が印刷済みの専用用紙</b>で、変えるには学習し直しが必要でした。<span class=qa>想定質問：BERT などのテキスト分類と何が違う？→ 文章は読めるが、何を判定するか（問いとラベル）は学習時に固定。Jev は問いと選択肢を毎回テキストで渡せる。</span>">
+  <div class="wrap">
+    <p class="kicker">一番大事なたとえ</p>
+    <h2>LLM は<span style="color:var(--ink-2)">記述式</span>、Jev は<span class="pop">マークシート</span></h2>
+    <div class="grid2" style="margin-top:1.3em;align-items:stretch">
+      <div class="sheet lined">
+        <span class="stamp">LLM</span>
+        <div class="sh-h">記述式<small>文章で書く</small></div>
+        <p class="q1">問1　この声明はタカ派か、ハト派か。</p>
+        <div class="ans">物価が見通しどおりに上がれば利上げを続けるとしており、引き締めに前向きな内容のため、<b>タカ派</b>と判断します<span class="cursor"></span></div>
+      </div>
+      <div class="sheet jev">
+        <span class="stamp">Jev</span>
+        <div class="sh-h">マークシート<small>自信の分だけ濃く塗る</small></div>
+        <p class="q1">問1　この声明のスタンスは？</p>
+        <div class="bub"><i style="--p:.82"></i><span>タカ</span><span class="pc">82%</span></div>
+        <div class="bub lo"><i style="--p:.15"></i><span>中立</span><span class="pc">15%</span></div>
+        <div class="bub lo"><i style="--p:.03"></i><span>ハト</span><span class="pc">3%</span></div>
+      </div>
+    </div>
+    <p class="ask" style="margin-top:1em">普通のマークシートは1つだけ塗る。Jev は<span class="pop">全部の選択肢を、自信の分だけ濃く塗る</span>。その濃さが確率</p>
+    <p class="foot center">問題も選択肢もその場で配れる（追加学習なし）。選択肢の外は答えない。昔ながらの分類モデル＝問題と選択肢が印刷済みの専用マークシート（変えるには学習し直し）。確率の数字は説明用。</p>
+  </div>
+</section>
+
+<!-- ============ 5. なぜ速いのか ============ -->
+<section id="s4" data-note="<b>【約80秒】</b>なぜ速いのか。答えは<b>『書くのは1文字ずつしかできない』</b>からです。<br>LLM は、声明文を読んだあと、『物価』『が』『見通し』…と、<b>1語ずつ順番に</b>答えを書きます。次の語は前の語が決まらないと書けないので、並べて同時に書くことができません。答えが長いほど時間がかかります。デモの左側で、文章が少しずつ出てきたのがこれです。<br>Jev 型は、声明文と問いと選択肢を<b>まとめて1回読んで、塗って終わり</b>です。書く工程がそもそもありません。書かないので出力トークンは0、料金も読んだ分だけです。<br>ついでに、書く工程には毎回サイコロを振る部分がありますが、塗るだけの Jev にはそれがないので、<b>同じ入力なら同じ確率</b>が返ります。<span class=qa>補足（用語）：読む＝prefill、1語ずつ書く＝decode。仕組みは OSS 実装（Kev・simple-jev）で確認できる内容で、Jev 本体の内部は非公開。同じ声明文に複数の問いを出す場合、読んだ結果（KV cache）を使い回せるので、問いを増やしても遅くなりにくい。</span>">
+  <div class="wrap">
+    <p class="kicker">なぜ速いのか</p>
+    <h2>書くのは、<span class="pop">1文字ずつしかできない</span></h2>
+    <div class="card" style="margin-top:1em">
+      <div class="tl">
+        <div class="row"><div class="nm">LLM<small>記述式</small></div>
+          <div class="seq">
+            <div class="seg read">読む</div>
+            <div class="seg dec" style="width:5.2%;transition-delay:.10s">物価</div><div class="seg dec" style="width:5.2%;transition-delay:.18s">が</div><div class="seg dec" style="width:5.2%;transition-delay:.26s">見通し</div><div class="seg dec" style="width:5.2%;transition-delay:.34s">どおり</div><div class="seg dec" style="width:5.2%;transition-delay:.42s">なら</div><div class="seg dec" style="width:5.2%;transition-delay:.50s">利上げ</div><div class="seg dec" style="width:5.2%;transition-delay:.58s">を</div><div class="seg dec" style="width:5.2%;transition-delay:.66s">続け</div><div class="seg dec" style="width:5.2%;transition-delay:.74s">…</div><div class="seg dec" style="width:5.2%;transition-delay:.82s">タカ</div>
+            <div class="end" style="color:var(--ink-2)">書き終わるまで</div>
+          </div>
+        </div>
+        <div class="row"><div class="nm pop">Jev<small>マークシート</small></div>
+          <div class="seq">
+            <div class="seg read">読む</div>
+            <div class="seg mark" style="transition-delay:.1s"></div>
+            <div class="end">塗って終わり　書く文字 0</div>
+          </div>
+        </div>
+        <div class="legend"><span><i style="background:#4a84d1"></i>声明文・問い・選択肢を読む</span><span><i style="background:#b9b9c0"></i>1語ずつ書く（前の語が決まるまで次は書けない）</span><span><i style="background:var(--blue)"></i>塗る</span></div>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:1em">
+      <div class="card mini"><h3>書かない</h3><p>書く工程がないので、1回読めば終わる。</p></div>
+      <div class="card mini"><h3>読んだ分だけ払う</h3><p>書く文字が0なので、料金は入力だけ。</p></div>
+      <div class="card mini"><h3>毎回同じ</h3><p>サイコロを振る工程がないので、同じ入力なら同じ確率。</p></div>
+    </div>
+    <p class="foot">模式図。仕組みは OSS 実装（Kev・simple-jev）で確認できる内容で、Jev 本体の内部は非公開。用語：読む＝prefill、1語ずつ書く＝decode。</p>
+  </div>
+</section>
+
+<!-- ============ Jev と Kev は別物 ============ -->
+<section id="sJK" data-note="<b>【約60秒】</b>ここで一度、はっきりさせておきます。<b>デモで動かした Kev は、Jev ではありません。</b><br>Jev は TypeSafe という会社の製品で、外部の API としてだけ提供されていて、中身は公開されていません。Kev は、Jev が出た後に個人の開発者が公開したオープンなモデルで、重みが公開されているので社内環境で動かせます。<br>共通しているのは<b>『答え方』と『API の形』だけ</b>です。たとえるなら、同じ規格のコンセントに挿さる、別メーカーの家電です。<br>なので次のスライドで見る中身は、<b>Kev の中身</b>です。Jev が同じ作りかどうかは分かりません。<br>性能は、第三者の比較（362問）で正答率の差は2ポイント以内。一方で、確率がどれだけ信頼できるかは Jev の方が良かったとされています。応答時間はこの比較では Kev の方が少し速い、という結果でした。">
+  <div class="wrap">
+    <p class="kicker">混ざりやすいので、はっきりさせておく</p>
+    <h2>デモの <span class="kev">Kev</span> は、<span class="pop">Jev</span> ではない</h2>
+    <p class="lead" style="margin-top:.2em">同じ「規格」で答える、<strong style="color:var(--ink)">別メーカーの別の製品</strong></p>
+    <div class="card" style="margin-top:1em">
+      <table class="jk">
+        <tr><td></td><th class="j">Jev</th><th class="k">Kev</th></tr>
+        <tr><td>作ったのは</td><td>TypeSafe AI（企業）</td><td>個人の開発者（オープンソース）</td></tr>
+        <tr><td>使い方</td><td>外部の API のみ（ウェイトリスト制）</td><td>重みを公開。<strong>社内環境で動かせる</strong></td></tr>
+        <tr><td>中身</td><td><strong>非公開</strong></td><td>公開（既存の LLM ＋ 付け替えた部品 → 次ページ）</td></tr>
+        <tr class="same"><td>共通点</td><td colspan="2">答え方（問いと選択肢 → 確率）と、API の形（/v1/systemone）だけ</td></tr>
+        <tr><td>第三者比較</td><td>確率の信頼性は <strong>Jev が上</strong></td><td>正答率の差は <strong>2pt 以内</strong>、応答は Kev が少し速い</td></tr>
+      </table>
+    </div>
+    <p class="foot">次ページの「中身」は Kev のもの。Jev が同じ作りかは公開されていない。第三者比較：Opper（362問、Jev 約275ms／Kev 約220ms）。Kev は Apache-2.0。</p>
+  </div>
+</section>
+
+<!-- ============ 6. 中身 ============ -->
+<section id="s5" class="alt" data-note="<b>【約90秒】</b>では中身はどうなっているのか。Jev の中身は非公開なので、デモで使った <b>Kev の中身</b>を見ます。繰り返しですが、Jev が同じ作りかは分かりません。<br>Kev は、<b>既存の LLM（Qwen）の『読解力』はそのまま借りて、『書く手』を『塗る手』に付け替えた</b>ものです。<br>左から。声明文と問いと選択肢を、1本の列に並べて渡します。LLM がそれを読んで、それぞれの選択肢が『この問いの答えとしてどれくらい合っているか』を表す数字の並びを作ります。最後の『塗る手』が、問いに一番合う選択肢を指して、確率にします。<br>なぜわざわざ LLM が要るのか。<b>問題も選択肢も毎回ちがう</b>からです。見たことのない問いを出されても読める、という読解力がないと、正しく塗れません。<br>付け替えた部分だけを少し学習させている（LoRA）ので、自分たちの業務向けに追加学習するのも比較的軽くできます。<span class=qa>補足（用語）：塗る手＝pointer head。Kev-4B は Qwen3.5-4B-Base に LoRA（rank 16、学習パラメータ約3,380万）と pointer head を載せた構成。第三者の比較（Opper、362問）では Jev と Kev の正答率差は2ポイント以内、確率の信頼性は Jev が良好。</span>">
+  <div class="wrap">
+    <p class="kicker">中身を見る　―　<span class="kev">Kev</span> の場合（Jev の中身は非公開）</p>
+    <h2>LLM の<span class="kev">「読解力」</span>を借りて、<br>「書く手」を<span class="kev">「塗る手」</span>に付け替えた</h2>
+    <div class="chain kevc">
+      <div class="st">
+        <h3>① 並べて渡す</h3>
+        <p>声明文<br>問い「スタンスは？」<br>選択肢　タカ／中立／ハト</p>
+      </div>
+      <div class="ar">→</div>
+      <div class="st">
+        <h3>② LLM が読む</h3>
+        <p>既存の LLM（Qwen）の<strong style="color:var(--ink)">読解力</strong>をそのまま使う。書かせはしない。</p>
+        <span class="en2">Qwen3.5-4B ／ 本体は学習済みのまま</span>
+      </div>
+      <div class="ar">→</div>
+      <div class="st key">
+        <h3>③ 塗る手</h3>
+        <p>問いに<strong style="color:var(--ink)">一番合う選択肢を指す</strong>。ここだけ新しく付け替えた部分。</p>
+        <span class="en2">pointer head ＋ LoRA（少しだけ追加学習）</span>
+      </div>
+      <div class="ar">→</div>
+      <div class="st out">
+        <div class="bub"><i style="--p:.82"></i><span>タカ</span><span class="pc">82%</span></div>
+        <div class="bub lo"><i style="--p:.15"></i><span>中立</span><span class="pc">15%</span></div>
+        <div class="bub lo"><i style="--p:.03"></i><span>ハト</span><span class="pc">3%</span></div>
+      </div>
+    </div>
+    <p class="ask" style="margin-top:1.2em">LLM が要るのは、<span class="pop">問題も選択肢も毎回ちがう</span>から。読めないと、塗れない</p>
+    <p class="foot center">これは <strong class="kev">Kev</strong> の作り。<strong class="pop">Jev</strong> が同じ作りかは公開されていない。確率の数字は説明用。</p>
+  </div>
+</section>
+
+<!-- ============ 7. Structured Output ============ -->
+<section id="s6" data-note="<b>【約50秒】</b>ここで必ず出る質問です。『中身が LLM なら、GPT に Structured Output で「タカ・中立・ハトのどれか1つだけ答えろ」と縛れば同じでは？』<br>たとえで言うと、それは<b>記述式の答案用紙に枠を印刷して、『タカ』とだけ書かせる</b>ことです。書く量は減りますが、<b>手で書いていることは変わりません</b>。1文字ずつ書く工程は残るので、速さの構造は LLM のままです。<br>もう1つ違うのが、返ってくる<b>数字の意味</b>です。次のスライドで説明します。">
+  <div class="wrap">
+    <p class="kicker">「GPT に選択肢だけ答えさせれば同じでは？」</p>
+    <h2>枠を印刷しても、<span class="pop">手で書いていることは変わらない</span></h2>
+    <div class="grid2" style="margin-top:1.3em;align-items:stretch">
+      <div class="sheet lined">
+        <span class="stamp">LLM ＋ Structured Output</span>
+        <div class="sh-h">記述式（枠つき）<small>「タカ」と書かせる</small></div>
+        <p class="q1">問1　タカ／中立／ハト のどれか1語で答えよ。</p>
+        <div class="ans" style="min-height:4em">［ <b>タ</b><b>カ</b><span class="cursor"></span> ］　← 1文字ずつ書いている</div>
+      </div>
+      <div class="sheet jev">
+        <span class="stamp">Jev</span>
+        <div class="sh-h">マークシート<small>塗るだけ</small></div>
+        <p class="q1">問1　この声明のスタンスは？</p>
+        <div class="bub"><i style="--p:.82"></i><span>タカ</span><span class="pc">82%</span></div>
+        <div class="bub lo"><i style="--p:.15"></i><span>中立</span><span class="pc">15%</span></div>
+        <div class="bub lo"><i style="--p:.03"></i><span>ハト</span><span class="pc">3%</span></div>
+      </div>
+    </div>
+    <p class="ask" style="margin-top:1em">形は真似できる。違うのは<span class="pop">書く工程が残ること</span>と、<span class="pop">数字の意味</span>（次ページ）</p>
+  </div>
+</section>
+
+<!-- ============ 8. 確率の意味 ============ -->
+<section id="s7" class="alt" data-note="<b>【約80秒】</b>『タカ82%』の82%は、本当に82%当たるのか、という話です。<br>天気予報で考えてください。<b>降水確率80%と言った日を集めたら、本当に8割の日に雨が降った</b>。これが『信頼できる確率』です。専門用語では較正（キャリブレーション）と言います。<br>GPT で似た数字を取ることはできます（logprobs）。ただしそれは『次に<b>その文字を書く</b>確率』で、『<b>当たる</b>確率』とは限りません。右の図の灰色の線のように、80%と言っても実際は6割しか当たらない、つまり<b>自信過剰</b>になることがあります。<br>Jev は、80%と言ったら本当に約8割当たる、<b>点線に乗る</b>ように学習している、と会社は説明しています。第三者の比較でも、この点は Jev が Kev より良かったとされています。<br>これが揃っていると、『82%なら自動で処理、50%なら人が見る』と<b>数字で線を引けます</b>。次のスライドがその使い方です。<span class=qa>想定質問：どう確かめる？→ 自分のデータで、80%前後と出たものを集めて正解率を見る。図にしたものを reliability diagram、ずれの大きさを ECE と呼ぶ。学習方法は RLCD（会社説明）。</span>">
+  <div class="wrap">
+    <p class="kicker">「タカ 82%」の意味</p>
+    <h2>「82%」と言ったら、<span class="pop">本当に8割当たるか</span></h2>
+    <div class="grid2" style="margin-top:1em;align-items:center">
+      <div>
+        <div class="card" style="border-color:var(--blue);border-width:2px">
+          <h3 class="pop">天気予報と同じ</h3>
+          <p style="color:var(--ink);font-weight:700;font-size:clamp(15px,min(1.4vw,2.4vh),25px);line-height:1.6">降水確率 80% の日を集めたら、<br>本当に8割の日に雨が降った</p>
+          <p style="margin-top:.4em">＝ 信頼できる確率（較正されている）</p>
+        </div>
+        <div class="cmp" style="margin-top:.8em;max-width:none">
+          <div class="r"><b>GPT の数字</b><span>次に<u>その文字を書く</u>確率　<span style="color:var(--ink-2);font-weight:600">→ 自信過剰なことがある</span></span></div>
+          <div class="r"><b class="pop">Jev の数字</b><span class="pop"><u>当たる</u>確率に揃うよう学習<span style="color:var(--ink-2);font-weight:600">（会社説明）</span></span></div>
+        </div>
+      </div>
+      <div class="center">
+        <svg class="calib" viewBox="0 0 300 290" role="img" aria-label="較正の概念図">
+          <line x1="50" y1="250" x2="280" y2="250" stroke="#b9b9c0"/>
+          <line x1="50" y1="250" x2="50" y2="20" stroke="#b9b9c0"/>
+          <line x1="50" y1="250" x2="280" y2="20" stroke="#86868b" stroke-dasharray="5 5"/>
+          <polyline fill="none" stroke="#9ea3ab" stroke-width="4" stroke-linecap="round" points="50,250 73,227 119,192 165,158 211,130 257,98 280,84"/>
+          <polyline fill="none" stroke="#0066cc" stroke-width="4" stroke-linecap="round" points="50,250 73,222 119,183 165,135 211,94 257,50 280,29"/>
+          <text x="60" y="36" font-size="12" fill="#0066cc" font-weight="700">言ったとおりに当たる（Jev が狙う）</text>
+          <text x="186" y="160" font-size="12" fill="#6e6e73" font-weight="700">自信過剰の例</text>
+          <text x="165" y="276" font-size="12" fill="#6e6e73" text-anchor="middle">言った確率 →</text>
+          <text x="22" y="135" font-size="12" fill="#6e6e73" text-anchor="middle" transform="rotate(-90 22 135)">実際に当たった割合 →</text>
+        </svg>
+        <p class="foot" style="margin-top:.2em">概念図（実測ではない）</p>
+      </div>
+    </div>
+    <p class="ask" style="margin-top:.8em">数字が信頼できれば、<span class="pop">「何%なら任せるか」を線で引ける</span></p>
+  </div>
+</section>
+
+<!-- ============ 9. 設計がどう変わるか ============ -->
+<section id="s8" data-note="<b>【約80秒】</b>では我々の設計がどう変わるか。日銀の例で続けます。<br>これまでは、声明文やニュースを LLM に1件ずつ読ませて、文章の答えをパースしていました。遅くて高いので、<b>重要そうなものだけ</b>に絞っていました。<br>Jev 型なら1件あたり約0.0004ドル（入力約1万トークンの場合）なので、<b>全件に流せます</b>。そして返ってくる確率で分けます。0.9以上なら自動でタグ付け、0.6〜0.9なら LLM に要約付きで再確認させる、それ未満はアナリストが見る。しきい値は例で、前のスライドの『本当に当たるか』を自分のデータで確かめてから決めます。<br>つまり、<b>強い LLM と人の時間を、本当に迷うものだけに使える</b>ようになります。<br>では、日銀の例以外に何ができるのか。次のページで具体例を見ます。">
+  <div class="wrap">
+    <p class="kicker">我々の設計がどう変わるか</p>
+    <h2>判断を<span class="pop">全件に</span>置いて、<br>迷ったものだけ LLM と人へ</h2>
+    <div class="flow">
+      <div class="box">声明文・ニュース<small>全件</small></div>
+      <div class="arr">→</div>
+      <div class="box jev">Jev<small>タカ？ 中立？ ハト？</small></div>
+      <div class="arr">→</div>
+      <div class="br">
+        <div class="hx2"><span>0.9 以上</span>自動でタグ付け</div>
+        <div class="hx3"><span>0.6〜0.9</span>LLM で要約付きの再確認</div>
+        <div class="hx4"><span>0.6 未満</span>アナリストが判断</div>
+      </div>
+    </div>
+    <div class="numnote" style="border-color:var(--blue);background:#fff;margin-top:1.2em">
+      <p style="text-align:center;color:var(--ink);font-weight:700;font-size:clamp(14px,min(1.32vw,2.25vh),24px)">
+        1件 約 <span class="pop">$0.0004</span> → 「重要そうなものだけ」から<span class="pop">「全件」</span>へ
+      </p>
+    </div>
+    <p class="ask" style="margin-top:.8em">日銀の例だけではない。<span class="pop">ほかに何ができる？</span>（次ページ）</p>
+    <p class="foot center">しきい値は例。$0.0004 は入力約1万トークンの場合の概算（$0.042 / 100万入力トークン、出力は無料）。</p>
+  </div>
+</section>
+
+<!-- ============ 何ができる ============ -->
+<section id="sUse" class="alt" data-note="<b>【約80秒】</b>では具体的に何ができるのか。6つ並べました。どれも『入力』と『問い』を渡して、確率を受け取るだけです。<br>左上から。<b>問い合わせ</b>の担当振り分け。<b>経費申請</b>に人の確認が要るかどうか。<b>アプリのログ</b>1行ずつに、障害の予兆かどうか。<br>下の段。<b>ニュース</b>が自動車セクターにプラスかマイナスか。<b>チャットボットの回答</b>が、ちゃんと質問に答えているかの採点。そして、<b>AI エージェントが実行しようとしているコマンド</b>が、取り返しのつかない操作かどうか。<br>どれも、これまでなら LLM に文章で答えさせてパースするか、専用の分類モデルを学習させていたものです。それが<b>問いを書くだけ</b>でできます。数字は説明用です。">
+  <div class="wrap">
+    <p class="kicker">じゃあ、何ができるの？</p>
+    <h2>「入力」と「問い」を渡すだけで、<span class="pop">こういう判断ができる</span></h2>
+    <div class="grid3" style="margin-top:1em">
+      <div class="card mini ex"><span class="ty">CHOICE ｜ 振り分け</span><h3>問い合わせ</h3>
+        <div class="in">「先月分が二重に請求されています」</div>
+        <div class="qq">担当は？ 請求／技術／営業</div><div class="aa">請求 91%</div></div>
+      <div class="card mini ex"><span class="ty">NOUL ｜ はい・いいえ</span><h3>経費申請</h3>
+        <div class="in">接待費 12万円・参加者 2名・事前申請なし</div>
+        <div class="qq">人の確認が必要？</div><div class="aa">はい 87%</div></div>
+      <div class="card mini ex"><span class="ty">NOUL ｜ はい・いいえ</span><h3>アプリのログ</h3>
+        <div class="in"><code>connection pool exhausted, retry 3/3</code></div>
+        <div class="qq">障害の予兆？</div><div class="aa">はい 88%</div></div>
+      <div class="card mini ex"><span class="ty">CHOICE ｜ 振り分け</span><h3>ニュース</h3>
+        <div class="in">「トヨタ、北米の EV 工場に追加投資」</div>
+        <div class="qq">自動車セクターに　プラス／中立／マイナス</div><div class="aa">プラス 78%</div></div>
+      <div class="card mini ex"><span class="ty">SCORE ｜ 段階評価</span><h3>チャットボットの回答</h3>
+        <div class="in">質問：返品の期限は？ → 回答：「送料は無料です」</div>
+        <div class="qq">質問に答えている？ 0／1／2</div><div class="aa">0.2<small>ほぼ答えていない</small></div></div>
+      <div class="card mini ex"><span class="ty">NOUL ｜ はい・いいえ</span><h3>AI エージェントの操作</h3>
+        <div class="in"><code>rm -rf ./data</code> を実行しようとしている</div>
+        <div class="qq">取り返しのつかない操作？</div><div class="aa">はい 96%<small>→ 止める</small></div></div>
+    </div>
+    <p class="ask" style="margin-top:.9em">これまでは LLM に文章で答えさせるか、専用モデルを学習させていた。<span class="pop">今は問いを書くだけ</span></p>
+    <p class="foot center">数字は説明用。</p>
+  </div>
+</section>
+
+<!-- ============ 判断だけで、ここまで ============ -->
+<section id="sWow" class="wow" data-note="<b>【約90秒】</b>ここからが面白いところです。Jev は『選ぶ』ことしかしません。でも、<b>速く・大量に・休みなく</b>回すと、想像しなかったことができます。<br>左。TypeSafe は Jev に<b>シューティングゲームを遊ばせました</b>。ゲームは『今の状況を見て、次に前へ進むか、曲がるか、撃つか』を選ぶことの繰り返しです。1回の判断が0.114秒なので、1秒に約9回選べる。人がとっさに反応する速さがおおよそ0.2秒と言われるので、それより速い。同じことを LLM でやると1回8.6秒で、ゲームになりません。<b>選ぶだけでも、速ければ『動き』になる</b>。<br>真ん中。1日1万本のニュースを、保有する100銘柄それぞれについて判定すると、<b>1日100万回の判断</b>です。LLM なら現実的ではありませんが、Jev の料金なら試算で1日数ドルから数十ドルです。<b>量が桁違いに増やせる</b>。<br>右。AI エージェントは何十、何百という操作を続けます。その1手ごとに『危ない操作ではないか』を挟んでも、0.1秒なら作業を止めません。<b>AI を見張る AI</b> を常駐させられます。<span class=qa>補足：ゲームは DOOM。ゲームの状況を文字（構造化データ）で渡した TypeSafe 自身のデモで、画面を見ているわけではない。比較の LLM は GPT-5.6 Terra。100万回の試算は、ニュース1本約1,000トークン・100銘柄の問いを1リクエストにまとめた場合 約$2.6/日、問いごとに記事全文が課金される最悪ケースで約$44/日。</span>">
+  <div class="wrap">
+    <p class="kicker">選ぶだけなのに</p>
+    <h2>速く・大量に・休みなく回すと、<br><span class="pop">「選ぶ」だけで別物になる</span></h2>
+    <div class="grid3" style="margin-top:1.1em">
+      <div class="card">
+        <h3>速さ　→　ゲームが遊べる</h3>
+        <p class="big-num">1秒に約9回</p>
+        <div class="loop"><span>状況</span><b>→</b><span class="k">選ぶ</span><b>→</b><span>動く</span><b>↺</b></div>
+        <p>前進・旋回・撃つ、を選び続けてシューティングゲームをプレイ。1回 <strong style="color:var(--ink)">0.114秒</strong>、人の反応（約0.2秒）より速い。LLM は1回 8.6秒。</p>
+      </div>
+      <div class="card">
+        <h3>量　→　全部を見られる</h3>
+        <p class="big-num">100万回<span class="unit">/ 日</span></p>
+        <div class="loop"><span>ニュース 1万本</span><b>×</b><span class="k">100銘柄</span></div>
+        <p>毎日すべてのニュースを、全保有銘柄について判定しても、試算で <strong style="color:var(--ink)">1日 数ドル〜数十ドル</strong>。</p>
+      </div>
+      <div class="card">
+        <h3>常駐　→　AI を見張る AI</h3>
+        <p class="big-num">全ステップ</p>
+        <div class="loop"><span>エージェントの1手</span><b>→</b><span class="k">危ない？</span><b>→</b><span>実行</span></div>
+        <p>何百手も続く AI の作業の<strong style="color:var(--ink)">1手ごと</strong>に検査を挟んでも、0.1秒なら止まらない。</p>
+      </div>
+    </div>
+    <p class="foot">ゲーム：TypeSafe 自身のデモ（DOOM。状況を文字で渡した条件）、比較は GPT-5.6 Terra、Source: The Register。100万回の費用はニュース1本約1,000トークンでの試算（問いを1リクエストにまとめて約$2.6/日、最悪ケース約$44/日）。</p>
+  </div>
+</section>
+
+<!-- ============ 10. 注意点 ============ -->
+<section id="s9" class="warn" data-note="<b>【約80秒】</b>注意点を3つ。<br>1つ目は、3枚目の<b>40〜200倍</b>です。これは TypeSafe が自分で作ったワークフローでの測定で、会社自身も実運用ではここまで出ないだろうと書いています。第三者の比較では Jev の応答は約275ミリ秒、また短い入力でも毎回約257トークン分が上乗せで課金されます。<br>2つ目は、<b>塗れても正解とは限らない</b>こと。選択肢の外は塗れないので『存在しない答え』は返しませんが、<b>間違った選択肢を自信満々に塗る</b>ことは起こります。<br>3つ目は、<b>理由を書かない</b>こと。マークシートなので、なぜそう判断したかは分かりません。監査やデバッグでは不利です。<br>加えて、Jev 本体は外部 API のみでウェイトリスト制です。社内で使うなら Kev のような OSS が現実的です。">
+  <div class="wrap">
+    <p class="kicker">注意点</p>
+    <h2>塗れても、<br>「正しい」とは限らない</h2>
+    <div class="grid3" style="margin-top:1.2em">
+      <div class="card">
+        <h3>3枚目の数字</h3>
+        <p class="big-num">自社測定</p>
+        <p style="margin-top:.5em">第三者の比較では応答 約275ms。短い入力でも毎回 約257トークン分が上乗せ。</p>
+      </div>
+      <div class="card">
+        <h3>正しさ</h3>
+        <p class="big-num">塗る ≠ 正解</p>
+        <p style="margin-top:.5em">選択肢の外は塗れないが、<strong style="color:#fff">間違った選択肢を自信満々に塗る</strong>ことはある。</p>
+      </div>
+      <div class="card">
+        <h3>説明</h3>
+        <p class="big-num">理由なし</p>
+        <p style="margin-top:.5em">マークシートなので<strong style="color:#fff">なぜ</strong>は分からない。監査・デバッグで不利。</p>
+      </div>
+    </div>
+    <p class="foot">ほか：問いと選択肢を事前に設計する手間／Jev 本体は外部 API のみ・重み非公開・ウェイトリスト制。Source: Opper（第三者比較）、InfoWorld、The Register、TypeSafe</p>
+  </div>
+</section>
+
+<!-- ============ 11. まとめ ============ -->
+<section id="s10" data-note="<b>【約50秒】</b>まとめます。LLM は記述式で、何でも書けるけれど、遅くて高い。Jev はマークシートで、書けないけれど、速くて安い。<br>だから、<b>『書く』仕事と『選ぶ』仕事を分けて設計する</b>。選ぶ仕事は全件に置いて、迷ったものだけ LLM と人に回す。<br>試すなら、手元の分類を1つ選んで、自分のデータで<b>正解率</b>と、<b>『82%が本当に82%当たるか』</b>を測るところからです。社内環境なら、今日のデモの Kev がそのまま使えます。">
+  <div class="wrap">
+    <p class="kicker">まとめ</p>
+    <h2>「書く」と「選ぶ」を、<span class="pop">分けて設計する</span></h2>
+    <div class="grid2" style="margin-top:.9em">
+      <div class="card">
+        <h3 class="pop">マークシートに向く</h3>
+        <p>選択肢が決まっている／件数が多い／速さが要る判断（分類・振り分け・承認・採点・監視）</p>
+      </div>
+      <div class="card dash">
+        <h3 style="color:var(--ink-2)">記述式のままがよい</h3>
+        <p>文章・要約・コードを書く／計算する／理由の説明が必要な判断</p>
+      </div>
+    </div>
+    <div class="closer">
+      <p class="c1">LLM　―　記述式。何でも書ける。遅く、高い</p>
+      <p class="c2">Jev　―　マークシート。<span style="color:#5aa9f5">書けない。速く、安い</span></p>
+      <p class="c3">だから、<span style="color:#5aa9f5;font-weight:700">選ぶ仕事は全件に置き、迷ったものだけ LLM と人へ</span></p>
+      <p class="c3" style="margin-top:.4em;font-size:clamp(12px,min(1.25vw,2.15vh),22px);color:#a1a1a6">まず手元の分類1つで、<span style="color:#c7c7cc;font-weight:700">正解率と「82% が本当に82% か」を測る。</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 参考：API の形 ============ -->
+<section id="s11" class="alt" data-note="<b>【参考・任意／約60秒】</b>時間が余れば、実際の API の形です。エンドポイントは POST /v1/systemone。state に判断材料、questions に問いを入れます。問いの型は3つで、choice は選択肢から選ぶ、noul ははい/いいえ、score は段階評価です。<br>レスポンスは answers の下に問いごとの答えが並ぶ1つの JSON です。Kev も同じ形の API で呼べるので、モデル名を変えるだけで差し替えられます。<span class=qa>補足：choice は最大255択、score は2〜10段階、コンテキストは約6.4万トークン。state は文字列か JSON。画像・音声は不可。</span>">
+  <div class="wrap">
+    <span class="badge">参考 ／ 時間が余れば</span>
+    <p class="kicker">API の形</p>
+    <h2>渡すのは「<span class="pop">状態</span>」と「<span class="pop">問いと選択肢</span>」だけ</h2>
+    <div class="grid2" style="margin-top:.9em;align-items:start">
+      <div class="code"><span class="c">// POST /v1/systemone</span>
+{
+  "model": "jev-latest",
+  "state": "基調的な物価上昇率が見通しに沿って…",
+  "questions": {
+    "stance": {
+      "type": "<span class="k">choice</span>",
+      "instructions": "金融政策のスタンスは？",
+      "criteria": {
+        "hawkish": "引き締めに前向き",
+        "neutral": "どちらとも言えない",
+        "dovish": "緩和に前向き"
+      }
+    }
+  }
+}</div>
+      <div class="code"><span class="c">// 返ってくるのは、選択肢と確率だけ</span>
+{
+  "model": "jev-latest",
+  "answers": {
+    "stance": {
+      "type": "choice",
+      "choice": "hawkish",
+      "probabilities": {
+        "hawkish": 0.82,
+        "neutral": 0.15,
+        "dovish": 0.03
+      },
+      "confidence": 0.6
+    }
+  },
+  "usage": { "input_tokens": 210, … }
+}</div>
+    </div>
+    <div class="center" style="margin-top:.8em">
+      <span class="tag"><b>choice</b>　選択肢から選ぶ（最大255）</span>
+      <span class="tag"><b>noul</b>　はい／いいえの確率</span>
+      <span class="tag"><b>score</b>　2〜10段階の評価</span>
+    </div>
+    <p class="foot center">Kev も同じ形の API。モデル名を変えるだけで差し替えられる。数字は説明用。</p>
+  </div>
+</section>
+
+<div class="dots" id="dots"></div>
+<div id="notes"></div>
+<div class="helpkey">↑↓ / PageUp・PageDown で送る　　N：発表者ノート表示</div>
+
+<script>
+(function(){
+  var secs = Array.prototype.slice.call(document.querySelectorAll('section'));
+  var dots = document.getElementById('dots');
+  var notes = document.getElementById('notes');
+  var cur = 0;
+
+  // 進行ドット
+  secs.forEach(function(s,i){
+    var d = document.createElement('i');
+    d.addEventListener('click', function(){ go(i); });
+    dots.appendChild(d);
+  });
+  var dotEls = Array.prototype.slice.call(dots.children);
+
+  function paint(i){
+    dotEls.forEach(function(d,j){ d.classList.toggle('on', j===i); });
+    var dark = secs[i].classList.contains('hero') || secs[i].classList.contains('warn');
+    dots.classList.toggle('ondark', dark);
+    notes.innerHTML = secs[i].getAttribute('data-note') || '';
+  }
+
+  function go(i){
+    i = Math.max(0, Math.min(secs.length-1, i));
+    secs[i].scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  // 表示中セクションの検出＋アニメーション発火
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add('in');
+      cur = secs.indexOf(e.target);
+      paint(cur);
+      // 動画は表示された時だけ再生（1スライドに複数動画がある場合も全部再生する）
+      e.target.querySelectorAll('video').forEach(function(v){
+        var p = v.play(); if(p && p.catch) p.catch(function(){});
+      });
+      // 大きい数字はカウントアップ（一度だけ）
+      e.target.querySelectorAll('[data-count-to]').forEach(function(el){
+        if(el.dataset.counted) return;
+        el.dataset.counted = '1';
+        var target = parseFloat(el.getAttribute('data-count-to'));
+        var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
+        var dur = 900, t0 = performance.now();
+        function step(t){
+          var p = Math.min(1, (t - t0) / dur);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = (target * eased).toFixed(dec);
+          if(p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    });
+  }, {threshold:0.55});
+  secs.forEach(function(s){ io.observe(s); });
+
+  // キー操作（投影中の誤爆を防ぐため最小限）
+  document.addEventListener('keydown', function(e){
+    var k = e.key;
+    if(k==='ArrowDown'||k==='PageDown'||k===' '||k==='ArrowRight'){ e.preventDefault(); go(cur+1); }
+    else if(k==='ArrowUp'||k==='PageUp'||k==='ArrowLeft'){ e.preventDefault(); go(cur-1); }
+    else if(k==='Home'){ e.preventDefault(); go(0); }
+    else if(k==='End'){ e.preventDefault(); go(secs.length-1); }
+    else if(k==='n'||k==='N'){ notes.classList.toggle('show'); }
+  });
+
+  // 操作ヒントの自動フェード（投影中の映り込み防止）
+  var help = document.querySelector('.helpkey'), ht;
+  function nudge(){
+    help.classList.remove('hide');
+    clearTimeout(ht);
+    ht = setTimeout(function(){ help.classList.add('hide'); }, 5000);
+  }
+  document.addEventListener('mousemove', nudge);
+  nudge();
+
+  secs[0].classList.add('in');
+  paint(0);
+})();
+</script>
+</body>
+</html>

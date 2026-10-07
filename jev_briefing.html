@@ -729,6 +729,23 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 .tp.choice{background:#e8f2fd;color:var(--blue);} .tp.noul{background:#e6f4ee;color:#00875a;} .tp.score{background:#f3ecfb;color:#6b3fa0;}
 .qs .qi{position:relative;}
 .qs .qi .tp{position:absolute;right:0;top:.55em;font-size:clamp(11px,min(.95vw,1.6vh),16px);}
+
+/* 3つの型 */
+.state1{margin:.2em 0 0;font-weight:700;color:var(--ink);font-size:clamp(16px,min(1.45vw,2.5vh),26px);}
+.state1 span{display:inline-block;margin-right:.7em;padding:0 .6em;border-radius:6px;background:#e6e6eb;color:var(--ink-2);font-size:.72em;vertical-align:.15em;}
+.ty3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.8vw,30px);margin-top:.8em;align-items:start;}
+.tc{border-top:4px solid var(--acc);padding-top:.5em;}
+.tc.noul{--acc:#00875a;} .tc.choice{--acc:#0066cc;} .tc.score{--acc:#6b3fa0;}
+.tc .tn{margin:0 0 .4em;color:var(--ink-2);font-weight:700;font-size:clamp(14px,min(1.25vw,2.1vh),22px);}
+.tc .tn b{color:var(--acc);font-family:"SF Mono",Menlo,Consolas,monospace;font-size:1.25em;margin-right:.5em;}
+.tc .code{font-size:clamp(12px,min(1.02vw,1.75vh),17px);line-height:1.55;padding:clamp(8px,1vh,12px) clamp(10px,1vw,14px);}
+.tc .code.res{background:#0f2238;}
+.tc .code .k{color:#fff;font-weight:700;}
+.tc .code .c{color:#9aa3ad;}
+.tc .ar{margin:.1em 0;text-align:center;color:#b0b0b6;font-weight:700;line-height:1.1;}
+.tc .rd{margin:.45em 0 0;color:var(--ink-2);font-size:clamp(14px,min(1.2vw,2.05vh),21px);line-height:1.45;}
+.tc .rd b{color:var(--acc);}
+@media (max-width:900px){.ty3{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -744,7 +761,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 2. Decision Model とは ============ -->
-<section id="what" class="alt" data-note="<b>【約90秒】</b>まず、Decision Model が何をするのかです。一言でいうと、<b>『何かのスナップショット』と『文章で書いた問い』を渡すと、確率つきの判定が返る関数</b>です。式で書くと、f(状態, 問いの束) → 確率分布の束。状態は、ある瞬間の姿なら文字でも JSON でも、モデルによっては画像でも入ります。問いは判定基準を文章で書くので、学習なしでその場で差し替えられます。<br>実際の API の形で見ます。例は TypeSafe の Jev です。全部読む必要はなく、<b>青い番号のところだけ</b>見てください。<br>左が渡すもの。<b>①</b>判断の材料、ここでは日銀の声明文。<b>②</b>問い。<b>③</b>選択肢。タカ・中立・ハトの3択です。<br>右が返ってくるもの。<b>④</b>選んだ答えと、<b>⑤</b>各選択肢の確率。これだけです。<br>ここで『JSON という文章が返ってきているじゃないか』と思われるかもしれません。モデルが決めているのは、<b>どれを選ぶかと、確率の数字だけ</b>です。JSON の枠や項目名は、こちらが渡した問いと選択肢を、API が決まった形に詰め直したものです。LLM のように1文字ずつ考えて書いた文章ではありません。<br>たとえるなら、LLM は記述式の試験、Decision Model はマークシートの試験です。しかも全部の選択肢を、自信の分だけ濃く塗って返す。その濃さが確率です。<span class=qa>想定質問：BERT などの分類モデルと何が違う？→ あちらは何を判定するか（問いとラベル）が学習時に固定。Decision Model は問いと選択肢をリクエストごとに渡せる。<br>想定質問：GPT に Structured Output で選択肢だけ答えさせれば同じでは？→ 形は真似できるが、LLM は答えを1文字ずつ書く工程が残る（4枚目）。<br>補足：JSON をサーバ側で組み立てていることは、オープンソースの Kev のコードで確認できる（Jev 本体の内部は非公開）。問いの型は choice（選ぶ・最大255択）、noul（はい／いいえを0〜1で）、score（2〜10段階）の3つ。入力は文字のみ。</span>">
+<section id="what" class="alt" data-note="<b>【約90秒】</b>まず、Decision Model が何をするのかです。一言でいうと、<b>『何かのスナップショット』と『文章で書いた問い』を渡すと、確率つきの判定が返る関数</b>です。式で書くと、f(状態, 問いの束) → 確率分布の束。状態は、ある瞬間の姿なら文字でも JSON でも、モデルによっては画像でも入ります。問いは判定基準を文章で書くので、学習なしでその場で差し替えられます。<br>実際の API の形で見ます。例は TypeSafe の Jev です。全部読む必要はなく、<b>青い番号のところだけ</b>見てください。<br>左が渡すもの。<b>①</b>判断の材料、ここでは日銀の声明文。<b>②</b>問い。<b>③</b>選択肢。タカ・中立・ハトの3択です。<br>右が返ってくるもの。<b>④</b>選んだ答えと、<b>⑤</b>各選択肢の確率。これだけです。<br>ここで『JSON という文章が返ってきているじゃないか』と思われるかもしれません。モデルが決めているのは、<b>どれを選ぶかと、確率の数字だけ</b>です。JSON の枠や項目名は、こちらが渡した問いと選択肢を、API が決まった形に詰め直したものです。LLM のように1文字ずつ考えて書いた文章ではありません。<br>たとえるなら、LLM は記述式の試験、Decision Model はマークシートの試験です。しかも全部の選択肢を、自信の分だけ濃く塗って返す。その濃さが確率です。<span class=qa>想定質問：BERT などの分類モデルと何が違う？→ あちらは何を判定するか（問いとラベル）が学習時に固定。Decision Model は問いと選択肢をリクエストごとに渡せる。<br>想定質問：GPT に Structured Output で選択肢だけ答えさせれば同じでは？→ 形は真似できるが、LLM は答えを1文字ずつ書く工程が残る（4枚目）。<br>補足：JSON をサーバ側で組み立てていることは、オープンソースの Kev のコードで確認できる（Jev 本体の内部は非公開）。問いの型は3つ（5枚目で説明）。Jev の入力は文字のみ。</span>">
   <div class="wrap">
     <p class="kicker">Decision Model とは</p>
     <h2>文章は書かない。<span class="pop">選んで、確率を返すだけ</span></h2>
@@ -837,6 +854,59 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
   </div>
 </section>
 
+<!-- ============ 3つの型 ============ -->
+<section id="types" class="alt" data-note="<b>【約90秒】</b>問いの型、つまり<b>答えの形</b>は3つしかありません。同じ問い合わせメール『3日前から支払いが失敗しています』に、3つの型で問いを出した例です。公式ドキュメントの例を日本語にしたものです。<br>左の <b>noul</b> は、はい・いいえ。返ってくるのは『はい』である確率1つだけです。0.95なら、急ぎである確率が95%。<br>真ん中の <b>choice</b> は、選択肢から1つ。選ばれた答えと、全部の選択肢の確率が返ってきます。2枚目の日銀の例もこれでした。<br>右の <b>score</b> は、段階評価。段階を順番に並べて渡すと、確率で重み付けした値が返ります。0が平静、1が不満、2が激怒で、1.05なら『不満』寄りです。<br>choice と score には、どれだけ迷っているかを表す <b>confidence</b> も付きます。noul には付きません。確率そのものが確信度を表しているからです。<span class=qa>補足：choice は最大255択、score は2〜10段階。score の値は段階の間の値をとるが、正確な大きさとして使うのではなく、しきい値と比べる使い方が推奨（公式の苦手の一覧に『段階の数値的な較正は弱い』とある）。noul で確信度が欲しい場合は |2p − 1| で計算すると公式が案内。複数の型の問いを1回のリクエストにまとめて送れる。</span>">
+  <div class="wrap">
+    <p class="kicker">3つの型</p>
+    <h2>答えの形は、<span class="pop">3種類だけ</span></h2>
+    <p class="state1"><span>状態（共通）</span>「3日前から支払いが失敗しています！」</p>
+    <div class="ty3">
+      <div class="tc noul">
+        <p class="tn"><b>noul</b>はい／いいえ</p>
+<div class="code">"type": "noul",
+"instructions": "急ぎの内容か？",
+"criteria": {
+  "true":  "期限が迫っている",
+  "false": "急ぎではない" }</div>
+        <p class="ar">↓</p>
+<div class="code res"><span class="k">"noul": 0.95</span></div>
+        <p class="rd">「はい」の確率が <b>95%</b>。確率は1つだけ</p>
+      </div>
+      <div class="tc choice">
+        <p class="tn"><b>choice</b>選択肢から1つ</p>
+<div class="code">"type": "choice",
+"instructions": "担当チームは？",
+"criteria": {
+  "billing":   "支払い・請求",
+  "technical": "不具合・障害",
+  "sales":     "料金・契約" }</div>
+        <p class="ar">↓</p>
+<div class="code res"><span class="k">"choice": "billing"</span>,
+"probabilities": {
+  "billing": 0.88,
+  "technical": 0.12,
+  "sales": 0.0 },
+<span class="c">"confidence": 0.81</span></div>
+        <p class="rd"><b>billing</b> を選択。全選択肢の確率つき</p>
+      </div>
+      <div class="tc score">
+        <p class="tn"><b>score</b>段階評価</p>
+<div class="code">"type": "score",
+"instructions": "お客様の不満の度合いは？",
+"criteria":
+  ["平静", "不満", "激怒"]</div>
+        <p class="ar">↓</p>
+<div class="code res"><span class="k">"score": 1.05</span>,
+"probabilities": {
+  "0": 0.0, "1": 0.95, "2": 0.05 },
+<span class="c">"confidence": 0.92</span></div>
+        <p class="rd">0〜2 の間の値。<b>1.05 ＝「不満」寄り</b></p>
+      </div>
+    </div>
+    <p class="foot">TypeSafe 公式 API ドキュメントの例を日本語訳（一部省略）。choice は最大255択、score は2〜10段階。confidence（迷いの少なさ）は choice と score にだけ付く。</p>
+  </div>
+</section>
+
 <!-- ============ 5. 確率の意味 ============ -->
 <section id="prob" class="alt" data-note="<b>【約80秒】</b>2枚目で、タカ82%という確率が返ってきました。この<b>82%の意味</b>が、LLM とは違います。<br>LLM でも確率を取り出すことはできます。ただしそれは『次に<b>その言葉が選ばれる</b>確率』です。文章としてどれだけもっともらしいか、であって、答えが当たっているかとは別物です。80%と言っても実際は6割しか当たらない、という自信過剰も起きます。<br>Decision Model は、<b>『その答えが実際に合っている確率』</b>を目指して学習しています。82%と言ったら、そういうものを集めると本当に8割当たる、という確率です。<br>実際に、外部の開発者が迷惑メール18,514通を Jev に判定させたところ、『0.9以上』と言ったものは99.9%が本当に迷惑メール、『0.1未満』と言ったものは0.1%しか迷惑メールではありませんでした。<br>確率が当たるので、<b>使い方が変わります</b>。全件に流して、確率が高いものは任せて人は抜き取りで確認、中くらいは LLM で再確認、低いものは人が判断、と分けられます。<span class=qa>補足：LLM の確率は logprobs と呼ばれる。Decision Model の学習方法は RLCD（Reinforcement Learning for Calibrated Decisions、TypeSafe の説明）。『言った確率どおりに当たるか』を図にしたものを reliability diagram、ずれの大きさを ECE と呼ぶ。<br>注意：迷惑メールは英語での1つの検証結果。しきい値は自分のデータで確かめて決める。</span>">
   <div class="wrap">
@@ -873,7 +943,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 4つの拡張 ============ -->
-<section id="expand" data-note="<b>【約80秒】</b>この数字が何を意味するか。判断そのものは、昔から LLM にも人にもできました。<b>新しいのはコストの桁</b>です。<br>判断はこれまで高かったので、<b>まれに・代表だけ・一律の基準で・一つの視点から</b>しか行えませんでした。それが4つの方向に広がります。<br>1つ目、<b>まれに → 常に</b>。月に1回の点検が、1秒ごとの判定になる。後で見る、動画を1秒ごとに判定する例がこれです。<br>2つ目、<b>代表だけ → 全部</b>。抜き取りや『重要そうなもの』だけだったのが、全件になる。5枚目の、全件に流して確率で分ける使い方です。<br>3つ目、<b>一律の基準 → 一人ずつの基準</b>。基準は文章の問いなので、顧客ごと、案件ごとに書き換えて回せます。<br>4つ目、<b>一つの視点 → 多数の視点</b>。問いを増やしてもほとんど遅くならないので、1つの文書を法務・リスク・広報の観点から一度に見られます。<span class=qa>補足：『一人ずつの基準』の例：顧客ごとの契約条件を問いの文章に入れて、請求書がその条件に合っているかを判定する。『多数の視点』は、1回の呼び出しに複数の問いを入れられる仕様による。</span>">
+<section id="expand" data-note="<b>【約80秒】</b>この数字が何を意味するか。判断そのものは、昔から LLM にも人にもできました。<b>新しいのはコストの桁</b>です。<br>判断はこれまで高かったので、<b>まれに・代表だけ・一律の基準で・一つの視点から</b>しか行えませんでした。それが4つの方向に広がります。<br>1つ目、<b>まれに → 常に</b>。月に1回の点検が、1秒ごとの判定になる。後で見る、動画を1秒ごとに判定する例がこれです。<br>2つ目、<b>代表だけ → 全部</b>。抜き取りや『重要そうなもの』だけだったのが、全件になる。6枚目の、全件に流して確率で分ける使い方です。<br>3つ目、<b>一律の基準 → 一人ずつの基準</b>。基準は文章の問いなので、顧客ごと、案件ごとに書き換えて回せます。<br>4つ目、<b>一つの視点 → 多数の視点</b>。問いを増やしてもほとんど遅くならないので、1つの文書を法務・リスク・広報の観点から一度に見られます。<span class=qa>補足：『一人ずつの基準』の例：顧客ごとの契約条件を問いの文章に入れて、請求書がその条件に合っているかを判定する。『多数の視点』は、1回の呼び出しに複数の問いを入れられる仕様による。</span>">
   <div class="wrap">
     <p class="kicker">何が新しいのか</p>
     <h2>判断は昔からできた。<span class="pop">新しいのはコストの桁</span></h2>
@@ -907,7 +977,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 10. 他社モデルの登場 ============ -->
-<section id="vendors" class="alt" data-note="<b>【約80秒】</b>ここまで例に使ってきた Jev ですが、Decision Model は<b>もう1社の製品ではありません</b>。<br>9月15日に TypeSafe が Jev を出してから、たった<b>3週間でこれだけ</b>出てきました。2日後に個人開発のオープンソース Kev、翌日に Convai の Laya。9月29日に OpenAI が Decisions API を発表。そして10月1日には、<b>Cloudflare の Clef、Perplexity の Decider、AWS の Strands Decider</b> が同じ日に出ています。<br>緑の『オープン』は重みが公開されていて、自分たちの環境で動かせるもの。青は<b>画像も読める</b>ものです。Cloudflare の Clef は短い動画も扱えるとしています。<br>画像が読めると、<b>動画を1秒ごとにコマに切って、1枚ずつ判定し続ける</b>ことができます。左は店舗のカメラで『レジに人が並んでいるか』。人が見れば一目で分かる判定です。右は日銀総裁の記者会見の映像を1秒ごとに切って、表情から読み取れる感情を<b>喜・怒・哀・楽の4つ</b>で測る例です。1コマごとの判定が多少ぶれても、<b>会見の中でどう変化したか</b>を追えば、質問によって表情が変わった場面を見つけられます。<br>5枚目の『全件に流して確率で分ける』を、<b>文字だけでなく映像にも</b>広げられます。<span class=qa>補足：TypeSafe 自身からは、10月初めの時点で Jev の次のモデルは出ていない（新しい入力形式の版を作ると説明）。<br>Kev：Jared Palmer、Apache-2.0、Qwen ベース。Laya：Convai Innovations、ModernBERT ベースの小型（約4億パラメータ）、100以上の言語に対応する版あり、Apache-2.0。OpenAI Decisions API：DevDay で発表、限定プレビュー、GPT-6 Luna ベース。Clef／Clef-flash：Cloudflare、Qwen ベースの27B／9B、Workers AI で提供（入力100万トークンあたり$0.24）と Hugging Face で公開、Apache-2.0、画像入力対応。pplx-decider-v1-27b：Perplexity、Qwen ベース、画像入力対応、API は入力100万トークンあたり$0.04、Apache-2.0。Strands Decider 2B：AWS Strands Labs、Qwen3.5-2B ベースで Kev と同じポインタ方式、学習データとスクリプトも公開。いずれも性能は各社の自己申告が中心。</span>">
+<section id="vendors" class="alt" data-note="<b>【約80秒】</b>ここまで例に使ってきた Jev ですが、Decision Model は<b>もう1社の製品ではありません</b>。<br>9月15日に TypeSafe が Jev を出してから、たった<b>3週間でこれだけ</b>出てきました。2日後に個人開発のオープンソース Kev、翌日に Convai の Laya。9月29日に OpenAI が Decisions API を発表。そして10月1日には、<b>Cloudflare の Clef、Perplexity の Decider、AWS の Strands Decider</b> が同じ日に出ています。<br>緑の『オープン』は重みが公開されていて、自分たちの環境で動かせるもの。青は<b>画像も読める</b>ものです。Cloudflare の Clef は短い動画も扱えるとしています。<br>画像が読めると、<b>動画を1秒ごとにコマに切って、1枚ずつ判定し続ける</b>ことができます。左は店舗のカメラで『レジに人が並んでいるか』。人が見れば一目で分かる判定です。右は日銀総裁の記者会見の映像を1秒ごとに切って、表情から読み取れる感情を<b>喜・怒・哀・楽の4つ</b>で測る例です。1コマごとの判定が多少ぶれても、<b>会見の中でどう変化したか</b>を追えば、質問によって表情が変わった場面を見つけられます。<br>6枚目の『全件に流して確率で分ける』を、<b>文字だけでなく映像にも</b>広げられます。<span class=qa>補足：TypeSafe 自身からは、10月初めの時点で Jev の次のモデルは出ていない（新しい入力形式の版を作ると説明）。<br>Kev：Jared Palmer、Apache-2.0、Qwen ベース。Laya：Convai Innovations、ModernBERT ベースの小型（約4億パラメータ）、100以上の言語に対応する版あり、Apache-2.0。OpenAI Decisions API：DevDay で発表、限定プレビュー、GPT-6 Luna ベース。Clef／Clef-flash：Cloudflare、Qwen ベースの27B／9B、Workers AI で提供（入力100万トークンあたり$0.24）と Hugging Face で公開、Apache-2.0、画像入力対応。pplx-decider-v1-27b：Perplexity、Qwen ベース、画像入力対応、API は入力100万トークンあたり$0.04、Apache-2.0。Strands Decider 2B：AWS Strands Labs、Qwen3.5-2B ベースで Kev と同じポインタ方式、学習データとスクリプトも公開。いずれも性能は各社の自己申告が中心。</span>">
   <div class="wrap">
     <p class="kicker">他社モデルの登場</p>
     <h2>3週間で、<span class="pop">大手も含めて一気に広がった</span></h2>
@@ -956,7 +1026,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 10. 課題 ============ -->
-<section id="issues" class="warn" data-note="<b>【約100秒】</b>ここからは課題です。<br>一番大きいのは<b>判断力そのもの</b>です。6枚目と同じ評価、つまり最先端モデルの答えとの一致率で見ると、最先端の LLM である Opus 5 は73%。Decision Model は68%で、<b>最先端には届きません</b>。速さと安さと引き換えです。選択肢の外は答えないので作り話はしませんが、間違った選択肢を選ぶことは普通にあります。だから5枚目のように、確率で振り分けて補います。<br>右は<b>苦手なこと</b>です。最初の4つは <b>Jev の公式ドキュメントが自分で挙げている</b>ものです。<b>計算や数を数えること</b>。電卓ではないので、計算はコードでやれ、と書いています。<b>日付の比較</b>も苦手で、日付は取り出すだけにして、比べるのはコード。<b>書いたとおりにしか読まない</b>ので、意図は汲んでくれません。条件は正確に書く必要があります。それから、<b>最初の選択肢に寄りやすい</b>。選択肢の順番を入れ替えて、答えが変わらないか確かめます。画像が読めるモデルでは、<b>細かい傷や暗い画像</b>を見落とした、という第三者の試用結果もあります。各社とも画像の精度はまだ公表していないので、自分の画像で試してから使います。<br>下の段。<b>日本語</b>は、英語が一番精度が高く、日本語を含む他の言語はそこまで出ない、自分のデータで試してから使え、と公式に書かれています。日銀の声明文は、まさに日本語です。<b>理由を返さない</b>ので、監査やデバッグでは不利。理由が要る判断は LLM に回します。最後に<b>提供の形</b>。Jev も OpenAI も外部の API なので、社内データを外に送ってよいかの確認が先に要ります。社内で動かせるモデルについては、最後に補足します。<span class=qa>補足：一致率の基準は人が付けた正解ではなく GPT-6 Astra と Fable 5.1 の答えの平均。ワークフローは TypeSafe の社員が作ったもので、基準が OpenAI と Anthropic のモデルに寄る偏りがあると TypeSafe 自身が書いている。<br>苦手の一覧は TypeSafe 公式ドキュメント『Jev 1.13 jaggedness』（2026年10月2日時点）。ほかに、関係ない情報が多い入力に弱い（先にコードで絞る）、遠回しな問いや二重否定に弱い、入力に紛れ込んだ誘導的な文章で答えが動き得る（プロンプトインジェクション）、問いと選択肢の説明が食い違うと混乱する、文章の生成はできない、を挙げている。<br>想定質問：『LLM より40〜200倍速い』という宣伝は本当？→ TypeSafe が自分たちで作ったワークフローでの測定で、会社自身も実際の用途では差が小さくなると書いている。第三者の比較では Jev の応答は約275ミリ秒、短い入力でも毎回約257トークン分が上乗せで課金される（Opper）。</span>">
+<section id="issues" class="warn" data-note="<b>【約100秒】</b>ここからは課題です。<br>一番大きいのは<b>判断力そのもの</b>です。7枚目と同じ評価、つまり最先端モデルの答えとの一致率で見ると、最先端の LLM である Opus 5 は73%。Decision Model は68%で、<b>最先端には届きません</b>。速さと安さと引き換えです。選択肢の外は答えないので作り話はしませんが、間違った選択肢を選ぶことは普通にあります。だから6枚目のように、確率で振り分けて補います。<br>右は<b>苦手なこと</b>です。最初の4つは <b>Jev の公式ドキュメントが自分で挙げている</b>ものです。<b>計算や数を数えること</b>。電卓ではないので、計算はコードでやれ、と書いています。<b>日付の比較</b>も苦手で、日付は取り出すだけにして、比べるのはコード。<b>書いたとおりにしか読まない</b>ので、意図は汲んでくれません。条件は正確に書く必要があります。それから、<b>最初の選択肢に寄りやすい</b>。選択肢の順番を入れ替えて、答えが変わらないか確かめます。画像が読めるモデルでは、<b>細かい傷や暗い画像</b>を見落とした、という第三者の試用結果もあります。各社とも画像の精度はまだ公表していないので、自分の画像で試してから使います。<br>下の段。<b>日本語</b>は、英語が一番精度が高く、日本語を含む他の言語はそこまで出ない、自分のデータで試してから使え、と公式に書かれています。日銀の声明文は、まさに日本語です。<b>理由を返さない</b>ので、監査やデバッグでは不利。理由が要る判断は LLM に回します。最後に<b>提供の形</b>。Jev も OpenAI も外部の API なので、社内データを外に送ってよいかの確認が先に要ります。社内で動かせるモデルについては、最後に補足します。<span class=qa>補足：一致率の基準は人が付けた正解ではなく GPT-6 Astra と Fable 5.1 の答えの平均。ワークフローは TypeSafe の社員が作ったもので、基準が OpenAI と Anthropic のモデルに寄る偏りがあると TypeSafe 自身が書いている。<br>苦手の一覧は TypeSafe 公式ドキュメント『Jev 1.13 jaggedness』（2026年10月2日時点）。ほかに、関係ない情報が多い入力に弱い（先にコードで絞る）、遠回しな問いや二重否定に弱い、入力に紛れ込んだ誘導的な文章で答えが動き得る（プロンプトインジェクション）、問いと選択肢の説明が食い違うと混乱する、文章の生成はできない、を挙げている。<br>想定質問：『LLM より40〜200倍速い』という宣伝は本当？→ TypeSafe が自分たちで作ったワークフローでの測定で、会社自身も実際の用途では差が小さくなると書いている。第三者の比較では Jev の応答は約275ミリ秒、短い入力でも毎回約257トークン分が上乗せで課金される（Opper）。</span>">
   <div class="wrap">
     <p class="kicker">Decision Model の課題</p>
     <h2>速い代わりに、<span style="color:#e8c979">判断力は最先端に届かない</span></h2>
@@ -967,7 +1037,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
           <div><span class="m">Opus 5<small>最先端の LLM</small></span><span class="v">73%</span><span class="t">38秒</span></div>
           <div class="hl"><span class="m">Jev<small>Decision Model</small></span><span class="v">68%</span><span class="t">0.4秒</span></div>
         </div>
-        <p style="margin-top:.5em">作り話はしないが、<strong style="color:#fff">間違った選択肢は選ぶ</strong>。<span class="fixi">→ 5枚目の確率の振り分けで補う</span></p>
+        <p style="margin-top:.5em">作り話はしないが、<strong style="color:#fff">間違った選択肢は選ぶ</strong>。<span class="fixi">→ 6枚目の確率の振り分けで補う</span></p>
       </div>
       <div class="card">
         <h3>苦手なこと</h3>
@@ -1008,7 +1078,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 12. 社内での使い方 ============ -->
-<section id="kev" class="alt" data-note="<b>【補足・約70秒】</b>最後に補足です。社内で使うなら、デモで使った <b>Kev</b> です。<br>使い方は3段階です。<br>1つ目、<b>動かす</b>。社内のクラウド検証環境で、GPU 1枚で既に動いています。社内のデータを外に出さずに済みます。<br>2つ目、<b>つなぐ</b>。Jev と同じ形の API なので、Jev 向けに書いたコードも接続先を変えるだけで動きます。将来 Jev に切り替えるときも同じです。OpenAI の API の形はまだ公開されていないので、そちらは別途確認が要ります。<br>3つ目、<b>測る</b>。第三者が362問で比べたところ、正答率は Jev と2ポイント以内でした。一方で、<b>確率の当たり方は Jev の方が良かった</b>。5枚目のように確率で振り分けるなら、なおさら自分のデータで、確率がどれだけ当たるかを測ってからしきい値を決めます。<br>まずは手元の分類を1つ選んで、そこから始めてください。<span class=qa>補足：作者は Jared Palmer、Apache-2.0、Qwen という既存の LLM がベース。社内環境は Kev-4B。比較は Opper（Kev-4B、362問、確率のずれ ECE は Jev 0.027〜0.049／Kev 0.044〜0.137、応答の中央値は Jev 約275ms／Kev 約220ms）。Kev-4B の動作確認済みの入力長は約8,000トークン（Jev は約6.4万）なので、長い文書は分けて渡す。</span>">
+<section id="kev" class="alt" data-note="<b>【補足・約70秒】</b>最後に補足です。社内で使うなら、デモで使った <b>Kev</b> です。<br>使い方は3段階です。<br>1つ目、<b>動かす</b>。社内のクラウド検証環境で、GPU 1枚で既に動いています。社内のデータを外に出さずに済みます。<br>2つ目、<b>つなぐ</b>。Jev と同じ形の API なので、Jev 向けに書いたコードも接続先を変えるだけで動きます。将来 Jev に切り替えるときも同じです。OpenAI の API の形はまだ公開されていないので、そちらは別途確認が要ります。<br>3つ目、<b>測る</b>。第三者が362問で比べたところ、正答率は Jev と2ポイント以内でした。一方で、<b>確率の当たり方は Jev の方が良かった</b>。6枚目のように確率で振り分けるなら、なおさら自分のデータで、確率がどれだけ当たるかを測ってからしきい値を決めます。<br>まずは手元の分類を1つ選んで、そこから始めてください。<span class=qa>補足：作者は Jared Palmer、Apache-2.0、Qwen という既存の LLM がベース。社内環境は Kev-4B。比較は Opper（Kev-4B、362問、確率のずれ ECE は Jev 0.027〜0.049／Kev 0.044〜0.137、応答の中央値は Jev 約275ms／Kev 約220ms）。Kev-4B の動作確認済みの入力長は約8,000トークン（Jev は約6.4万）なので、長い文書は分けて渡す。</span>">
   <div class="wrap">
     <p class="kicker">補足｜社内で使うには</p>
     <h2>社内のデータは、<span class="kev">社内で動く Kev</span> で</h2>

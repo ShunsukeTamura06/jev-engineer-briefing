@@ -779,6 +779,17 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 .tp code{font-family:"SF Mono",Menlo,Consolas,monospace;font-weight:700;margin-right:.45em;font-size:.95em;}
 .tc.noul{--acc:var(--t-noul);} .tc.choice{--acc:var(--t-choice);} .tc.score{--acc:var(--t-score);}
 .tc .tn .tp{font-size:clamp(14px,min(1.25vw,2.1vh),22px);padding:.05em .7em;}
+
+/* 記者会見の感情：1秒ごとに更新して動かす */
+.emo .live{margin:0 0 .15em;display:flex;align-items:center;gap:.45em;font-weight:700;color:#d23b3b;font-size:clamp(11px,min(.95vw,1.6vh),16px);letter-spacing:.08em;}
+.emo .live i{width:.6em;height:.6em;border-radius:50%;background:#d23b3b;animation:blinkc 1s infinite;}
+.emo .live .tm{color:var(--ink-2);font-variant-numeric:tabular-nums;letter-spacing:0;margin-left:.2em;}
+.emo i::after{transition:width .8s ease;}
+.emo div{transition:color .4s;}
+.emo .spark{display:block;width:100%;height:clamp(24px,4.4vh,40px);margin-top:.35em;background:#fff;border:1px solid var(--line);border-radius:6px;}
+.emo .spark polyline{fill:none;stroke:#c7c7cc;stroke-width:1.5;vector-effect:non-scaling-stroke;}
+.emo .spark polyline.hi{stroke:var(--blue);stroke-width:2.5;}
+.emo + .vx-n,.emo .vx-n{margin-top:.2em;}
 </style>
 </head>
 <body>
@@ -1056,13 +1067,15 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
         <div class="vx-r">
           <p class="vx-t">日銀総裁の記者会見</p>
           <p class="vx-q">「表情から読み取れる感情は？」</p>
-          <div class="emo">
-            <div><span>喜</span><i style="--w:12%"></i><b>12%</b></div>
-            <div><span>怒</span><i style="--w:6%"></i><b>6%</b></div>
-            <div><span>哀</span><i style="--w:22%"></i><b>22%</b></div>
-            <div class="hi"><span>楽</span><i style="--w:60%"></i><b>60%</b></div>
+          <div class="emo" id="emoLive">
+            <p class="live"><i></i>LIVE<span class="tm">00:00</span></p>
+            <div data-k="0"><span>喜</span><i style="--w:12%"></i><b>12%</b></div>
+            <div data-k="1"><span>怒</span><i style="--w:6%"></i><b>6%</b></div>
+            <div data-k="2"><span>哀</span><i style="--w:22%"></i><b>22%</b></div>
+            <div data-k="3" class="hi"><span>楽</span><i style="--w:60%"></i><b>60%</b></div>
+            <svg class="spark" viewBox="0 0 200 36" preserveAspectRatio="none" aria-label="直近20秒の推移"></svg>
+            <p class="vx-n">直近20秒の推移（1秒ごとに判定）</p>
           </div>
-          <p class="vx-n">1秒ごとに測り、<b>感情の変化</b>を追う</p>
         </div>
       </div>
     </div>
@@ -1223,6 +1236,52 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 
   secs[0].classList.add('in');
   paint(0);
+})();
+</script>
+
+<script>
+/* 記者会見の感情（喜・怒・哀・楽）を1秒ごとに更新する演出。数字は説明用の台本 */
+(function(){
+  var box=document.getElementById('emoLive'); if(!box) return;
+  var rows=[].slice.call(box.querySelectorAll('div[data-k]'));
+  var tm=box.querySelector('.tm'), svg=box.querySelector('.spark');
+  // 冒頭は落ち着いて説明 → 利上げの質問で「哀」「怒」が上がる → 落ち着きを取り戻す
+  var script=[[12,6,22,60],[14,5,20,61],[15,6,18,61],[13,7,21,59],[10,9,28,53],[7,14,38,41],[5,22,45,28],[4,27,48,21],
+              [5,24,46,25],[7,18,40,35],[9,12,33,46],[12,9,26,53],[16,7,20,57],[22,5,15,58],[28,4,12,56],[25,5,14,56],
+              [19,6,18,57],[15,6,20,59],[13,6,21,60],[12,6,22,60]];
+  var hist=[[],[],[],[]], t=0, timer=null;
+  function draw(){
+    var n=20, svgns='http://www.w3.org/2000/svg';
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    var cur=script[t%script.length], top=cur.indexOf(Math.max.apply(null,cur));
+    for(var k=0;k<4;k++){
+      var pts=hist[k].map(function(v,i){return (i*(200/(n-1))).toFixed(1)+','+(34-v*0.6).toFixed(1);}).join(' ');
+      var pl=document.createElementNS(svgns,'polyline'); pl.setAttribute('points',pts); if(k===top) pl.setAttribute('class','hi');
+      svg.appendChild(pl);
+    }
+  }
+  function step(){
+    var v=script[t%script.length], top=v.indexOf(Math.max.apply(null,v));
+    rows.forEach(function(r,k){
+      r.querySelector('i').style.setProperty('--w',v[k]+'%');
+      r.querySelector('b').textContent=v[k]+'%';
+      r.classList.toggle('hi',k===top);
+      hist[k].push(v[k]); if(hist[k].length>20) hist[k].shift();
+    });
+    var sec=t; tm.textContent=('0'+Math.floor(sec/60)).slice(-2)+':'+('0'+(sec%60)).slice(-2);
+    draw(); t++;
+  }
+  // 最初の20秒分の推移を埋めた状態から始める（印刷・静止画でもグラフが出るように）
+  for(var i=0;i<script.length;i++){ script[i].forEach(function(x,k){hist[k].push(x);}); }
+  hist=hist.map(function(h){return h.slice(-20);});
+  step();
+  var sec=box.closest('section');
+  new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting && !timer){ timer=setInterval(step,1000); }
+      else if(!e.isIntersecting && timer){ clearInterval(timer); timer=null; }
+    });
+  },{threshold:0.4}).observe(sec);
 })();
 </script>
 </body>

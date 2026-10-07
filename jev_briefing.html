@@ -622,6 +622,51 @@ table.acc tr:last-child td{border-bottom:none;}
 
 /* 日本語の改行を文節単位にする（Chrome / Edge 119 以降） */
 p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
+
+/* 9枚目：他社の登場を枠なしの時系列で並べ、下に画像の例を1段で置く */
+.tline{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2.2vw,38px);margin-top:1em;}
+.tline .ti{border-top:4px solid var(--acc);padding-top:.6em;}
+.tline .when{display:block;font-weight:700;color:var(--acc);font-size:clamp(14px,min(1.25vw,2.1vh),22px);}
+.tline h3{margin:.15em 0 0;font-size:clamp(22px,min(2.3vw,3.9vh),40px);font-weight:700;color:var(--acc);letter-spacing:-.01em;}
+.tline .who{display:block;color:var(--ink-2);font-weight:600;font-size:clamp(14px,min(1.2vw,2.05vh),21px);margin-top:.1em;}
+.tline p{margin:.45em 0 0;color:var(--ink-2);font-size:clamp(15px,min(1.3vw,2.2vh),23px);line-height:1.5;}
+.tline p b{color:var(--blue);}
+.vex{display:grid;grid-template-columns:minmax(0,.62fr) 1.38fr;gap:clamp(16px,2.4vw,40px);align-items:center;margin-top:clamp(10px,1.6vh,18px);
+  padding-top:clamp(10px,1.6vh,18px);border-top:1px solid var(--line);}
+.vex .vid.shot{aspect-ratio:16/9;}
+.vex-k{margin:0;font-weight:700;color:var(--blue);font-size:clamp(15px,min(1.35vw,2.3vh),24px);}
+.vex-flow{margin:.5em 0 0;padding:0;list-style:none;counter-reset:vf;font-weight:700;color:var(--ink);line-height:1.5;font-size:clamp(18px,min(1.7vw,2.9vh),30px);}
+.vex-flow li{counter-increment:vf;margin:.15em 0;}
+.vex-flow li::before{content:counter(vf);flex:none;width:1.5em;height:1.5em;border-radius:50%;background:#e8f2fd;color:var(--blue);font-size:.7em;display:inline-flex;align-items:center;justify-content:center;margin-right:.5em;vertical-align:.1em;}
+.vex-ans{display:flex;gap:clamp(18px,2.4vw,40px);margin-top:.7em;}
+.vex-ans .bub{margin:0;font-size:clamp(18px,min(1.7vw,2.9vh),30px);}
+@media (max-width:900px){.tline,.vex{grid-template-columns:1fr;}}
+
+/* 9枚目：3週間の時系列 */
+.tl2{display:grid;grid-template-columns:repeat(4,1fr) 2.9fr;gap:clamp(8px,1.2vw,18px);margin-top:1em;position:relative;padding-top:1.6em;}
+.tl2::before{content:"";position:absolute;left:0;right:0;top:.55em;height:3px;background:linear-gradient(90deg,#c7c7cc,var(--blue));border-radius:3px;}
+.tl2 .col{position:relative;display:flex;flex-direction:column;gap:clamp(5px,.8vh,9px);}
+.tl2 .col::before{content:"";position:absolute;left:0;top:-1.35em;width:.75em;height:.75em;border-radius:50%;background:#fff;border:3px solid var(--blue);}
+.tl2 .d{font-weight:700;color:var(--blue);font-size:clamp(15px,min(1.3vw,2.2vh),23px);}
+.tl2 .it{background:#fff;border:1px solid var(--line);border-radius:10px;padding:.35em .6em;line-height:1.35;}
+.tl2 .it b{display:block;font-size:clamp(15px,min(1.35vw,2.3vh),24px);color:var(--ink);}
+.tl2 .it small{display:inline-block;margin-right:.5em;color:var(--ink-2);font-weight:600;font-size:clamp(12px,min(1.02vw,1.75vh),18px);}
+.tl2 .tg{display:inline-block;margin:.2em .3em 0 0;padding:0 .5em;border-radius:99px;background:#ececf0;color:var(--ink-2);font-weight:700;
+  font-size:clamp(11px,min(.92vw,1.58vh),16px);line-height:1.6;}
+.tl2 .tg.op{background:#e6f4ee;color:#00875a;}
+.tl2 .tg.im{background:#e8f2fd;color:var(--blue);}
+.tl2 .col:last-child{display:grid;grid-template-columns:repeat(3,1fr);align-content:start;column-gap:clamp(6px,.8vw,12px);}
+.tl2 .col:last-child .d{grid-column:1/-1;}
+@media (max-width:900px){.tl2{grid-template-columns:1fr 1fr;}}
+
+/* 10枚目：公式が挙げる苦手 */
+.weak{list-style:none;margin:.2em 0 0;padding:0;display:flex;flex-direction:column;gap:clamp(4px,.8vh,9px);}
+.weak li{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.7em;font-size:clamp(15px,min(1.3vw,2.2vh),23px);line-height:1.45;}
+.weak li b{color:#fff;}
+.weak li span{color:#e8c979;font-weight:700;font-size:.86em;}
+.warn .mini .fixi{display:inline;}
+
+.warn h3 .h3s{margin-left:.8em;color:#8a8a90;font-weight:600;font-size:.72em;}
 </style>
 </head>
 <body>
@@ -750,14 +795,15 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 4. 数字 ============ -->
-<section id="num" class="hero" data-note="<b>【約45秒】</b>数字で見ます。Jev を出した TypeSafe が公表している評価で、4種類の判断の仕事を平均したものです。<br>普通の LLM である GPT-5.6 Terra と Jev は、<b>正答率が同じ68%</b>。そのうえで1件あたりの時間が10秒から0.4秒、<b>25分の1</b>です。費用も3セントから0.04セント、75分の1になっています。<br>同じ正確さの判断が、桁違いに速くなっている。書く工程がない分が、そのまま速さに出ています。<span class=qa>補足：TypeSafe 自身の評価なので割り引いて読む。判断の仕事の例は『終わったエージェントの作業ログを見て、人の確認が要るかを決める』など（O'Reilly Radar、2026年9月23日）。</span>">
+<section id="num" class="hero" data-note="<b>【約45秒】</b>数字で見ます。Jev を出した TypeSafe が公表している評価で、4種類の判断の仕事を平均したものです。人が付けた正解ではなく、<b>最先端のモデル（GPT-6 Astra と Fable 5.1）の答えを基準にして、それとどれだけ一致したか</b>を測っています。<br>普通の LLM である GPT-5.6 Terra と Jev は、<b>一致率が同じ68%</b>。そのうえで1件あたりの時間が10秒から0.4秒、<b>25分の1</b>です。費用も3セントから0.04セント、75分の1になっています。<br>同じ水準の判断が、桁違いに速くなっている。書く工程がない分が、そのまま速さに出ています。<span class=qa>補足：TypeSafe 自身の評価なので割り引いて読む。判断の仕事の例は『終わったエージェントの作業ログを見て、人の確認が要るかを決める』など（O'Reilly Radar、2026年9月23日）。</span>">
   <div class="wrap center">
     <p class="q">「で、どれくらい速いの？」</p>
     <p class="huge tight">10秒<span class="arrowbig">→</span>0.4秒</p>
-    <p class="sub">正答率は同じ 68% のまま、1件の判断が<br><span style="color:#5aa9f5;font-weight:700">25倍速い</span>（費用も 75分の1）</p>
+    <p class="sub">最先端モデルとの一致率は同じ 68% のまま、1件の判断が<br><span style="color:#5aa9f5;font-weight:700">25倍速い</span>（費用も 75分の1）</p>
     <p class="ctx">
       1件あたり　LLM（GPT-5.6 Terra）：10秒・$0.03　／　Decision Model（Jev）：0.4秒・$0.0004<br>
-      TypeSafe 公表の評価（4つの判断ワークフローの平均）。Source: O'Reilly Radar
+      一致率＝GPT-6 Astra と Fable 5.1 の答えの平均を基準にした一致の割合<br>
+      TypeSafe の自社評価（4つの判断ワークフローの平均）。Source: TypeSafe、O'Reilly Radar
     </p>
   </div>
   <div class="scrollhint">↓ &nbsp; SCROLL</div>
@@ -805,50 +851,48 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 10. 他社モデルの登場 ============ -->
-<section id="vendors" class="alt" data-note="<b>【約70秒】</b>ここまで例に使ってきた Jev ですが、Decision Model は<b>もう1社の製品ではありません</b>。<br>9月15日に TypeSafe が Jev を出し、2日後には個人の開発者がオープンソースの <b>Kev</b> を公開しました。重みが公開されているので、自分たちの環境で動かせます。デモで使ったのはこれです。<br>そして9月29日、<b>OpenAI も Decisions API を発表</b>しました。考え方は同じで、決めておいた選択肢から選んで、自信の度合いを返します。<br>OpenAI の一番大きな違いは、<b>画像も入力できる</b>ことです。画像が読めると、<b>動画を1秒ごとにコマに切って、1枚ずつ判定する</b>ことができます。店舗のカメラで『レジに人が並んでいるか』、『棚が空になっていないか』。人が見れば一目で分かる判定です。1回0.1〜0.2秒なら1秒に1回は十分に回せます。<br>前のページの『全部見る』を、<b>文字だけでなく映像にも</b>広げられます。<span class=qa>補足：Kev は Jared Palmer が公開（Apache-2.0、最初の版は9月17日、Kev 1.0 は10月1日）。OpenAI Decisions API は DevDay で発表、限定プレビュー、GPT-6 Luna ベースで応答 約150ms、料金は未公表（報道ベース）。動画を直接渡すのではなく、コマを画像として渡す想定の使い方。</span>">
+<section id="vendors" class="alt" data-note="<b>【約80秒】</b>ここまで例に使ってきた Jev ですが、Decision Model は<b>もう1社の製品ではありません</b>。<br>9月15日に TypeSafe が Jev を出してから、たった<b>3週間でこれだけ</b>出てきました。2日後に個人開発のオープンソース Kev、翌日に Convai の Laya。9月29日に OpenAI が Decisions API を発表。そして10月1日には、<b>Cloudflare の Clef、Perplexity の Decider、AWS の Strands Decider</b> が同じ日に出ています。<br>緑の『オープン』は重みが公開されていて、自分たちの環境で動かせるもの。青は<b>画像も読める</b>ものです。Cloudflare の Clef は短い動画も扱えるとしています。<br>画像が読めると、たとえば<b>動画を1秒ごとにコマに切って、1枚ずつ判定する</b>ことができます。店舗のカメラで『レジに人が並んでいるか』。人が見れば一目で分かる判定です。<br>前のページの『全部見る』を、<b>文字だけでなく映像にも</b>広げられます。<span class=qa>補足：TypeSafe 自身からは、10月初めの時点で Jev の次のモデルは出ていない（新しい入力形式の版を作ると説明）。<br>Kev：Jared Palmer、Apache-2.0、Qwen ベース。Laya：Convai Innovations、ModernBERT ベースの小型（約4億パラメータ）、100以上の言語に対応する版あり、Apache-2.0。OpenAI Decisions API：DevDay で発表、限定プレビュー、GPT-6 Luna ベース。Clef／Clef-flash：Cloudflare、Qwen ベースの27B／9B、Workers AI で提供（入力100万トークンあたり$0.24）と Hugging Face で公開、Apache-2.0、画像入力対応。pplx-decider-v1-27b：Perplexity、Qwen ベース、画像入力対応、API は入力100万トークンあたり$0.04、Apache-2.0。Strands Decider 2B：AWS Strands Labs、Qwen3.5-2B ベースで Kev と同じポインタ方式、学習データとスクリプトも公開。いずれも性能は各社の自己申告が中心。</span>">
   <div class="wrap">
     <p class="kicker">他社モデルの登場</p>
-    <h2>Decision Model は、<span class="pop">1社の製品ではなくなった</span></h2>
-    <div class="grid3 vend" style="margin-top:.9em">
-      <div class="card mini"><span class="when">9月15日</span><h3>Jev<small>TypeSafe AI</small></h3><p>入力は<b>文字</b>。<br>外部 API のみ（ウェイトリスト制）</p></div>
-      <div class="card mini"><span class="when kev">9月17日〜</span><h3 class="kev">Kev<small>個人開発のオープンソース</small></h3><p>入力は<b>文字</b>。重みが公開され、<b class="nb">自分の環境で動かせる</b></p></div>
-      <div class="card mini key"><span class="when">9月29日</span><h3 class="pop">Decisions API<small>OpenAI</small></h3><p>入力は<b class="pop">文字＋画像</b>。限定プレビュー</p></div>
+    <h2>3週間で、<span class="pop">大手も含めて一気に広がった</span></h2>
+    <div class="tl2">
+      <div class="col"><span class="d">9/15</span>
+        <div class="it"><b>Jev</b><small>TypeSafe AI</small><span class="tg">文字</span></div></div>
+      <div class="col"><span class="d">9/17</span>
+        <div class="it"><b>Kev</b><small>個人開発</small><span class="tg op">オープン</span><span class="tg">文字</span></div></div>
+      <div class="col"><span class="d">9/18</span>
+        <div class="it"><b>Laya</b><small>Convai</small><span class="tg op">オープン</span><span class="tg">文字</span></div></div>
+      <div class="col"><span class="d">9/29</span>
+        <div class="it"><b>Decisions API</b><small>OpenAI</small><span class="tg im">画像も</span></div></div>
+      <div class="col"><span class="d">10/1</span>
+        <div class="it"><b>Clef</b><small>Cloudflare</small><span class="tg op">オープン</span><span class="tg im">画像・動画も</span></div>
+        <div class="it"><b>Decider</b><small>Perplexity</small><span class="tg op">オープン</span><span class="tg im">画像も</span></div>
+        <div class="it"><b>Strands</b><small>AWS</small><span class="tg op">オープン</span><span class="tg">文字</span></div></div>
     </div>
-    <div class="chain" style="margin-top:.9em">
-      <div class="st">
-        <h3>① 動画</h3>
-        <div class="vid thumb"><div class="hint">画像をここに<br><code>assets/register_frame.png</code></div><img src="assets/register_frame.png" alt="" onerror="this.remove()"></div>
-        <p style="margin-top:.4em">店舗のカメラ（レジ前）</p>
-      </div>
-      <div class="ar">→</div>
-      <div class="st">
-        <h3>② 1秒ごとに切る</h3>
-        <p>動画を<strong style="color:var(--ink)">1秒に1枚</strong>の画像にする。</p>
-      </div>
-      <div class="ar">→</div>
-      <div class="st key">
-        <h3>③ 選ばせる</h3>
-        <p>1枚ずつ渡して<br>「<strong style="color:var(--ink)">レジに人が並んでいる？</strong>」</p>
-      </div>
-      <div class="ar">→</div>
-      <div class="st out">
-        <div class="bub"><i style="--p:.97"></i><span>はい</span><span class="pc">97%</span></div>
-        <div class="bub lo"><i style="--p:.03"></i><span>いいえ</span><span class="pc">3%</span></div>
+    <div class="vex">
+      <div class="vid shot"><div class="hint">画像をここに<br><code>assets/register_frame.jpg</code><br><span style="font-size:.9em">店舗のカメラ（レジ前）の1コマ</span></div><img src="assets/register_frame.jpg" alt="スーパーのレジに客が並んでいる様子" style="object-fit:cover" onerror="this.remove()"></div>
+      <div class="vex-r">
+        <p class="vex-k">画像が読めるモデルなら、たとえば</p>
+        <ol class="vex-flow"><li>店舗のカメラの動画を</li><li>1秒に1枚の画像に切って</li><li>「<span class="nb">レジに人が並んでいる？</span>」と聞く</li></ol>
+        <div class="vex-ans">
+          <div class="bub"><i style="--p:.97"></i><span>はい</span><span class="pc">97%</span></div>
+          <div class="bub lo"><i style="--p:.03"></i><span>いいえ</span><span class="pc">3%</span></div>
+        </div>
       </div>
     </div>
     <p class="ask" style="margin-top:.9em">画像が読めると、「全部見る」が<span class="pop">映像にも</span>広がる</p>
-    <p class="foot center">Source: TypeSafe、Kev（GitHub）、OpenAI DevDay 2026 の報道。動画はコマを画像として渡す想定の例。確率の数字は説明用。</p>
+    <p class="foot center">Source: 各社の発表・公開ページ、OpenAI DevDay 2026 の報道。オープン＝重みを公開。日付は2026年。確率の数字は説明用。写真：Kurt Kaiser（CC0、Wikimedia Commons）。</p>
   </div>
 </section>
 
 <!-- ============ 10. 課題 ============ -->
-<section id="issues" class="warn" data-note="<b>【約90秒】</b>ここからは課題です。<br>一番大きいのは<b>判断力そのもの</b>です。6枚目と同じ評価に、最先端の LLM である Opus 5 も入っていて、こちらは73%。Decision Model は68%で、<b>最先端には届きません</b>。速さと安さと引き換えです。選択肢の外は答えないので作り話はしませんが、間違った選択肢を選ぶことは普通にあります。だから、確率で振り分けて、迷うものは LLM と人に回す使い方になります。<br>それから<b>日本語</b>。公式ドキュメントに、英語が一番精度が出る、日本語を含む他の言語は自分のデータで試してから使え、と書かれています。日銀の声明文は、まさに日本語です。<br>3つ目は<b>理由を返さない</b>こと。なぜそう判断したかは分かりません。監査やデバッグでは不利です。理由が要る判断は LLM に回します。<br>4つ目は<b>事前の設計</b>。問いと選択肢を先に言葉にする必要があります。公式も、大きな判断は小さな問いに分けることを勧めています。<br>5つ目は<b>提供の形</b>。Jev も OpenAI も外部の API です。社内データを外に送ってよいかの確認が先に要ります。社内で動かせるモデルについては、最後に補足します。<span class=qa>補足：数字は TypeSafe 公表の評価（4つの判断ワークフローの平均、O'Reilly Radar 経由）。<br>想定質問：『LLM より40〜200倍速い』という宣伝は本当？→ TypeSafe が自分たちで作ったワークフローでの測定で、会社自身も実際の用途では差が小さくなると書いている。第三者の比較では Jev の応答は約275ミリ秒、短い入力でも毎回約257トークン分が上乗せで課金される（Opper）。</span>">
+<section id="issues" class="warn" data-note="<b>【約100秒】</b>ここからは課題です。<br>一番大きいのは<b>判断力そのもの</b>です。6枚目と同じ評価、つまり最先端モデルの答えとの一致率で見ると、最先端の LLM である Opus 5 は73%。Decision Model は68%で、<b>最先端には届きません</b>。速さと安さと引き換えです。選択肢の外は答えないので作り話はしませんが、間違った選択肢を選ぶことは普通にあります。だから5枚目のように、確率で振り分けて補います。<br>右は、<b>Jev の公式ドキュメントが自分で挙げている苦手</b>です。<b>計算や数を数えること</b>。電卓ではないので、計算はコードでやれ、と書いています。<b>日付の比較</b>も苦手で、日付は取り出すだけにして、比べるのはコード。<b>書いたとおりにしか読まない</b>ので、意図は汲んでくれません。条件は正確に書く必要があります。それから、<b>最初の選択肢に寄りやすい</b>。選択肢の順番を入れ替えて、答えが変わらないか確かめます。<br>下の段。<b>日本語</b>は、英語が一番精度が高く、日本語を含む他の言語はそこまで出ない、自分のデータで試してから使え、と公式に書かれています。日銀の声明文は、まさに日本語です。<b>理由を返さない</b>ので、監査やデバッグでは不利。理由が要る判断は LLM に回します。最後に<b>提供の形</b>。Jev も OpenAI も外部の API なので、社内データを外に送ってよいかの確認が先に要ります。社内で動かせるモデルについては、最後に補足します。<span class=qa>補足：一致率の基準は人が付けた正解ではなく GPT-6 Astra と Fable 5.1 の答えの平均。ワークフローは TypeSafe の社員が作ったもので、基準が OpenAI と Anthropic のモデルに寄る偏りがあると TypeSafe 自身が書いている。<br>苦手の一覧は TypeSafe 公式ドキュメント『Jev 1.13 jaggedness』（2026年10月2日時点）。ほかに、関係ない情報が多い入力に弱い（先にコードで絞る）、遠回しな問いや二重否定に弱い、入力に紛れ込んだ誘導的な文章で答えが動き得る（プロンプトインジェクション）、問いと選択肢の説明が食い違うと混乱する、文章の生成はできない、を挙げている。<br>想定質問：『LLM より40〜200倍速い』という宣伝は本当？→ TypeSafe が自分たちで作ったワークフローでの測定で、会社自身も実際の用途では差が小さくなると書いている。第三者の比較では Jev の応答は約275ミリ秒、短い入力でも毎回約257トークン分が上乗せで課金される（Opper）。</span>">
   <div class="wrap">
     <p class="kicker">Decision Model の課題</p>
     <h2>速い代わりに、<span style="color:#e8c979">判断力は最先端に届かない</span></h2>
     <div class="iss-top">
       <div class="card">
-        <h3>判断力</h3>
+        <h3>判断力<small class="h3s">最先端モデルの答えとの一致率</small></h3>
         <div class="acc2">
           <div><span class="m">Opus 5<small>最先端の LLM</small></span><span class="v">73%</span><span class="t">38秒</span></div>
           <div class="hl"><span class="m">Jev<small>Decision Model</small></span><span class="v">68%</span><span class="t">0.4秒</span></div>
@@ -856,22 +900,26 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
         <p style="margin-top:.5em">作り話はしないが、<strong style="color:#fff">間違った選択肢は選ぶ</strong>。<span class="fixi">→ 5枚目の確率の振り分けで補う</span></p>
       </div>
       <div class="card">
-        <h3>日本語</h3>
-        <p class="big-num">英語ほど出ない</p>
-        <p style="margin-top:.5em">公式ドキュメントに「英語が最も精度が高い。<br>他の言語は<strong style="color:#fff">自分のデータで試してから</strong>」。</p>
+        <h3>公式が挙げる苦手</h3>
+        <ul class="weak">
+          <li><b>計算・数を数える</b><span>→ 計算はコードで</span></li>
+          <li><b>日付の比較</b><span>→ 取り出すだけ、比べるのはコード</span></li>
+          <li><b>書いたとおりにしか読まない</b><span>→ 条件を正確に書く</span></li>
+          <li><b>最初の選択肢に寄りやすい</b><span>→ 順番を入れ替えて確かめる</span></li>
+        </ul>
       </div>
     </div>
     <div class="grid3" style="margin-top:clamp(8px,1.4vh,16px)">
-      <div class="card mini"><h3>説明</h3><p class="big-num">理由なし</p><p>なぜそう判断したかは返らない。<span class="fixi">→ 理由が要る判断は LLM へ</span></p></div>
-      <div class="card mini"><h3>設計</h3><p class="big-num">事前設計</p><p>問いと選択肢を先に言葉にする。<span class="fixi">→ 大きな判断は小さな問いに分ける</span></p></div>
-      <div class="card mini"><h3>提供の形</h3><p class="big-num">外部 API</p><p>Jev も OpenAI も外部 API。<span class="fixi">→ 社内データは確認が先（補足）</span></p></div>
+      <div class="card mini"><h3>日本語</h3><p class="big-num">精度が落ちる</p><p>判断の精度は英語が最も高い。<br><span class="fixi">→ 自分のデータで試してから</span></p></div>
+      <div class="card mini"><h3>説明</h3><p class="big-num">理由なし</p><p>なぜそう判断したかは返らない。<br><span class="fixi">→ 理由が要る判断は LLM へ</span></p></div>
+      <div class="card mini"><h3>提供の形</h3><p class="big-num">外部 API</p><p>Jev も OpenAI も外部 API。<br><span class="fixi">→ 社内データは確認が先（補足）</span></p></div>
     </div>
-    <p class="foot">判断力：TypeSafe 公表の評価（4つの判断ワークフローの平均）、Source: O'Reilly Radar。日本語・設計：TypeSafe 公式ドキュメント。</p>
+    <p class="foot">判断力：TypeSafe の自社評価（4つの判断ワークフローの平均、GPT-6 Astra と Fable 5.1 の答えの平均を基準にした一致率）、Source: TypeSafe、O'Reilly Radar。苦手・日本語：TypeSafe 公式ドキュメント（Jev 1.13 jaggedness、Models）。</p>
   </div>
 </section>
 
 <!-- ============ 13. まとめ ============ -->
-<section id="sum" data-note="<b>【約45秒】</b>まとめます。<br>Decision Model は、判断力そのものは最先端の LLM に届きません。<br>ただし、同じ正確さの判断が、時間で25分の1、費用で75分の1になりました。<br>だから、<b>判断を全件に置き、迷ったものだけ LLM と人に回す</b>。精度の不足は確率で補います。<br>上の2つの箱のとおり、選ぶ仕事は Decision Model、文章・要約・コード・理由の説明が要るものはこれまでどおり LLM です。本編は以上です。時間があれば、社内で使うための補足をします。">
+<section id="sum" data-note="<b>【約45秒】</b>まとめます。<br>Decision Model は、判断力そのものは最先端の LLM に届きません。<br>ただし、同じ水準の判断が、時間で25分の1、費用で75分の1になりました。<br>だから、<b>判断を全件に置き、迷ったものだけ LLM と人に回す</b>。精度の不足は確率で補います。<br>上の2つの箱のとおり、選ぶ仕事は Decision Model、文章・要約・コード・理由の説明が要るものはこれまでどおり LLM です。本編は以上です。時間があれば、社内で使うための補足をします。">
   <div class="wrap">
     <p class="kicker">まとめ</p>
     <h2>判断を全件に置き、<span class="pop">迷ったものだけ LLM と人へ</span></h2>
@@ -881,7 +929,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
     </div>
     <div class="closer">
       <p class="c1">判断力　―　最先端の LLM には届かない</p>
-      <p class="c2">同じ正確さの判断が、時間 25分の1・費用 75分の1<span class="num">10秒 → 0.4秒</span></p>
+      <p class="c2">同じ水準の判断が、時間 25分の1・費用 75分の1<span class="num">10秒 → 0.4秒</span></p>
       <p class="c3">精度の不足は確率で補い、強い LLM と人の時間は迷うものだけに</p>
     </div>
   </div>

@@ -503,10 +503,10 @@ audio{width:100%;margin:0;height:clamp(30px,3.6vh,40px);}
 }
 
 /* ---------- Jev と Kev を色で分ける（Jev＝青、Kev＝緑） ---------- */
-.kev{color:#00875a;}
-.sheet.kev .stamp{background:#00875a;}
-.sheet.kev .bub i::after{background:#00875a;}
-.sheet.kev .bub .pc{color:#00875a;}
+.kev{color:#b5540a;}
+.sheet.kev .stamp{background:#b5540a;}
+.sheet.kev .bub i::after{background:#b5540a;}
+.sheet.kev .bub .pc{color:#b5540a;}
 .jk{width:100%;border-collapse:separate;border-spacing:0;font-size:clamp(16px,min(1.46vw,2.5vh),27px);}
 .jk th,.jk td{padding:.55em .8em;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;}
 .jk th{font-size:clamp(20px,min(2vw,3.4vh),34px);font-weight:700;border-bottom:3px solid currentColor;}
@@ -533,10 +533,10 @@ audio{width:100%;margin:0;height:clamp(30px,3.6vh,40px);}
 .loop span{background:var(--bg-2);border-radius:99px;padding:.25em .7em;}
 .loop span.k{background:#e8f2fd;color:var(--blue);}
 .loop b{color:#b0b0b6;}
-.chain.kevc .st.key{border-color:#00875a;background:#eef8f3;}
-.chain.kevc .st.key h3{color:#00875a;}
-.chain.kevc .bub i::after{background:#00875a;}
-.chain.kevc .bub .pc{color:#00875a;}
+.chain.kevc .st.key{border-color:#b5540a;background:#fdf1e7;}
+.chain.kevc .st.key h3{color:#b5540a;}
+.chain.kevc .bub i::after{background:#b5540a;}
+.chain.kevc .bub .pc{color:#b5540a;}
 
 /* ---------- 作り直し版で追加 ---------- */
 /* 渡すもの／返ってくるもの の見出し */
@@ -575,7 +575,7 @@ table.acc tr:last-child td{border-bottom:none;}
 .route span[style] b{color:var(--acc);margin-right:.5em;}
 /* 他社モデルの並び */
 .vend .when{display:block;font-weight:700;color:var(--blue);font-size:clamp(15px,min(1.28vw,2.2vh),22px);margin-bottom:.2em;}
-.vend .when.kev{color:#00875a;}
+.vend .when.kev{color:#b5540a;}
 .vend h3{margin:0 0 .3em !important;}
 .vend h3 small{font-size:.8em;color:var(--ink-2);font-weight:600;margin-left:.5em;}
 .vend .card.key{border:2px solid var(--blue);background:#f2f7fd;}
@@ -588,7 +588,7 @@ table.acc tr:last-child td{border-bottom:none;}
 /* 社内での使い方の3段階 */
 .steps{display:flex;flex-direction:column;gap:clamp(8px,1.4vh,16px);}
 .steps .sp{display:grid;grid-template-columns:auto 1fr;gap:.9em;align-items:start;}
-.steps .no{width:1.9em;height:1.9em;border-radius:50%;background:#00875a;color:#fff;font-weight:700;display:flex;
+.steps .no{width:1.9em;height:1.9em;border-radius:50%;background:#b5540a;color:#fff;font-weight:700;display:flex;
   align-items:center;justify-content:center;font-size:clamp(17px,min(1.59vw,2.68vh),27px);}
 .steps h3{margin:0 0 .15em;font-size:clamp(16px,min(1.5vw,2.55vh),26px);}
 .steps p{margin:0;color:var(--ink-2);line-height:1.6;font-size:clamp(16px,min(1.4vw,2.38vh),24px);}
@@ -653,7 +653,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 .tl2 .it small{display:inline-block;margin-right:.5em;color:var(--ink-2);font-weight:600;font-size:clamp(12px,min(1.02vw,1.75vh),18px);}
 .tl2 .tg{display:inline-block;margin:.2em .3em 0 0;padding:0 .5em;border-radius:99px;background:#ececf0;color:var(--ink-2);font-weight:700;
   font-size:clamp(11px,min(.92vw,1.58vh),16px);line-height:1.6;}
-.tl2 .tg.op{background:#e6f4ee;color:#00875a;}
+.tl2 .tg.op{background:#fdf1e7;color:#b5540a;}
 .tl2 .tg.im{background:#e8f2fd;color:var(--blue);}
 .tl2 .col:last-child{display:grid;grid-template-columns:repeat(3,1fr);align-content:start;column-gap:clamp(6px,.8vw,12px);}
 .tl2 .col:last-child .d{grid-column:1/-1;}
@@ -770,6 +770,15 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 .pills em{font-style:normal;font-weight:700;font-size:clamp(11px,min(.95vw,1.6vh),16px);padding:.05em .55em;border-radius:99px;background:#dcdce1;color:var(--ink-2);}
 .pills em.b{background:#e8f2fd;color:var(--blue);}
 @media (max-width:900px){.ex4{grid-template-columns:1fr;}}
+
+/* ===== 用語と色の統一 =====
+   答えの型：choice＝青／noul＝緑／score＝紫（どのスライドでも同じ）
+   Kev・オープン（重み公開）＝橙。確率による振り分け＝青の濃淡と灰 */
+:root{--t-choice:#0066cc;--t-noul:#00875a;--t-score:#6b3fa0;}
+.tp.choice{background:#e8f2fd;color:var(--t-choice);} .tp.noul{background:#e6f4ee;color:var(--t-noul);} .tp.score{background:#f3ecfb;color:var(--t-score);}
+.tp code{font-family:"SF Mono",Menlo,Consolas,monospace;font-weight:700;margin-right:.45em;font-size:.95em;}
+.tc.noul{--acc:var(--t-noul);} .tc.choice{--acc:var(--t-choice);} .tc.score{--acc:var(--t-score);}
+.tc .tn .tp{font-size:clamp(14px,min(1.25vw,2.1vh),22px);padding:.05em .7em;}
 </style>
 </head>
 <body>
@@ -785,7 +794,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 2. Decision Model とは ============ -->
-<section id="what" class="alt" data-note="<b>【約90秒】</b>まず、Decision Model が何をするのかです。一言でいうと、<b>『何かのスナップショット』と『文章で書いた問い』を渡すと、確率つきの判定が返る関数</b>です。式で書くと、f(状態, 問いの束) → 確率分布の束。状態は、ある瞬間の姿なら文字でも JSON でも、モデルによっては画像でも入ります。問いは判定基準を文章で書くので、学習なしでその場で差し替えられます。<br>実際の API の形で見ます。例は TypeSafe の Jev です。全部読む必要はなく、<b>青い番号のところだけ</b>見てください。<br>左が渡すもの。<b>①</b>判断の材料、ここでは日銀の声明文。<b>②</b>問い。<b>③</b>選択肢。タカ・中立・ハトの3択です。<br>右が返ってくるもの。<b>④</b>選んだ答えと、<b>⑤</b>各選択肢の確率。これだけです。<br>ここで『JSON という文章が返ってきているじゃないか』と思われるかもしれません。モデルが決めているのは、<b>どれを選ぶかと、確率の数字だけ</b>です。JSON の枠や項目名は、こちらが渡した問いと選択肢を、API が決まった形に詰め直したものです。LLM のように1文字ずつ考えて書いた文章ではありません。<br>たとえるなら、LLM は記述式の試験、Decision Model はマークシートの試験です。しかも全部の選択肢を、自信の分だけ濃く塗って返す。その濃さが確率です。<span class=qa>想定質問：BERT などの分類モデルと何が違う？→ あちらは何を判定するか（問いとラベル）が学習時に固定。Decision Model は問いと選択肢をリクエストごとに渡せる。<br>想定質問：GPT に Structured Output で選択肢だけ答えさせれば同じでは？→ 形は真似できるが、LLM は答えを1文字ずつ書く工程が残る（4枚目）。<br>補足：JSON をサーバ側で組み立てていることは、オープンソースの Kev のコードで確認できる（Jev 本体の内部は非公開）。問いの型は3つ（5枚目で説明）。Jev の入力は文字のみ。</span>">
+<section id="what" class="alt" data-note="<b>【約90秒】</b>まず、Decision Model が何をするのかです。一言でいうと、<b>『何かのスナップショット』と『文章で書いた問い』を渡すと、確率つきの判定が返る関数</b>です。式で書くと、f(状態, 問いの束) → 確率分布の束。状態は、ある瞬間の姿なら文字でも JSON でも、モデルによっては画像でも入ります。問いは判定基準を文章で書くので、学習なしでその場で差し替えられます。<br>実際の API の形で見ます。例は TypeSafe の Jev です。全部読む必要はなく、<b>青い番号のところだけ</b>見てください。<br>左が渡すもの。<b>①</b>状態、ここでは日銀の声明文。<b>②</b>問い。<b>③</b>選択肢。タカ・中立・ハトの3択です。<br>右が返ってくるもの。<b>④</b>選んだ答えと、<b>⑤</b>各選択肢の確率。この例は5枚目で説明する choice（選択肢から1つ）の型です。これだけです。<br>ここで『JSON という文章が返ってきているじゃないか』と思われるかもしれません。モデルが決めているのは、<b>どれを選ぶかと、確率の数字だけ</b>です。JSON の枠や項目名は、こちらが渡した問いと選択肢を、API が決まった形に詰め直したものです。LLM のように1文字ずつ考えて書いた文章ではありません。<br>たとえるなら、LLM は記述式の試験、Decision Model はマークシートの試験です。しかも全部の選択肢を、自信の分だけ濃く塗って返す。その濃さが確率です。<span class=qa>想定質問：BERT などの分類モデルと何が違う？→ あちらは何を判定するか（問いとラベル）が学習時に固定。Decision Model は問いと選択肢をリクエストごとに渡せる。<br>想定質問：GPT に Structured Output で選択肢だけ答えさせれば同じでは？→ 形は真似できるが、LLM は答えを1文字ずつ書く工程が残る（4枚目）。<br>補足：JSON をサーバ側で組み立てていることは、オープンソースの Kev のコードで確認できる（Jev 本体の内部は非公開）。問いの型は3つ（5枚目で説明）。Jev の入力は文字のみ。</span>">
   <div class="wrap">
     <p class="kicker">Decision Model とは</p>
     <h2>文章は書かない。<span class="pop">選んで、確率を返すだけ</span></h2>
@@ -794,7 +803,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
       <div>
         <p class="iolabel">渡すもの（例：Jev の API）</p>
 <div class="code focus">{
-  <span class="hl">"state": "物価上昇率は見通しに沿って…"</span>,<span class="mk">① 判断の材料</span>
+  <span class="hl">"state": "物価上昇率は見通しに沿って…"</span>,<span class="mk">① 状態</span>
   "questions": { "stance": {
     "type": "choice",
     <span class="hl">"instructions": "金融政策のスタンスは？"</span>,<span class="mk">② 問い</span>
@@ -879,14 +888,14 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 3つの型 ============ -->
-<section id="types" class="alt" data-note="<b>【約90秒】</b>問いの型、つまり<b>答えの形</b>は3つしかありません。同じ問い合わせメール『3日前から支払いが失敗しています』に、3つの型で問いを出した例です。公式ドキュメントの例を日本語にしたものです。<br>左の <b>noul</b> は、はい・いいえ。返ってくるのは『はい』である確率1つだけです。0.95なら、急ぎである確率が95%。<br>真ん中の <b>choice</b> は、選択肢から1つ。選ばれた答えと、全部の選択肢の確率が返ってきます。2枚目の日銀の例もこれでした。<br>右の <b>score</b> は、段階評価。段階を順番に並べて渡すと、確率で重み付けした値が返ります。0が平静、1が不満、2が激怒で、1.05なら『不満』寄りです。<br>choice と score には、どれだけ迷っているかを表す <b>confidence</b> も付きます。noul には付きません。確率そのものが確信度を表しているからです。<span class=qa>補足：choice は最大255択、score は2〜10段階。score の値は段階の間の値をとるが、正確な大きさとして使うのではなく、しきい値と比べる使い方が推奨（公式の苦手の一覧に『段階の数値的な較正は弱い』とある）。noul で確信度が欲しい場合は |2p − 1| で計算すると公式が案内。複数の型の問いを1回のリクエストにまとめて送れる。</span>">
+<section id="types" class="alt" data-note="<b>【約90秒】</b>問いの型、つまり<b>答えの形</b>は3つしかありません。同じ問い合わせメール『3日前から支払いが失敗しています』に、3つの型で問いを出した例です。公式ドキュメントの例を日本語にしたものです。<br>左の <b>noul</b> は、はい／いいえ。返ってくるのは『はい』である確率1つだけです。0.95なら、急ぎである確率が95%。<br>真ん中の <b>choice</b> は、選択肢から1つ。選ばれた答えと、全部の選択肢の確率が返ってきます。2枚目の日銀の例もこれでした。<br>右の <b>score</b> は、段階評価。段階を順番に並べて渡すと、確率で重み付けした値が返ります。0が平静、1が不満、2が激怒で、1.05なら『不満』寄りです。<br>choice と score には、<b>確信度（confidence）</b>も付きます。noul には付きません。確率そのものが確信度を表しているからです。<span class=qa>補足：choice は最大255択、score は2〜10段階。score の値は段階の間の値をとるが、正確な大きさとして使うのではなく、しきい値と比べる使い方が推奨（公式の苦手の一覧に『段階の数値的な較正は弱い』とある）。noul で確信度が欲しい場合は |2p − 1| で計算すると公式が案内。複数の型の問いを1回のリクエストにまとめて送れる。</span>">
   <div class="wrap">
     <p class="kicker">3つの型</p>
     <h2>答えの形は、<span class="pop">3種類だけ</span></h2>
     <p class="state1"><span>状態（共通）</span>「3日前から支払いが失敗しています！」</p>
     <div class="ty3">
       <div class="tc noul">
-        <p class="tn"><b>noul</b>はい／いいえ</p>
+        <p class="tn"><span class="tp noul"><code>noul</code>はい／いいえ</span></p>
 <div class="code">"type": "noul",
 "instructions": "急ぎの内容か？",
 "criteria": {
@@ -897,7 +906,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
         <p class="rd">「はい」の確率が <b>95%</b>。確率は1つだけ</p>
       </div>
       <div class="tc choice">
-        <p class="tn"><b>choice</b>選択肢から1つ</p>
+        <p class="tn"><span class="tp choice"><code>choice</code>選択肢から1つ</span></p>
 <div class="code">"type": "choice",
 "instructions": "担当チームは？",
 "criteria": {
@@ -914,7 +923,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
         <p class="rd"><b>billing</b> を選択。全選択肢の確率つき</p>
       </div>
       <div class="tc score">
-        <p class="tn"><b>score</b>段階評価</p>
+        <p class="tn"><span class="tp score"><code>score</code>段階評価</span></p>
 <div class="code">"type": "score",
 "instructions": "お客様の不満の度合いは？",
 "criteria":
@@ -927,7 +936,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
         <p class="rd">0〜2 の間の値。<b>1.05 ＝「不満」寄り</b></p>
       </div>
     </div>
-    <p class="foot">TypeSafe 公式 API ドキュメントの例を日本語訳（一部省略）。choice は最大255択、score は2〜10段階。confidence（迷いの少なさ）は choice と score にだけ付く。</p>
+    <p class="foot">TypeSafe 公式 API ドキュメントの例を日本語訳（一部省略）。choice は最大255択、score は2〜10段階。確信度（confidence）は choice と score にだけ付く。</p>
   </div>
 </section>
 
@@ -944,8 +953,8 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
     <div class="route">
       <span class="lbl">だから確率で分けられる</span>
       <span style="--acc:#0066cc"><b>高い</b>任せる（抜き取り確認）</span>
-      <span style="--acc:#b5540a"><b>中くらい</b>LLM で再確認</span>
-      <span style="--acc:#6b3fa0"><b>低い</b>人が判断</span>
+      <span style="--acc:#6aa0dc"><b>中くらい</b>LLM で再確認</span>
+      <span style="--acc:#9a9aa2"><b>低い</b>人が判断</span>
     </div>
     <p class="foot center">学習の狙いは TypeSafe の説明（RLCD）。実例は外部開発者による検証（O'Reilly Radar で紹介、英語のメール）。</p>
   </div>
@@ -983,7 +992,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
       </div>
       <div class="ex4">
         <div class="ex4-t"><p class="ft"><span>一律の基準</span><b>→</b><span class="to">一人ずつの基準</span></p><p class="eg">基準は文章なので、<b>顧客・案件ごとに書き換えられる</b></p></div>
-        <div class="viz"><p><small>これまで</small><span class="dots2 big"><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i></span></p><p><small>これから</small><span class="dots2 big"><i class="on" style="background:#0066cc"></i><i class="on" style="background:#00875a"></i><i class="on" style="background:#6b3fa0"></i><i class="on" style="background:#b5540a"></i><i class="on" style="background:#2b9bd6"></i><i class="on" style="background:#c2417a"></i><i class="on" style="background:#0066cc"></i><i class="on" style="background:#00875a"></i><i class="on" style="background:#6b3fa0"></i><i class="on" style="background:#b5540a"></i><i class="on" style="background:#2b9bd6"></i><i class="on" style="background:#c2417a"></i></span></p></div>
+        <div class="viz"><p><small>これまで</small><span class="dots2 big"><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i></span></p><p><small>これから</small><span class="dots2 big"><i class="on" style="background:#0066cc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#9cc1ea"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#0066cc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#9cc1ea"></i><i class="on" style="background:#6aa0dc"></i></span></p></div>
       </div>
       <div class="ex4">
         <div class="ex4-t"><p class="ft"><span>一つの視点</span><b>→</b><span class="to">多数の視点</span></p><p class="eg">1つの文書を<b>法務・リスク・広報の観点から一度に</b></p></div>
@@ -994,18 +1003,18 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 8. 使い方 ============ -->
-<section id="uses" class="alt" data-note="<b>【約70秒】</b>日銀の例以外に何に使えるか。TypeSafe の公式ドキュメントに載っている使い方をもとに、社内での活用例にしてみました。<br>答えの型は<b>3つ</b>しかありません。選択肢から1つ選ぶ <b>choice</b>、はい・いいえを0〜1で返す <b>noul</b>、段階で評価する <b>score</b> です。どれも確率つきで返ります。<br>この3つの型で、できる判断はだいたい<b>6つの動詞</b>に分けられます。各例の右上の色が、使っている型です。<br>上の段。<b>分岐する</b>：社内ヘルプデスクへの依頼を担当ごとに振り分ける。<b>選ぶ</b>：LLM への指示を見て、軽い仕事なら軽量モデルで低いエフォート、難しい仕事なら最上位モデルで高いエフォートを選ぶ。<b>ふるう</b>：社内文書検索の結果から、質問に関係ある段落だけ残す。<br>下の段。<b>照合する</b>：要約に書かれた記述が元資料にあるか。<b>測る</b>：問い合わせメールの不満の度合いを段階で測る。<b>検証する</b>：AI エージェントが実行しようとしている操作に、削除や送信が含まれるかを確認し、含まれていたら人に確認する。今ある権限設定に上乗せする確認です。<br>どれも、これまでなら LLM に文章で答えさせてパースするか、専用の分類モデルを学習させていたものです。それが<b>問いを書くだけ</b>でできます。<br>選び方のコツは、<b>間違えても後ろで拾える判断から始める</b>ことです。振り分けや絞り込みなら、外れても人や LLM が後で気づけます。<span class=qa>補足：元にした公式の使い方は Intent routing／RAG passage classification／Citation check／Function calling。モデル選択は、問いの判定結果で処理先を切り替える Intent routing・SDE cascade の応用（TypeSafe docs の Patterns・Cookbooks）。</span>">
+<section id="uses" class="alt" data-note="<b>【約70秒】</b>日銀の例以外に何に使えるか。TypeSafe の公式ドキュメントに載っている使い方をもとに、社内での活用例にしてみました。<br>答えの型は<b>3つ</b>しかありません。選択肢から1つを返す <b>choice</b>、はい／いいえを0〜1で返す <b>noul</b>、段階評価を返す <b>score</b> です。どれも確率つきで返ります。<br>この3つの型で、できる判断はだいたい<b>6つの動詞</b>に分けられます。各例の右上の色が、使っている型です。<br>上の段。<b>分岐する</b>：社内ヘルプデスクへの依頼を担当ごとに振り分ける。<b>選ぶ</b>：LLM への指示を見て、軽い仕事なら軽量モデルで低いエフォート、難しい仕事なら最上位モデルで高いエフォートを選ぶ。<b>ふるう</b>：社内文書検索の結果から、質問に関係ある段落だけ残す。<br>下の段。<b>照合する</b>：要約に書かれた記述が元資料にあるか。<b>測る</b>：問い合わせメールの不満の度合いを段階で測る。<b>検証する</b>：AI エージェントが実行しようとしている操作に、削除や送信が含まれるかを確認し、含まれていたら人に確認する。今ある権限設定に上乗せする確認です。<br>どれも、これまでなら LLM に文章で答えさせてパースするか、専用の分類モデルを学習させていたものです。それが<b>問いを書くだけ</b>でできます。<br>選び方のコツは、<b>間違えても後ろで拾える判断から始める</b>ことです。振り分けや絞り込みなら、外れても人や LLM が後で気づけます。<span class=qa>補足：元にした公式の使い方は Intent routing／RAG passage classification／Citation check／Function calling。モデル選択は、問いの判定結果で処理先を切り替える Intent routing・SDE cascade の応用（TypeSafe docs の Patterns・Cookbooks）。</span>">
   <div class="wrap">
     <p class="kicker">活用例 ― 6つの動詞</p>
     <h2>問いを書くだけで、<span class="pop">こんな判断ができる</span></h2>
-    <p class="types">答えの型は3つ　<span class="tp choice">選択肢から1つ</span><span class="tp noul">はい／いいえ</span><span class="tp score">段階評価</span>　どれも確率つきで返る</p>
+    <p class="types">答えの型は3つ　<span class="tp choice"><code>choice</code>選択肢から1つ</span><span class="tp noul"><code>noul</code>はい／いいえ</span><span class="tp score"><code>score</code>段階評価</span>　どれも確率つきで返る</p>
     <div class="qs">
-      <div class="qi"><span class="ty">分岐する</span><span class="tp choice">選択肢から1つ</span><p class="inp">社内ヘルプデスクへの依頼</p><p class="qq">担当は？</p><p class="op"><span><i></i>経理</span><span><i></i>情報システム</span><span><i></i>総務</span></p></div>
-      <div class="qi"><span class="ty">選ぶ</span><span class="tp choice">選択肢から1つ</span><p class="inp">LLM への指示</p><p class="qq">どのモデルとエフォートで処理する？</p><p class="op"><span><i></i>軽量・低</span><span><i></i>標準・中</span><span><i></i>最上位・高</span></p></div>
-      <div class="qi"><span class="ty">ふるう</span><span class="tp noul">はい／いいえ</span><p class="inp">社内文書検索の結果</p><p class="qq">この段落は質問に関係ある？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
-      <div class="qi"><span class="ty">照合する</span><span class="tp noul">はい／いいえ</span><p class="inp">レポートの要約</p><p class="qq">この記述は元資料に書かれている？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
-      <div class="qi"><span class="ty">測る</span><span class="tp score">段階評価</span><p class="inp">問い合わせメール</p><p class="qq">お客様の不満の度合いは？</p><p class="op"><span><i></i>平静</span><span><i></i>不満</span><span><i></i>強い不満</span></p></div>
-      <div class="qi"><span class="ty">検証する</span><span class="tp noul">はい／いいえ</span><p class="inp">AI エージェントの操作</p><p class="qq">削除・送信を含む？</p><p class="op"><span><i></i>はい → 人に確認</span><span><i></i>いいえ</span></p></div>
+      <div class="qi"><span class="ty">分岐する</span><span class="tp choice"><code>choice</code>選択肢から1つ</span><p class="inp">社内ヘルプデスクへの依頼</p><p class="qq">担当は？</p><p class="op"><span><i></i>経理</span><span><i></i>情報システム</span><span><i></i>総務</span></p></div>
+      <div class="qi"><span class="ty">選ぶ</span><span class="tp choice"><code>choice</code>選択肢から1つ</span><p class="inp">LLM への指示</p><p class="qq">どのモデルとエフォートで処理する？</p><p class="op"><span><i></i>軽量・低</span><span><i></i>標準・中</span><span><i></i>最上位・高</span></p></div>
+      <div class="qi"><span class="ty">ふるう</span><span class="tp noul"><code>noul</code>はい／いいえ</span><p class="inp">社内文書検索の結果</p><p class="qq">この段落は質問に関係ある？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
+      <div class="qi"><span class="ty">照合する</span><span class="tp noul"><code>noul</code>はい／いいえ</span><p class="inp">レポートの要約</p><p class="qq">この記述は元資料に書かれている？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
+      <div class="qi"><span class="ty">測る</span><span class="tp score"><code>score</code>段階評価</span><p class="inp">問い合わせメール</p><p class="qq">お客様の不満の度合いは？</p><p class="op"><span><i></i>平静</span><span><i></i>不満</span><span><i></i>強い不満</span></p></div>
+      <div class="qi"><span class="ty">検証する</span><span class="tp noul"><code>noul</code>はい／いいえ</span><p class="inp">AI エージェントの操作</p><p class="qq">削除・送信を含む？</p><p class="op"><span><i></i>はい → 人に確認</span><span><i></i>いいえ</span></p></div>
     </div>
     <p class="ask">どれも「問いを書くだけ」。<span class="pop">間違えても後ろで拾える判断</span>から始める</p>
     <p class="foot">TypeSafe 公式ドキュメント（Patterns・Cookbooks）に載っている使い方をもとに作成。</p>

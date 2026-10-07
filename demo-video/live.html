@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>LLM vs Decision Model（ライブ実行）</title>
+<style>
+:root{--ink:#1d1d1f;--ink-2:#6e6e73;--line:#d2d2d7;--bg-2:#f5f5f7;--blue:#0066cc;--blue-soft:#b8d4f0;--red:#d6361f;}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#fff;overflow:hidden}
+body{font-family:"Yu Gothic Medium","Yu Gothic",YuGothic,"Hiragino Sans",Meiryo,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;padding:26px 64px 22px;display:flex;flex-direction:column}
+.mono{font-family:Consolas,"Cascadia Mono","MS Gothic",monospace}
+.banner{display:flex;align-items:center;font-size:22px;color:var(--ink-2);height:36px}
+.live{color:var(--red);font-weight:700;margin-right:18px}.live i{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--red);margin-right:8px;vertical-align:-1px}
+.live.idle i{background:#b0b0b6}.live.idle{color:var(--ink-2)}
+.src{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:12px 24px;margin-top:8px}
+.src .k{font-size:20px;color:var(--ink-2);display:flex;justify-content:space-between}
+.src .t{font-size:24px;line-height:1.5;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.qrow{display:flex;align-items:center;justify-content:space-between;margin:12px 4px 0}
+.q{font-size:26px;color:var(--ink-2)}.q b{color:var(--ink)}
+.opt{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:1px 18px;margin-left:10px;color:var(--ink);background:#fff;font-size:24px}
+button#run{font:inherit;font-size:30px;font-weight:700;color:#fff;background:var(--blue);border:0;border-radius:14px;padding:10px 40px;cursor:pointer}
+button#run:disabled{background:#b0b0b6;cursor:default}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:12px;flex:1;min-height:0}
+.panel{border:1.5px solid var(--line);border-radius:20px;padding:18px 30px;display:flex;flex-direction:column;background:#fff;min-height:0}
+.panel.dm{border-color:var(--blue-soft);background:#f7fbff}
+.hd{display:flex;justify-content:space-between;align-items:baseline}
+.hd h3{margin:0;font-size:38px;letter-spacing:-.02em}.hd h3 small{display:block;font-size:20px;font-weight:400;color:var(--ink-2);margin-top:0;letter-spacing:0}
+.dm .hd h3{color:var(--blue)}
+.timer{font-size:84px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.03em;color:var(--ink-2)}
+.timer small{font-size:34px;font-weight:600;margin-left:6px}
+.timer.run{color:var(--ink)}.timer.done{color:var(--ink)}.dm .timer.done{color:var(--blue)}
+.body{flex:1;margin-top:8px;min-height:0;overflow:hidden}
+.stream{font-size:28px;line-height:1.6;white-space:pre-wrap}
+.cur{display:inline-block;width:.5em;height:1em;background:var(--ink);vertical-align:-.12em;margin-left:2px;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.verdict{display:none;margin-top:6px;font-size:32px;font-weight:700}
+.verdict span{background:var(--ink);color:#fff;border-radius:12px;padding:3px 20px;margin-left:10px}
+.bars{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+.bar{display:grid;grid-template-columns:190px 1fr 130px;align-items:center;gap:16px;font-size:34px;font-weight:600;white-space:nowrap}
+.track{height:42px;background:#e6eef7;border-radius:10px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--blue-soft);border-radius:10px;transition:width .3s ease-out}
+.bar.win .fill{background:var(--blue)}.bar .pc{text-align:right;font-variant-numeric:tabular-nums}.bar.win{color:var(--blue)}
+.raw{margin-top:12px;font-size:17px;line-height:1.4;color:var(--ink-2);word-break:break-all;display:none}
+.wait{font-size:28px;color:var(--ink-2)}
+.foot{height:78px;display:flex;align-items:center;justify-content:center;gap:30px;font-size:50px;font-weight:700;opacity:0;transition:opacity .4s}
+.foot.show{opacity:1}.foot .x{color:var(--blue);font-size:62px}.foot .vs{font-size:30px;font-weight:500;color:var(--ink-2)}
+.log{height:124px;background:#1d1d1f;color:#d8d8dc;border-radius:12px;padding:8px 18px;font-size:18px;line-height:1.5;overflow:hidden;white-space:nowrap}
+.log .t{color:#8e8e93}.log .ok{color:#6fd08c}.log .err{color:#ff7b6b}
+</style></head><body>
+<div id="stage">
+  <div class="banner"><div><span class="live idle" id="livetag"><i></i><span id="livetxt">準備中</span></span><span id="env"></span></div></div>
+  <div class="src"><div class="k"><span id="srcname"></span><span id="srclen"></span></div><div class="t" id="stmt"></div></div>
+  <div class="qrow"><div class="q"><b>問い</b>　<span id="qtxt"></span><span id="opts"></span></div><button id="run" disabled>準備中…</button></div>
+  <div class="cols">
+    <div class="panel"><div class="hd"><h3>LLM<small>理由を書いてから結論（Chat API・ストリーミング）</small></h3><div class="timer" id="t1">0.00<small>秒</small></div></div>
+      <div class="body"><div class="stream" id="stream"></div><div class="verdict" id="verdict">結論<span id="vtxt"></span></div></div></div>
+    <div class="panel dm"><div class="hd"><h3>Decision Model<small>確率だけ返す</small></h3><div class="timer" id="t2">0.00<small>秒</small></div></div>
+      <div class="body"><div class="wait" id="wait">「実行」を押すと、同時に呼び出します</div><div class="bars" id="bars"></div><div class="raw mono" id="raw"></div></div></div>
+  </div>
+  <div class="foot" id="foot"></div>
+  <div class="log mono" id="log"></div>
+</div>
+<script>
+(function(){
+function $(i){ return document.getElementById(i); }
+function fit(){ var s = Math.min(innerWidth/1920, innerHeight/1080); $('stage').style.transform = 'scale(' + s + ')'; }
+addEventListener('resize', fit); fit();
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function two(n){ return (n<10?'0':'')+n; }
+var runT0 = null;   // 実行開始の時刻（ログは、現在時刻ではなく、ここからの経過秒で出す）
+function stamp(){ return runT0 === null ? '        ' : ('+' + ((performance.now() - runT0) / 1000).toFixed(2) + ' s').padStart(8, ' '); }
+function fmt(ms){ return (ms/1000).toFixed(2)+'<small>秒</small>'; }
+
+var cfg, busy = false, logLines = [];
+function log(cls, msg){
+  logLines.push('<span class="t">' + stamp() + '</span>  <span class="' + cls + '">' + esc(msg) + '</span>');
+  if (logLines.length > 4) logLines.shift();
+  $('log').innerHTML = logLines.join('<br>');
+}
+function setBtn(text, on){ $('run').textContent = text; $('run').disabled = !on; }
+function live(on, txt){ $('livetag').className = 'live' + (on ? '' : ' idle'); $('livetxt').textContent = txt; }
+
+function resetUI(){
+  $('t1').className = 'timer'; $('t2').className = 'timer'; $('t1').innerHTML = fmt(0); $('t2').innerHTML = fmt(0);
+  $('stream').innerHTML = ''; $('verdict').style.display = 'none'; $('vtxt').textContent = '';
+  $('wait').textContent = ''; $('bars').innerHTML = ''; $('raw').style.display = 'none'; $('raw').textContent = '';
+  $('foot').className = 'foot'; $('foot').innerHTML = '';
+}
+
+function prep(){
+  setBtn('準備中…', false); live(false, '準備中');
+  log('t', 'Decision Model 側の準備（初期化と、キャッシュの入れ替え）');
+  return fetch('/api/prep', {method:'POST'}).then(function(r){ return r.json(); }).then(function(j){
+    if (j.ok) { log('ok', '準備完了。実行できます'); setBtn(busy ? '…' : '▶ 実行（Space）', true); live(false, '待機中'); }
+    else { log('err', '準備に失敗: ' + j.error + '（Kev のサーバーは起動していますか）'); setBtn('再試行', true); $('run').onclick = function(){ prep(); }; }
+  }).catch(function(e){ log('err', '準備に失敗: ' + e); setBtn('再試行', true); });
+}
+
+function renderBars(ans){
+  var probs = ans.probabilities;
+  $('bars').innerHTML = cfg.choices.map(function(c){
+    var p = probs[c.value] || 0, win = (c.value === ans.choice);
+    return '<div class="bar' + (win ? ' win' : '') + '"><span>' + esc(c.value) + '</span><div class="track"><div class="fill" style="width:' + (p*100) + '%"></div></div><span class="pc">' + Math.round(p*100) + '%</span></div>';
+  }).join('');
+  $('raw').style.display = 'block';
+  $('raw').textContent = '応答（そのまま）: ' + JSON.stringify({choice: ans.choice, probabilities: probs, confidence: ans.confidence});
+}
+
+async function run(){
+  if (busy) return;
+  busy = true; setBtn('実行中…', false); resetUI(); live(true, 'ライブ実行中');
+  var t0 = performance.now(); runT0 = t0; var dmDone = false, llmDone = false, dmMs = 0, llmMs = 0, text = '', firstMs = null;
+  var iv = setInterval(function(){
+    var e = performance.now() - t0;
+    if (!llmDone) { $('t1').className = 'timer run'; $('t1').innerHTML = fmt(e); }
+    if (!dmDone) { $('t2').className = 'timer run'; $('t2').innerHTML = fmt(e); $('wait').textContent = '判定中…'; }
+  }, 30);
+  log('t', '実行開始。2つの API を同時に呼びます');
+
+  var pk = (async function(){
+    log('t', '→ POST /v1/systemone  （Decision Model）');
+    try {
+      var r = await fetch('/api/kev', {method:'POST'}); var j = await r.json();
+      dmMs = performance.now() - t0; dmDone = true;
+      $('t2').className = 'timer done'; $('t2').innerHTML = fmt(dmMs); $('wait').textContent = '';
+      if (!r.ok) { log('err', '← Decision Model エラー ' + r.status + ' ' + (j.error||'')); return; }
+      renderBars(j.response.answers.stance);
+      log('ok', '← 200  Decision Model  ' + (dmMs/1000).toFixed(2) + ' 秒  ' + j.response.answers.stance.choice);
+    } catch (e) { dmDone = true; log('err', '← Decision Model 失敗: ' + e); }
+  })();
+
+  var pl = (async function(){
+    log('t', '→ POST /v1/chat/completions  （LLM・ストリーミング）');
+    try {
+      var r = await fetch('/api/llm', {method:'POST'});
+      if (!r.ok) { llmDone = true; llmMs = performance.now() - t0; log('err', '← LLM エラー ' + r.status); return; }
+      var rd = r.body.getReader(), dec = new TextDecoder(), buf = '';
+      for (;;) {
+        var x = await rd.read(); if (x.done) break;
+        buf += dec.decode(x.value, {stream:true});
+        var i;
+        while ((i = buf.indexOf('\n')) >= 0) {
+          var line = buf.slice(0, i).trim(); buf = buf.slice(i + 1);
+          if (line.indexOf('data:') !== 0) continue;
+          var d = line.slice(5).trim(); if (d === '[DONE]') continue;
+          try {
+            var ch = JSON.parse(d).choices;
+            var s = ch && ch[0] && ch[0].delta && ch[0].delta.content;
+            if (s) {
+              if (firstMs === null) { firstMs = performance.now() - t0; log('t', '← LLM 最初の文字が届いた  ' + (firstMs/1000).toFixed(2) + ' 秒'); }
+              text += s; $('stream').innerHTML = esc(text) + '<span class="cur"></span>';
+            }
+          } catch (e) {}
+        }
+      }
+      llmMs = performance.now() - t0; llmDone = true;
+      $('t1').className = 'timer done'; $('t1').innerHTML = fmt(llmMs);
+      var m = text.match(/^([\s\S]*?)\s*結論[：:]\s*(\S+)\s*$/);
+      $('stream').innerHTML = esc(m ? m[1] : text);
+      if (m) { $('verdict').style.display = 'block'; $('vtxt').textContent = m[2]; }
+      log('ok', '← 200  LLM  完了 ' + (llmMs/1000).toFixed(2) + ' 秒  ' + text.length + '字');
+    } catch (e) { llmDone = true; log('err', '← LLM 失敗: ' + e); }
+  })();
+
+  await Promise.all([pk, pl]);
+  clearInterval(iv);
+  if (dmMs && llmMs) {
+    $('foot').innerHTML = '<span>' + (dmMs/1000).toFixed(2) + ' 秒</span><span class="vs">対</span><span>' + (llmMs/1000).toFixed(2) + ' 秒</span><span class="x">約' + Math.round(llmMs/dmMs) + '倍の差</span>';
+    $('foot').className = 'foot show';
+  }
+  busy = false; live(false, '完了');
+  prep().then(function(){ setBtn('▶ もう一度（Space）', true); });
+}
+
+$('run').onclick = run;
+addEventListener('keydown', function(e){ if ((e.key === ' ' || e.key === 'Enter') && !$('run').disabled) { e.preventDefault(); run(); } });
+
+fetch('/api/config').then(function(r){ return r.json(); }).then(function(c){
+  cfg = c;
+  $('srcname').textContent = '日本銀行　2026年9月18日「金融市場調節方針の変更について」　本文4・5段落（原文のまま）';
+  $('srclen').textContent = c.statement.length.toLocaleString() + '字';
+  $('stmt').textContent = c.statement;
+  $('qtxt').textContent = c.question + 'は？';
+  $('opts').innerHTML = c.choices.map(function(x){ return '<span class="opt">' + esc(x.value) + '</span>'; }).join('');
+  $('env').textContent = 'LLM：OpenAI ' + c.model + '（API）';
+  log('t', '設定を読み込みました。入力 ' + c.statement.length + ' 字');
+  return prep();
+}).catch(function(e){ log('err', '起動に失敗: ' + e); });
+})();
+</script></body></html>

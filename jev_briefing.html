@@ -421,7 +421,7 @@ audio{width:100%;margin:0;height:clamp(30px,3.6vh,40px);}
 .tl .seq{display:flex;gap:3px;height:clamp(26px,4.4vh,40px);}
 .tl .seg{border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
   font-size:clamp(13px,min(1.12vw,1.9vh),18px);white-space:nowrap;overflow:hidden;
-  opacity:0;transform:scaleX(.2);transform-origin:left;transition:opacity .35s ease,transform .35s ease;}
+  opacity:0;transform:scaleX(.2);transform-origin:left;transition:opacity .6s ease,transform .6s ease;}
 .in .tl .seg{opacity:1;transform:scaleX(1);}
 .tl .pre{background:#4a84d1;width:18%;}
 .tl .dec{background:#b9b9c0;width:4.6%;}
@@ -667,6 +667,44 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 .warn .mini .fixi{display:inline;}
 
 .warn h3 .h3s{margin-left:.8em;color:#8a8a90;font-weight:600;font-size:.72em;}
+
+/* 7枚目：活用例をマークシートの設問のように並べる */
+.qs{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2.4vh,28px) clamp(16px,2.4vw,40px);margin-top:1.1em;}
+.qs .qi{border-top:3px solid var(--blue);padding-top:.55em;}
+.qs .ty{display:block;font-weight:700;color:var(--blue);font-size:clamp(13px,min(1.12vw,1.9vh),20px);letter-spacing:.04em;}
+.qs .inp{margin:.25em 0 0;color:var(--ink-2);font-weight:600;font-size:clamp(14px,min(1.2vw,2.05vh),21px);}
+.qs .qq{margin:.15em 0 0;font-weight:700;color:var(--ink);line-height:1.4;font-size:clamp(17px,min(1.55vw,2.65vh),28px);}
+.qs .op{margin:.45em 0 0;display:flex;flex-wrap:wrap;gap:.35em 1.1em;}
+.qs .op span{display:inline-flex;align-items:center;gap:.4em;color:var(--ink-2);font-weight:600;font-size:clamp(14px,min(1.2vw,2.05vh),21px);}
+.qs .op i{width:1em;height:1em;border-radius:50%;border:2px solid #9a9aa2;display:inline-block;}
+/* 補足情報（出典・前提・注記）：上に罫線と「注」ラベルを付け、本文と区別する */
+.foot{border-top:1px solid var(--line);padding-top:.55em;margin-top:1.1em;}
+.foot::before{content:"注";display:inline-block;margin-right:.6em;padding:0 .45em;border-radius:4px;background:#e6e6eb;color:#6e6e73;
+  font-weight:700;font-size:.85em;line-height:1.6;vertical-align:.05em;}
+.warn .foot{border-top-color:#35353c;}
+.warn .foot::before{background:#2c2c33;color:#a1a1a6;}
+.hero .ctx{border-top:1px solid #2c2c31;padding-top:1em;display:inline-block;}
+.hero .ctx::before{content:"注";display:inline-block;margin-right:.6em;padding:0 .45em;border-radius:4px;background:#2c2c33;color:#a1a1a6;
+  font-weight:700;font-size:.85em;line-height:1.6;}
+
+/* 8枚目：動画の判定例を2つ並べる */
+.vex-k{margin:clamp(10px,1.8vh,20px) 0 0;padding-top:clamp(10px,1.6vh,18px);border-top:1px solid var(--line);}
+.vex2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.4vw,40px);margin-top:.6em;}
+.vx{display:grid;grid-template-columns:minmax(0,1fr) 1.05fr;gap:clamp(10px,1.4vw,22px);align-items:center;}
+.vx .vid.shot{aspect-ratio:4/3;}
+.vx-t{margin:0;color:var(--ink-2);font-weight:600;font-size:clamp(14px,min(1.2vw,2.05vh),21px);}
+.vx-q{margin:.15em 0 .35em;font-weight:700;color:var(--ink);line-height:1.4;font-size:clamp(16px,min(1.45vw,2.5vh),26px);}
+.vx .bub{margin:.2em 0;font-size:clamp(15px,min(1.35vw,2.3vh),24px);}
+.emo{display:flex;flex-direction:column;gap:.25em;}
+.emo div{display:grid;grid-template-columns:1.4em 1fr 3em;align-items:center;gap:.5em;font-weight:700;color:var(--ink-2);
+  font-size:clamp(14px,min(1.25vw,2.1vh),22px);}
+.emo i{display:block;height:.7em;border-radius:99px;background:#e3e3e6;position:relative;overflow:hidden;}
+.emo i::after{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--w);background:#9ea3ab;border-radius:99px;}
+.emo .hi{color:var(--blue);} .emo .hi i::after{background:var(--blue);}
+.emo b{text-align:right;font-variant-numeric:tabular-nums;}
+.vx-n{margin:.4em 0 0;color:var(--ink-2);font-size:clamp(13px,min(1.12vw,1.9vh),20px);}
+.vx-n b{color:var(--ink);}
+@media (max-width:900px){.vex2,.vx{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -751,15 +789,15 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
         <div class="row"><div class="nm">LLM<small>記述式</small></div>
           <div class="seq">
             <div class="seg read">読む</div>
-            <div class="seg dec" style="width:5.2%;transition-delay:.10s">物価</div><div class="seg dec" style="width:5.2%;transition-delay:.18s">が</div><div class="seg dec" style="width:5.2%;transition-delay:.26s">見通し</div><div class="seg dec" style="width:5.2%;transition-delay:.34s">どおり</div><div class="seg dec" style="width:5.2%;transition-delay:.42s">なら</div><div class="seg dec" style="width:5.2%;transition-delay:.50s">利上げ</div><div class="seg dec" style="width:5.2%;transition-delay:.58s">を</div><div class="seg dec" style="width:5.2%;transition-delay:.66s">続け</div><div class="seg dec" style="width:5.2%;transition-delay:.74s">…</div><div class="seg dec" style="width:5.2%;transition-delay:.82s">タカ</div>
-            <div class="end" style="color:var(--ink-2)">書き終わるまで</div>
+            <div class="seg dec" style="width:5.2%;transition-delay:0.18s">物価</div><div class="seg dec" style="width:5.2%;transition-delay:0.32s">が</div><div class="seg dec" style="width:5.2%;transition-delay:0.46s">見通し</div><div class="seg dec" style="width:5.2%;transition-delay:0.60s">どおり</div><div class="seg dec" style="width:5.2%;transition-delay:0.74s">なら</div><div class="seg dec" style="width:5.2%;transition-delay:0.88s">利上げ</div><div class="seg dec" style="width:5.2%;transition-delay:1.02s">を</div><div class="seg dec" style="width:5.2%;transition-delay:1.16s">続け</div><div class="seg dec" style="width:5.2%;transition-delay:1.30s">…</div><div class="seg dec" style="width:5.2%;transition-delay:1.44s">タカ</div>
+            <div class="end" style="color:var(--ink-2);transition-delay:1.9s">書き終わるまで</div>
           </div>
         </div>
         <div class="row"><div class="nm pop">Decision<small>マークシート</small></div>
           <div class="seq">
             <div class="seg read">読む</div>
             <div class="seg mark" style="transition-delay:.1s"></div>
-            <div class="end">選んで終わり</div>
+            <div class="end" style="transition-delay:.45s">選んで終わり</div>
           </div>
         </div>
         <div class="legend"><span><i style="background:#4a84d1"></i>声明文・問い・選択肢を読む</span><span><i style="background:#b9b9c0"></i>1語ずつ書く（前の語が決まるまで次は書けない）</span><span><i style="background:var(--blue)"></i>選ぶ</span></div>
@@ -810,48 +848,25 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 8. 使い方 ============ -->
-<section id="uses" class="alt" data-note="<b>【約70秒】</b>日銀の例以外に何に使えるか。TypeSafe の公式ドキュメントに載っている使い方をもとに、社内での活用例にしてみました。<br>左上から。<b>社内ヘルプデスクへの依頼の担当振り分け</b>。<b>社内文書検索で、質問に関係ある段落だけ残す</b>。<b>問い合わせに『担当者と話したい』と書いてあるか</b>。<br>下の段。<b>要約に書かれた数字が、元資料にあるか</b>。<b>AI エージェントが次に使うツールを選ぶ</b>。<b>ニュースが自動車セクターの記事か</b>。<br>どれも、これまでなら LLM に文章で答えさせてパースするか、専用の分類モデルを学習させていたものです。それが<b>問いを書くだけ</b>でできます。<br>選び方のコツは、<b>間違えても後ろで拾える判断から始める</b>ことです。振り分けや絞り込みなら、外れても人や LLM が後で気づけます。<span class=qa>補足：元にした公式の使い方は Intent routing／RAG passage classification／Noul の例（is_human_escalation）／Citation check／Function calling（TypeSafe docs の Patterns・Cookbooks）。</span>">
+<section id="uses" class="alt" data-note="<b>【約70秒】</b>日銀の例以外に何に使えるか。TypeSafe の公式ドキュメントに載っている使い方をもとに、社内での活用例にしてみました。<br>上の段は<b>振り分け</b>です。<b>社内ヘルプデスクへの依頼</b>を担当ごとに振り分ける。<b>LLM への指示</b>を見て、軽い仕事なら軽量モデルで低いエフォート、難しい仕事なら最上位モデルで高いエフォート、と<b>処理するモデルとエフォートの組み合わせを選ぶ</b>。<b>AI エージェントが次に使うツール</b>を選ぶ。<br>下の段は<b>確認と選別</b>です。<b>社内文書検索で、質問に関係ある段落だけ残す</b>。<b>要約に書かれた記述が、元資料にあるか</b>。<b>ニュースが自動車セクターの記事か</b>。<br>どれも、これまでなら LLM に文章で答えさせてパースするか、専用の分類モデルを学習させていたものです。それが<b>問いを書くだけ</b>でできます。<br>選び方のコツは、<b>間違えても後ろで拾える判断から始める</b>ことです。振り分けや絞り込みなら、外れても人や LLM が後で気づけます。<span class=qa>補足：元にした公式の使い方は Intent routing／RAG passage classification／Citation check／Function calling。モデル選択は、問いの判定結果で処理先を切り替える Intent routing・SDE cascade の応用（TypeSafe docs の Patterns・Cookbooks）。</span>">
   <div class="wrap">
     <p class="kicker">活用例</p>
     <h2>問いを書くだけで、<span class="pop">こんな判断ができる</span></h2>
-    <div class="grid3" style="margin-top:1em">
-      <div class="card ex"><span class="ty">振り分け</span><h3>社内ヘルプデスクへの依頼</h3><p class="qq">担当は？</p><p class="in">経理／情報システム／総務</p></div>
-      <div class="card ex"><span class="ty">検索結果の選別</span><h3>社内文書検索</h3><p class="qq">この段落は質問に関係ある？</p><p class="in">はい／いいえ</p></div>
-      <div class="card ex"><span class="ty">要望の検出</span><h3>問い合わせメール</h3><p class="qq">「担当者と話したい」と書いてある？</p><p class="in">はい → 有人対応へ</p></div>
-      <div class="card ex"><span class="ty">引用チェック</span><h3>レポートの要約</h3><p class="qq">この数字は元資料に書かれている？</p><p class="in">はい／いいえ</p></div>
-      <div class="card ex"><span class="ty">ツール選択</span><h3>AI エージェント</h3><p class="qq">次に使うツールは？</p><p class="in">社内検索／計算／メール作成</p></div>
-      <div class="card ex"><span class="ty">絞り込み</span><h3>ニュース</h3><p class="qq">自動車セクターの記事？</p><p class="in">はい／いいえ</p></div>
+    <div class="qs">
+      <div class="qi"><span class="ty">振り分け</span><p class="inp">社内ヘルプデスクへの依頼</p><p class="qq">担当は？</p><p class="op"><span><i></i>経理</span><span><i></i>情報システム</span><span><i></i>総務</span></p></div>
+      <div class="qi"><span class="ty">モデル選択</span><p class="inp">LLM への指示</p><p class="qq">どのモデルとエフォートで処理する？</p><p class="op"><span><i></i>軽量・低</span><span><i></i>標準・中</span><span><i></i>最上位・高</span></p></div>
+      <div class="qi"><span class="ty">ツール選択</span><p class="inp">AI エージェント</p><p class="qq">次に使うツールは？</p><p class="op"><span><i></i>社内検索</span><span><i></i>計算</span><span><i></i>メール作成</span></p></div>
+      <div class="qi"><span class="ty">検索結果の選別</span><p class="inp">社内文書検索の結果</p><p class="qq">この段落は質問に関係ある？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
+      <div class="qi"><span class="ty">引用チェック</span><p class="inp">レポートの要約</p><p class="qq">この記述は元資料に書かれている？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
+      <div class="qi"><span class="ty">絞り込み</span><p class="inp">ニュース</p><p class="qq">自動車セクターの記事？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
     </div>
     <p class="ask">どれも「問いを書くだけ」。<span class="pop">間違えても後ろで拾える判断</span>から始める</p>
     <p class="foot">TypeSafe 公式ドキュメント（Patterns・Cookbooks）に載っている使い方をもとに作成。</p>
   </div>
 </section>
 
-<!-- ============ 9. 量と速さ ============ -->
-<section id="scale" class="wow" data-note="<b>【約70秒】</b>速くて安いと、量と速さの桁が変わります。2つ試算しました。<br>左は量。1日1万本のニュースを、保有する100銘柄それぞれについて判定すると、<b>1日100万回の判断</b>です。1件3セントの LLM なら1日約3万ドルで現実的ではありませんが、Decision Model なら<b>1日約2.6ドル</b>です。<br>右は速さ。AI エージェントは何十、何百という操作を続けます。その<b>1手ごとに『削除や送信を含む操作か』を確認</b>します。コマンドを見れば分かる、白黒はっきりした判定です。1手0.4秒なら、100手で約40秒。LLM だと1手10秒で約17分かかり、作業が止まります。今ある権限設定はそのままで、その上に足す確認です。<br>どちらも、これまでは<b>抜き取りで見ていたものを、全部見られる</b>ようになる、という話です。<span class=qa>試算の前提：1件あたりの値は6枚目（Jev、TypeSafe 公表の評価）。ニュースは1本約1,000トークン、100銘柄分の問いを1リクエストにまとめた場合（問いごとに記事全文を送る最悪ケースで約44ドル／日）。LLM 側は1件$0.03・10秒として単純計算。</span>">
-  <div class="wrap">
-    <p class="kicker">速く・安いと、何が変わるか</p>
-    <h2>「抜き取りで見る」から、<br><span class="pop">「全部見る」へ</span></h2>
-    <div class="grid2" style="margin-top:1.1em">
-      <div class="card">
-        <h3>量　―　全ニュース × 全保有銘柄</h3>
-        <p class="big-num">100万回<span class="unit">/ 日</span></p>
-        <div class="loop"><span>ニュース 1万本</span><b>×</b><span class="k">保有 100銘柄</span></div>
-        <p>毎日すべてを判定しても<strong style="color:var(--ink)">約 $2.6 / 日</strong>。<span class="nb">1件 $0.03 の LLM なら</span><span class="nb">約 $3万 / 日</span>。</p>
-      </div>
-      <div class="card">
-        <h3>速さ　―　AI エージェントの全ステップを確認</h3>
-        <p class="big-num">約40秒<span class="unit">/ 100手</span></p>
-        <div class="loop"><span>エージェントの1手</span><b>→</b><span class="k">削除・送信を含む？</span><b>→</b><span>はいなら人に確認</span></div>
-        <p>1手 0.4秒なら作業が止まらない。<span class="nb">1手 10秒の LLM だと<strong style="color:var(--ink)">約17分</strong>。</span><br>既存の権限設定に<strong style="color:var(--ink)">上乗せする</strong>確認。</p>
-      </div>
-    </div>
-    <p class="foot">試算。量：記事1本につき1リクエスト（記事 約1,000＋100銘柄分の問い 約5,200トークン）× 1万本 × $0.042／100万トークン ≈ $2.6。LLM 側と速さは6枚目の1件あたりの値（$0.03・10秒／0.4秒）で単純計算。</p>
-  </div>
-</section>
-
 <!-- ============ 10. 他社モデルの登場 ============ -->
-<section id="vendors" class="alt" data-note="<b>【約80秒】</b>ここまで例に使ってきた Jev ですが、Decision Model は<b>もう1社の製品ではありません</b>。<br>9月15日に TypeSafe が Jev を出してから、たった<b>3週間でこれだけ</b>出てきました。2日後に個人開発のオープンソース Kev、翌日に Convai の Laya。9月29日に OpenAI が Decisions API を発表。そして10月1日には、<b>Cloudflare の Clef、Perplexity の Decider、AWS の Strands Decider</b> が同じ日に出ています。<br>緑の『オープン』は重みが公開されていて、自分たちの環境で動かせるもの。青は<b>画像も読める</b>ものです。Cloudflare の Clef は短い動画も扱えるとしています。<br>画像が読めると、たとえば<b>動画を1秒ごとにコマに切って、1枚ずつ判定する</b>ことができます。店舗のカメラで『レジに人が並んでいるか』。人が見れば一目で分かる判定です。<br>前のページの『全部見る』を、<b>文字だけでなく映像にも</b>広げられます。<span class=qa>補足：TypeSafe 自身からは、10月初めの時点で Jev の次のモデルは出ていない（新しい入力形式の版を作ると説明）。<br>Kev：Jared Palmer、Apache-2.0、Qwen ベース。Laya：Convai Innovations、ModernBERT ベースの小型（約4億パラメータ）、100以上の言語に対応する版あり、Apache-2.0。OpenAI Decisions API：DevDay で発表、限定プレビュー、GPT-6 Luna ベース。Clef／Clef-flash：Cloudflare、Qwen ベースの27B／9B、Workers AI で提供（入力100万トークンあたり$0.24）と Hugging Face で公開、Apache-2.0、画像入力対応。pplx-decider-v1-27b：Perplexity、Qwen ベース、画像入力対応、API は入力100万トークンあたり$0.04、Apache-2.0。Strands Decider 2B：AWS Strands Labs、Qwen3.5-2B ベースで Kev と同じポインタ方式、学習データとスクリプトも公開。いずれも性能は各社の自己申告が中心。</span>">
+<section id="vendors" class="alt" data-note="<b>【約80秒】</b>ここまで例に使ってきた Jev ですが、Decision Model は<b>もう1社の製品ではありません</b>。<br>9月15日に TypeSafe が Jev を出してから、たった<b>3週間でこれだけ</b>出てきました。2日後に個人開発のオープンソース Kev、翌日に Convai の Laya。9月29日に OpenAI が Decisions API を発表。そして10月1日には、<b>Cloudflare の Clef、Perplexity の Decider、AWS の Strands Decider</b> が同じ日に出ています。<br>緑の『オープン』は重みが公開されていて、自分たちの環境で動かせるもの。青は<b>画像も読める</b>ものです。Cloudflare の Clef は短い動画も扱えるとしています。<br>画像が読めると、<b>動画を1秒ごとにコマに切って、1枚ずつ判定し続ける</b>ことができます。左は店舗のカメラで『レジに人が並んでいるか』。人が見れば一目で分かる判定です。右は日銀総裁の記者会見の映像を1秒ごとに切って、表情から読み取れる感情を<b>喜・怒・哀・楽の4つ</b>で測る例です。1コマごとの判定が多少ぶれても、<b>会見の中でどう変化したか</b>を追えば、質問によって表情が変わった場面を見つけられます。<br>5枚目の『全件に流して確率で分ける』を、<b>文字だけでなく映像にも</b>広げられます。<span class=qa>補足：TypeSafe 自身からは、10月初めの時点で Jev の次のモデルは出ていない（新しい入力形式の版を作ると説明）。<br>Kev：Jared Palmer、Apache-2.0、Qwen ベース。Laya：Convai Innovations、ModernBERT ベースの小型（約4億パラメータ）、100以上の言語に対応する版あり、Apache-2.0。OpenAI Decisions API：DevDay で発表、限定プレビュー、GPT-6 Luna ベース。Clef／Clef-flash：Cloudflare、Qwen ベースの27B／9B、Workers AI で提供（入力100万トークンあたり$0.24）と Hugging Face で公開、Apache-2.0、画像入力対応。pplx-decider-v1-27b：Perplexity、Qwen ベース、画像入力対応、API は入力100万トークンあたり$0.04、Apache-2.0。Strands Decider 2B：AWS Strands Labs、Qwen3.5-2B ベースで Kev と同じポインタ方式、学習データとスクリプトも公開。いずれも性能は各社の自己申告が中心。</span>">
   <div class="wrap">
     <p class="kicker">他社モデルの登場</p>
     <h2>3週間で、<span class="pop">大手も含めて一気に広がった</span></h2>
@@ -869,19 +884,33 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
         <div class="it"><b>Decider</b><small>Perplexity</small><span class="tg op">オープン</span><span class="tg im">画像も</span></div>
         <div class="it"><b>Strands</b><small>AWS</small><span class="tg op">オープン</span><span class="tg">文字</span></div></div>
     </div>
-    <div class="vex">
-      <div class="vid shot"><div class="hint">画像をここに<br><code>assets/register_frame.jpg</code><br><span style="font-size:.9em">店舗のカメラ（レジ前）の1コマ</span></div><img src="assets/register_frame.jpg" alt="スーパーのレジに客が並んでいる様子" style="object-fit:cover" onerror="this.remove()"></div>
-      <div class="vex-r">
-        <p class="vex-k">画像が読めるモデルなら、たとえば</p>
-        <ol class="vex-flow"><li>店舗のカメラの動画を</li><li>1秒に1枚の画像に切って</li><li>「<span class="nb">レジに人が並んでいる？</span>」と聞く</li></ol>
-        <div class="vex-ans">
+    <p class="vex-k">画像が読めると、判断の対象が映像にも広がる ― 動画を1秒ごとに画像にして判定し続ける</p>
+    <div class="vex2">
+      <div class="vx">
+        <div class="vid shot"><div class="hint">画像をここに<br><code>assets/register_frame.jpg</code></div><img src="assets/register_frame.jpg" alt="スーパーのレジに客が並んでいる様子" style="object-fit:cover" onerror="this.remove()"></div>
+        <div class="vx-r">
+          <p class="vx-t">店舗のカメラ</p>
+          <p class="vx-q">「レジに人が並んでいる？」</p>
           <div class="bub"><i style="--p:.97"></i><span>はい</span><span class="pc">97%</span></div>
           <div class="bub lo"><i style="--p:.03"></i><span>いいえ</span><span class="pc">3%</span></div>
         </div>
       </div>
+      <div class="vx">
+        <div class="vid shot"><div class="hint">画像をここに<br><code>assets/boj_governor.jpg</code></div><img src="assets/boj_governor.jpg" alt="日本銀行の植田総裁" style="object-fit:cover;object-position:50% 20%" onerror="this.remove()"></div>
+        <div class="vx-r">
+          <p class="vx-t">日銀総裁の記者会見</p>
+          <p class="vx-q">「表情から読み取れる感情は？」</p>
+          <div class="emo">
+            <div><span>喜</span><i style="--w:12%"></i><b>12%</b></div>
+            <div><span>怒</span><i style="--w:6%"></i><b>6%</b></div>
+            <div><span>哀</span><i style="--w:22%"></i><b>22%</b></div>
+            <div class="hi"><span>楽</span><i style="--w:60%"></i><b>60%</b></div>
+          </div>
+          <p class="vx-n">1秒ごとに測り、<b>感情の変化</b>を追う</p>
+        </div>
+      </div>
     </div>
-    <p class="ask" style="margin-top:.9em">画像が読めると、「全部見る」が<span class="pop">映像にも</span>広がる</p>
-    <p class="foot center">Source: 各社の発表・公開ページ、OpenAI DevDay 2026 の報道。オープン＝重みを公開。日付は2026年。確率の数字は説明用。写真：Kurt Kaiser（CC0、Wikimedia Commons）。</p>
+    <p class="foot center">Source: 各社の発表・公開ページ、OpenAI DevDay 2026 の報道。オープン＝重みを公開。日付は2026年。確率の数字は説明用。写真：Kurt Kaiser（CC0）、内閣官房内閣広報室（CC BY 4.0）、いずれも Wikimedia Commons。</p>
   </div>
 </section>
 

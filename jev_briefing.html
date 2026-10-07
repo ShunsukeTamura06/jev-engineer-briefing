@@ -705,6 +705,23 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 .vx-n{margin:.4em 0 0;color:var(--ink-2);font-size:clamp(13px,min(1.12vw,1.9vh),20px);}
 .vx-n b{color:var(--ink);}
 @media (max-width:900px){.vex2,.vx{grid-template-columns:1fr;}}
+
+/* 2枚目：関数の形 */
+.fx{margin:.1em 0 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:.3em 1.2em;}
+.fx code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:clamp(16px,min(1.5vw,2.55vh),27px);color:var(--ink);background:#fff;
+  border:1px solid var(--line);border-radius:8px;padding:.15em .6em;}
+.fx code b{font-weight:700;} .fx code b.pop{color:var(--blue);}
+.fx span{color:var(--ink-2);font-size:clamp(13px,min(1.12vw,1.9vh),20px);}
+/* 4つの拡張 */
+.ext{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2.6vh,30px) clamp(18px,3vw,50px);margin-top:1.2em;}
+.ex4{border-top:4px solid var(--blue);padding-top:.6em;}
+.ex4 .ft{margin:0;display:flex;align-items:baseline;gap:.5em;font-weight:700;font-size:clamp(22px,min(2.3vw,3.9vh),40px);letter-spacing:-.01em;}
+.ex4 .ft span{color:#9a9aa2;} .ex4 .ft span.to{color:var(--blue);} .ex4 .ft b{color:#c7c7cc;}
+.ex4 .eg{margin:.35em 0 0;color:var(--ink-2);font-size:clamp(15px,min(1.35vw,2.3vh),24px);line-height:1.5;}
+.ex4 .eg b{color:var(--ink);}
+@media (max-width:900px){.ext{grid-template-columns:1fr;}}
+/* まとめ：最後の一言 */
+.closer .c4{margin-top:.7em;padding-top:.6em;border-top:1px solid #35353c;color:#7ab5f0;font-size:clamp(17px,min(1.8vw,3.05vh),31px);}
 </style>
 </head>
 <body>
@@ -720,15 +737,15 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 2. Decision Model とは ============ -->
-<section id="what" class="alt" data-note="<b>【約80秒】</b>まず、Decision Model が何をするのかを、実際の API の形で見ます。例は TypeSafe の Jev です。全部読む必要はなく、<b>青い番号のところだけ</b>見てください。<br>左が渡すもの。<b>①</b>判断の材料、ここでは日銀の声明文。<b>②</b>問い。<b>③</b>選択肢。タカ・中立・ハトの3択です。<br>右が返ってくるもの。<b>④</b>選んだ答えと、<b>⑤</b>各選択肢の確率。これだけです。<br>ここで『JSON という文章が返ってきているじゃないか』と思われるかもしれません。モデルが決めているのは、<b>どれを選ぶかと、確率の数字だけ</b>です。JSON の枠や項目名は、こちらが渡した問いと選択肢を、API が決まった形に詰め直したものです。LLM のように1文字ずつ考えて書いた文章ではありません。<br>たとえるなら、LLM は記述式の試験、Decision Model はマークシートの試験です。しかも全部の選択肢を、自信の分だけ濃く塗って返す。その濃さが確率です。<span class=qa>想定質問：BERT などの分類モデルと何が違う？→ あちらは何を判定するか（問いとラベル）が学習時に固定。Decision Model は問いと選択肢をリクエストごとに渡せる。<br>想定質問：GPT に Structured Output で選択肢だけ答えさせれば同じでは？→ 形は真似できるが、LLM は答えを1文字ずつ書く工程が残る（4枚目）。<br>補足：JSON をサーバ側で組み立てていることは、オープンソースの Kev のコードで確認できる（Jev 本体の内部は非公開）。問いの型は choice（選ぶ・最大255択）、noul（はい／いいえを0〜1で）、score（2〜10段階）の3つ。入力は文字のみ。</span>">
+<section id="what" class="alt" data-note="<b>【約90秒】</b>まず、Decision Model が何をするのかです。一言でいうと、<b>『何かのスナップショット』と『文章で書いた問い』を渡すと、確率つきの判定が返る関数</b>です。式で書くと、f(状態, 問いの束) → 確率分布の束。状態は、ある瞬間の姿なら文字でも JSON でも、モデルによっては画像でも入ります。問いは判定基準を文章で書くので、学習なしでその場で差し替えられます。<br>実際の API の形で見ます。例は TypeSafe の Jev です。全部読む必要はなく、<b>青い番号のところだけ</b>見てください。<br>左が渡すもの。<b>①</b>判断の材料、ここでは日銀の声明文。<b>②</b>問い。<b>③</b>選択肢。タカ・中立・ハトの3択です。<br>右が返ってくるもの。<b>④</b>選んだ答えと、<b>⑤</b>各選択肢の確率。これだけです。<br>ここで『JSON という文章が返ってきているじゃないか』と思われるかもしれません。モデルが決めているのは、<b>どれを選ぶかと、確率の数字だけ</b>です。JSON の枠や項目名は、こちらが渡した問いと選択肢を、API が決まった形に詰め直したものです。LLM のように1文字ずつ考えて書いた文章ではありません。<br>たとえるなら、LLM は記述式の試験、Decision Model はマークシートの試験です。しかも全部の選択肢を、自信の分だけ濃く塗って返す。その濃さが確率です。<span class=qa>想定質問：BERT などの分類モデルと何が違う？→ あちらは何を判定するか（問いとラベル）が学習時に固定。Decision Model は問いと選択肢をリクエストごとに渡せる。<br>想定質問：GPT に Structured Output で選択肢だけ答えさせれば同じでは？→ 形は真似できるが、LLM は答えを1文字ずつ書く工程が残る（4枚目）。<br>補足：JSON をサーバ側で組み立てていることは、オープンソースの Kev のコードで確認できる（Jev 本体の内部は非公開）。問いの型は choice（選ぶ・最大255択）、noul（はい／いいえを0〜1で）、score（2〜10段階）の3つ。入力は文字のみ。</span>">
   <div class="wrap">
     <p class="kicker">Decision Model とは</p>
     <h2>文章は書かない。<span class="pop">選んで、確率を返すだけ</span></h2>
+    <p class="fx"><code>f( <b>状態</b>, <b>問いの束</b> ) → <b class="pop">確率分布の束</b></code><span>状態＝ある瞬間の姿　問い＝文章で書く判定基準（学習不要）</span></p>
     <div class="io2">
       <div>
         <p class="iolabel">渡すもの（例：Jev の API）</p>
 <div class="code focus">{
-  "model": "jev-latest",
   <span class="hl">"state": "物価上昇率は見通しに沿って…"</span>,<span class="mk">① 判断の材料</span>
   "questions": { "stance": {
     "type": "choice",
@@ -780,7 +797,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 5. なぜ速いのか ============ -->
-<section id="why" data-note="<b>【約70秒】</b>理由は単純で、<b>LLM は答えを1語ずつしか書けない</b>からです。<br>LLM は声明文を読んだあと、『物価』『が』『見通し』…と1語ずつ順番に書きます。次の語は前の語が決まらないと書けないので、並べて同時には書けません。答えが長いほど時間がかかります。デモの左側で、文章が少しずつ出てきたのがこれです。<br>Decision Model は、声明文と問いと選択肢を<b>まとめて1回読んで、選んで終わり</b>です。書く工程がありません。<br>だから Jev の場合、応答は70〜500ミリ秒。料金も読んだ分、入力にしかかかりません。100万トークンで0.042ドル、出力は無料です。<span class=qa>補足（用語）：読む＝prefill、1語ずつ書く＝decode。同じ state に複数の問いを出すと、読んだ結果を使い回して並列に評価するので、問いを増やしても遅くなりにくい。Jev 本体の内部構造は非公開。<br>想定質問：Structured Output で『タカ』の1語に縛れば速いのでは？→ 書く量は減るが、1語ずつ書く工程は残る。</span>">
+<section id="why" data-note="<b>【約70秒】</b>理由は単純で、<b>LLM は答えを1語ずつしか書けない</b>からです。<br>LLM は声明文を読んだあと、『物価』『が』『見通し』…と1語ずつ順番に書きます。次の語は前の語が決まらないと書けないので、並べて同時には書けません。答えが長いほど時間がかかります。デモの左側で、文章が少しずつ出てきたのがこれです。<br>Decision Model は、声明文と問いと選択肢を<b>まとめて1回読んで、選んで終わり</b>です。書く工程がありません。<br>だから Jev の場合、応答は70〜500ミリ秒。料金も読んだ分、入力にしかかかりません。100万トークンで0.042ドル、出力は無料です。<br>もう1つ、<b>問いを増やしても、ほとんど遅くならない</b>。入力を1回読んだら、全部の問いを並列に評価するからです。<span class=qa>補足（用語）：読む＝prefill、1語ずつ書く＝decode。同じ state に複数の問いを出すと、読んだ結果を使い回して並列に評価するので、問いを増やしても遅くなりにくい。Jev 本体の内部構造は非公開。<br>想定質問：Structured Output で『タカ』の1語に縛れば速いのでは？→ 書く量は減るが、1語ずつ書く工程は残る。</span>">
   <div class="wrap">
     <p class="kicker">なぜ速いのか</p>
     <h2>書くのは、<span class="pop">1文字ずつしかできない</span></h2>
@@ -803,9 +820,10 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
         <div class="legend"><span><i style="background:#4a84d1"></i>声明文・問い・選択肢を読む</span><span><i style="background:#b9b9c0"></i>1語ずつ書く（前の語が決まるまで次は書けない）</span><span><i style="background:var(--blue)"></i>選ぶ</span></div>
       </div>
     </div>
-    <div class="grid2" style="margin-top:1em">
+    <div class="grid3" style="margin-top:1em">
       <div class="card mini center"><p class="big-num">70〜500<span class="unit">ms</span></p><p style="margin-top:.4em">1回の応答（Jev）</p></div>
       <div class="card mini center"><p class="big-num">$0.042<span class="unit">/ 100万トークン</span></p><p style="margin-top:.4em">入力だけ。出力は無料（Jev）</p></div>
+      <div class="card mini center"><p class="big-num">問いの数</p><p style="margin-top:.4em">増やしても、ほとんど遅くならない</p></div>
     </div>
     <p class="ask">書く工程がないので、<span class="pop">1回読めば終わる。払うのも、読んだ分だけ</span></p>
     <p class="foot">模式図。応答時間と料金は TypeSafe の公表値。Jev 本体の内部構造は非公開。</p>
@@ -847,18 +865,33 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
   <div class="scrollhint">↓ &nbsp; SCROLL</div>
 </section>
 
-<!-- ============ 8. 使い方 ============ -->
-<section id="uses" class="alt" data-note="<b>【約70秒】</b>日銀の例以外に何に使えるか。TypeSafe の公式ドキュメントに載っている使い方をもとに、社内での活用例にしてみました。<br>上の段は<b>振り分け</b>です。<b>社内ヘルプデスクへの依頼</b>を担当ごとに振り分ける。<b>LLM への指示</b>を見て、軽い仕事なら軽量モデルで低いエフォート、難しい仕事なら最上位モデルで高いエフォート、と<b>処理するモデルとエフォートの組み合わせを選ぶ</b>。<b>AI エージェントが次に使うツール</b>を選ぶ。<br>下の段は<b>確認と選別</b>です。<b>社内文書検索で、質問に関係ある段落だけ残す</b>。<b>要約に書かれた記述が、元資料にあるか</b>。<b>ニュースが自動車セクターの記事か</b>。<br>どれも、これまでなら LLM に文章で答えさせてパースするか、専用の分類モデルを学習させていたものです。それが<b>問いを書くだけ</b>でできます。<br>選び方のコツは、<b>間違えても後ろで拾える判断から始める</b>ことです。振り分けや絞り込みなら、外れても人や LLM が後で気づけます。<span class=qa>補足：元にした公式の使い方は Intent routing／RAG passage classification／Citation check／Function calling。モデル選択は、問いの判定結果で処理先を切り替える Intent routing・SDE cascade の応用（TypeSafe docs の Patterns・Cookbooks）。</span>">
+<!-- ============ 4つの拡張 ============ -->
+<section id="expand" data-note="<b>【約80秒】</b>この数字が何を意味するか。判断そのものは、昔から LLM にも人にもできました。<b>新しいのはコストの桁</b>です。<br>判断はこれまで高かったので、<b>まれに・代表だけ・一律の基準で・一つの視点から</b>しか行えませんでした。それが4つの方向に広がります。<br>1つ目、<b>まれに → 常に</b>。月に1回の点検が、1秒ごとの判定になる。後で見る、動画を1秒ごとに判定する例がこれです。<br>2つ目、<b>代表だけ → 全部</b>。抜き取りや『重要そうなもの』だけだったのが、全件になる。5枚目の、全件に流して確率で分ける使い方です。<br>3つ目、<b>一律の基準 → 一人ずつの基準</b>。基準は文章の問いなので、顧客ごと、案件ごとに書き換えて回せます。<br>4つ目、<b>一つの視点 → 多数の視点</b>。問いを増やしてもほとんど遅くならないので、1つの文書を法務・リスク・広報の観点から一度に見られます。<span class=qa>補足：『一人ずつの基準』の例：顧客ごとの契約条件を問いの文章に入れて、請求書がその条件に合っているかを判定する。『多数の視点』は、1回の呼び出しに複数の問いを入れられる仕様による。</span>">
   <div class="wrap">
-    <p class="kicker">活用例</p>
+    <p class="kicker">何が新しいのか</p>
+    <h2>判断は昔からできた。<span class="pop">新しいのはコストの桁</span></h2>
+    <p class="lead" style="margin-top:.1em">コストが消えると、判断の使い方が4つの方向に広がる</p>
+    <div class="ext">
+      <div class="ex4"><p class="ft"><span>まれに</span><b>→</b><span class="to">常に</span></p><p class="eg">月1回の点検が、<b>1秒ごとの判定</b>に</p></div>
+      <div class="ex4"><p class="ft"><span>代表だけ</span><b>→</b><span class="to">全部</span></p><p class="eg">抜き取りが、<b>全件に流して確率で分ける</b>に</p></div>
+      <div class="ex4"><p class="ft"><span>一律の基準</span><b>→</b><span class="to">一人ずつの基準</span></p><p class="eg">基準は文章なので、<b>顧客・案件ごとに書き換えられる</b></p></div>
+      <div class="ex4"><p class="ft"><span>一つの視点</span><b>→</b><span class="to">多数の視点</span></p><p class="eg">1つの文書を<b>法務・リスク・広報の観点から一度に</b></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. 使い方 ============ -->
+<section id="uses" class="alt" data-note="<b>【約70秒】</b>日銀の例以外に何に使えるか。TypeSafe の公式ドキュメントに載っている使い方をもとに、社内での活用例にしてみました。<br>Decision Model でできる判断は、だいたい<b>6つの動詞</b>に分けられます。<br>上の段。<b>分岐する</b>：社内ヘルプデスクへの依頼を担当ごとに振り分ける。<b>選ぶ</b>：LLM への指示を見て、軽い仕事なら軽量モデルで低いエフォート、難しい仕事なら最上位モデルで高いエフォートを選ぶ。<b>ふるう</b>：社内文書検索の結果から、質問に関係ある段落だけ残す。<br>下の段。<b>照合する</b>：要約に書かれた記述が元資料にあるか。<b>測る</b>：問い合わせメールの不満の度合いを段階で測る。<b>検証する</b>：AI エージェントが実行しようとしている操作に、削除や送信が含まれるかを確認し、含まれていたら人に確認する。今ある権限設定に上乗せする確認です。<br>どれも、これまでなら LLM に文章で答えさせてパースするか、専用の分類モデルを学習させていたものです。それが<b>問いを書くだけ</b>でできます。<br>選び方のコツは、<b>間違えても後ろで拾える判断から始める</b>ことです。振り分けや絞り込みなら、外れても人や LLM が後で気づけます。<span class=qa>補足：元にした公式の使い方は Intent routing／RAG passage classification／Citation check／Function calling。モデル選択は、問いの判定結果で処理先を切り替える Intent routing・SDE cascade の応用（TypeSafe docs の Patterns・Cookbooks）。</span>">
+  <div class="wrap">
+    <p class="kicker">活用例 ― 6つの動詞</p>
     <h2>問いを書くだけで、<span class="pop">こんな判断ができる</span></h2>
     <div class="qs">
-      <div class="qi"><span class="ty">振り分け</span><p class="inp">社内ヘルプデスクへの依頼</p><p class="qq">担当は？</p><p class="op"><span><i></i>経理</span><span><i></i>情報システム</span><span><i></i>総務</span></p></div>
-      <div class="qi"><span class="ty">モデル選択</span><p class="inp">LLM への指示</p><p class="qq">どのモデルとエフォートで処理する？</p><p class="op"><span><i></i>軽量・低</span><span><i></i>標準・中</span><span><i></i>最上位・高</span></p></div>
-      <div class="qi"><span class="ty">ツール選択</span><p class="inp">AI エージェント</p><p class="qq">次に使うツールは？</p><p class="op"><span><i></i>社内検索</span><span><i></i>計算</span><span><i></i>メール作成</span></p></div>
-      <div class="qi"><span class="ty">検索結果の選別</span><p class="inp">社内文書検索の結果</p><p class="qq">この段落は質問に関係ある？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
-      <div class="qi"><span class="ty">引用チェック</span><p class="inp">レポートの要約</p><p class="qq">この記述は元資料に書かれている？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
-      <div class="qi"><span class="ty">絞り込み</span><p class="inp">ニュース</p><p class="qq">自動車セクターの記事？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
+      <div class="qi"><span class="ty">分岐する</span><p class="inp">社内ヘルプデスクへの依頼</p><p class="qq">担当は？</p><p class="op"><span><i></i>経理</span><span><i></i>情報システム</span><span><i></i>総務</span></p></div>
+      <div class="qi"><span class="ty">選ぶ</span><p class="inp">LLM への指示</p><p class="qq">どのモデルとエフォートで処理する？</p><p class="op"><span><i></i>軽量・低</span><span><i></i>標準・中</span><span><i></i>最上位・高</span></p></div>
+      <div class="qi"><span class="ty">ふるう</span><p class="inp">社内文書検索の結果</p><p class="qq">この段落は質問に関係ある？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
+      <div class="qi"><span class="ty">照合する</span><p class="inp">レポートの要約</p><p class="qq">この記述は元資料に書かれている？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
+      <div class="qi"><span class="ty">測る</span><p class="inp">問い合わせメール</p><p class="qq">お客様の不満の度合いは？</p><p class="op"><span><i></i>平静</span><span><i></i>不満</span><span><i></i>強い不満</span></p></div>
+      <div class="qi"><span class="ty">検証する</span><p class="inp">AI エージェントの操作</p><p class="qq">削除・送信を含む？</p><p class="op"><span><i></i>はい → 人に確認</span><span><i></i>いいえ</span></p></div>
     </div>
     <p class="ask">どれも「問いを書くだけ」。<span class="pop">間違えても後ろで拾える判断</span>から始める</p>
     <p class="foot">TypeSafe 公式ドキュメント（Patterns・Cookbooks）に載っている使い方をもとに作成。</p>
@@ -915,7 +948,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 10. 課題 ============ -->
-<section id="issues" class="warn" data-note="<b>【約100秒】</b>ここからは課題です。<br>一番大きいのは<b>判断力そのもの</b>です。6枚目と同じ評価、つまり最先端モデルの答えとの一致率で見ると、最先端の LLM である Opus 5 は73%。Decision Model は68%で、<b>最先端には届きません</b>。速さと安さと引き換えです。選択肢の外は答えないので作り話はしませんが、間違った選択肢を選ぶことは普通にあります。だから5枚目のように、確率で振り分けて補います。<br>右は、<b>Jev の公式ドキュメントが自分で挙げている苦手</b>です。<b>計算や数を数えること</b>。電卓ではないので、計算はコードでやれ、と書いています。<b>日付の比較</b>も苦手で、日付は取り出すだけにして、比べるのはコード。<b>書いたとおりにしか読まない</b>ので、意図は汲んでくれません。条件は正確に書く必要があります。それから、<b>最初の選択肢に寄りやすい</b>。選択肢の順番を入れ替えて、答えが変わらないか確かめます。<br>下の段。<b>日本語</b>は、英語が一番精度が高く、日本語を含む他の言語はそこまで出ない、自分のデータで試してから使え、と公式に書かれています。日銀の声明文は、まさに日本語です。<b>理由を返さない</b>ので、監査やデバッグでは不利。理由が要る判断は LLM に回します。最後に<b>提供の形</b>。Jev も OpenAI も外部の API なので、社内データを外に送ってよいかの確認が先に要ります。社内で動かせるモデルについては、最後に補足します。<span class=qa>補足：一致率の基準は人が付けた正解ではなく GPT-6 Astra と Fable 5.1 の答えの平均。ワークフローは TypeSafe の社員が作ったもので、基準が OpenAI と Anthropic のモデルに寄る偏りがあると TypeSafe 自身が書いている。<br>苦手の一覧は TypeSafe 公式ドキュメント『Jev 1.13 jaggedness』（2026年10月2日時点）。ほかに、関係ない情報が多い入力に弱い（先にコードで絞る）、遠回しな問いや二重否定に弱い、入力に紛れ込んだ誘導的な文章で答えが動き得る（プロンプトインジェクション）、問いと選択肢の説明が食い違うと混乱する、文章の生成はできない、を挙げている。<br>想定質問：『LLM より40〜200倍速い』という宣伝は本当？→ TypeSafe が自分たちで作ったワークフローでの測定で、会社自身も実際の用途では差が小さくなると書いている。第三者の比較では Jev の応答は約275ミリ秒、短い入力でも毎回約257トークン分が上乗せで課金される（Opper）。</span>">
+<section id="issues" class="warn" data-note="<b>【約100秒】</b>ここからは課題です。<br>一番大きいのは<b>判断力そのもの</b>です。6枚目と同じ評価、つまり最先端モデルの答えとの一致率で見ると、最先端の LLM である Opus 5 は73%。Decision Model は68%で、<b>最先端には届きません</b>。速さと安さと引き換えです。選択肢の外は答えないので作り話はしませんが、間違った選択肢を選ぶことは普通にあります。だから5枚目のように、確率で振り分けて補います。<br>右は<b>苦手なこと</b>です。最初の4つは <b>Jev の公式ドキュメントが自分で挙げている</b>ものです。<b>計算や数を数えること</b>。電卓ではないので、計算はコードでやれ、と書いています。<b>日付の比較</b>も苦手で、日付は取り出すだけにして、比べるのはコード。<b>書いたとおりにしか読まない</b>ので、意図は汲んでくれません。条件は正確に書く必要があります。それから、<b>最初の選択肢に寄りやすい</b>。選択肢の順番を入れ替えて、答えが変わらないか確かめます。画像が読めるモデルでは、<b>細かい傷や暗い画像</b>を見落とした、という第三者の試用結果もあります。各社とも画像の精度はまだ公表していないので、自分の画像で試してから使います。<br>下の段。<b>日本語</b>は、英語が一番精度が高く、日本語を含む他の言語はそこまで出ない、自分のデータで試してから使え、と公式に書かれています。日銀の声明文は、まさに日本語です。<b>理由を返さない</b>ので、監査やデバッグでは不利。理由が要る判断は LLM に回します。最後に<b>提供の形</b>。Jev も OpenAI も外部の API なので、社内データを外に送ってよいかの確認が先に要ります。社内で動かせるモデルについては、最後に補足します。<span class=qa>補足：一致率の基準は人が付けた正解ではなく GPT-6 Astra と Fable 5.1 の答えの平均。ワークフローは TypeSafe の社員が作ったもので、基準が OpenAI と Anthropic のモデルに寄る偏りがあると TypeSafe 自身が書いている。<br>苦手の一覧は TypeSafe 公式ドキュメント『Jev 1.13 jaggedness』（2026年10月2日時点）。ほかに、関係ない情報が多い入力に弱い（先にコードで絞る）、遠回しな問いや二重否定に弱い、入力に紛れ込んだ誘導的な文章で答えが動き得る（プロンプトインジェクション）、問いと選択肢の説明が食い違うと混乱する、文章の生成はできない、を挙げている。<br>想定質問：『LLM より40〜200倍速い』という宣伝は本当？→ TypeSafe が自分たちで作ったワークフローでの測定で、会社自身も実際の用途では差が小さくなると書いている。第三者の比較では Jev の応答は約275ミリ秒、短い入力でも毎回約257トークン分が上乗せで課金される（Opper）。</span>">
   <div class="wrap">
     <p class="kicker">Decision Model の課題</p>
     <h2>速い代わりに、<span style="color:#e8c979">判断力は最先端に届かない</span></h2>
@@ -929,12 +962,13 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
         <p style="margin-top:.5em">作り話はしないが、<strong style="color:#fff">間違った選択肢は選ぶ</strong>。<span class="fixi">→ 5枚目の確率の振り分けで補う</span></p>
       </div>
       <div class="card">
-        <h3>公式が挙げる苦手</h3>
+        <h3>苦手なこと</h3>
         <ul class="weak">
           <li><b>計算・数を数える</b><span>→ 計算はコードで</span></li>
           <li><b>日付の比較</b><span>→ 取り出すだけ、比べるのはコード</span></li>
           <li><b>書いたとおりにしか読まない</b><span>→ 条件を正確に書く</span></li>
           <li><b>最初の選択肢に寄りやすい</b><span>→ 順番を入れ替えて確かめる</span></li>
+          <li><b>細かい物・暗い画像</b><span>→ 自分の画像で試す（第三者の試用）</span></li>
         </ul>
       </div>
     </div>
@@ -943,23 +977,24 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
       <div class="card mini"><h3>説明</h3><p class="big-num">理由なし</p><p>なぜそう判断したかは返らない。<br><span class="fixi">→ 理由が要る判断は LLM へ</span></p></div>
       <div class="card mini"><h3>提供の形</h3><p class="big-num">外部 API</p><p>Jev も OpenAI も外部 API。<br><span class="fixi">→ 社内データは確認が先（補足）</span></p></div>
     </div>
-    <p class="foot">判断力：TypeSafe の自社評価（4つの判断ワークフローの平均、GPT-6 Astra と Fable 5.1 の答えの平均を基準にした一致率）、Source: TypeSafe、O'Reilly Radar。苦手・日本語：TypeSafe 公式ドキュメント（Jev 1.13 jaggedness、Models）。</p>
+    <p class="foot">判断力：TypeSafe の自社評価（4つの判断ワークフローの平均、GPT-6 Astra と Fable 5.1 の答えの平均を基準にした一致率）、Source: TypeSafe、O'Reilly Radar。苦手・日本語：TypeSafe 公式ドキュメント（Jev 1.13 jaggedness、Models）。画像：Clef の第三者による試用（DEV Community ほか）。</p>
   </div>
 </section>
 
 <!-- ============ 13. まとめ ============ -->
-<section id="sum" data-note="<b>【約45秒】</b>まとめます。<br>Decision Model は、判断力そのものは最先端の LLM に届きません。<br>ただし、同じ水準の判断が、時間で25分の1、費用で75分の1になりました。<br>だから、<b>判断を全件に置き、迷ったものだけ LLM と人に回す</b>。精度の不足は確率で補います。<br>上の2つの箱のとおり、選ぶ仕事は Decision Model、文章・要約・コード・理由の説明が要るものはこれまでどおり LLM です。本編は以上です。時間があれば、社内で使うための補足をします。">
+<section id="sum" data-note="<b>【約45秒】</b>まとめます。<br>Decision Model は、判断力そのものは最先端の LLM に届きません。<br>ただし、同じ水準の判断が、時間で25分の1、費用で75分の1になりました。<br>だから、<b>判断を全件に置き、迷ったものだけ LLM と人に回す</b>。精度の不足は確率で補います。<br>上の2つの箱のとおり、選ぶ仕事は Decision Model、文章・要約・コード・理由の説明が要るものはこれまでどおり LLM です。<br>一言でいえば、<b>意味で書ける if 文を、桁違いに安く、いくらでも回せるようになった</b>、ということです。本編は以上です。時間があれば、社内で使うための補足をします。">
   <div class="wrap">
     <p class="kicker">まとめ</p>
     <h2>判断を全件に置き、<span class="pop">迷ったものだけ LLM と人へ</span></h2>
     <div class="grid2" style="margin-top:.9em">
-      <div class="card"><h3 class="pop">選ぶ仕事 → Decision Model</h3><p>選択肢が決まっている・件数が多い・速さが要る。<br>振り分け・絞り込み・確認</p></div>
+      <div class="card"><h3 class="pop">選ぶ仕事 → Decision Model</h3><p>選択肢が決まっている・件数が多い・速さが要る。<br>分岐する・選ぶ・ふるう・照合する・測る・検証する</p></div>
       <div class="card"><h3>書く仕事 → LLM のまま</h3><p>文章・要約・コードを書く。<br>理由の説明が要る判断</p></div>
     </div>
     <div class="closer">
       <p class="c1">判断力　―　最先端の LLM には届かない</p>
       <p class="c2">同じ水準の判断が、時間 25分の1・費用 75分の1<span class="num">10秒 → 0.4秒</span></p>
       <p class="c3">精度の不足は確率で補い、強い LLM と人の時間は迷うものだけに</p>
+      <p class="c4">意味で書ける if 文を、桁違いに安く、いくらでも回せるようになった</p>
     </div>
   </div>
 </section>

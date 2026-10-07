@@ -1,6 +1,6 @@
 # Decision Model ― エンジニア向け勉強会資料
 
-文章を書かず、決められた選択肢から「選ぶ」だけの AI（Decision Model）を扱う、エンジニア向け勉強会（約12分）のスライドです。一般名で説明し、事実の出どころを示すときだけ Jev（TypeSafe AI）・Kev（オープンソース）・OpenAI Decisions API の固有名詞を使います。
+文章を書かず、決められた選択肢から「選ぶ」だけの AI（Decision Model）を扱う、エンジニア向け勉強会（約14分）のスライドです。一般名で説明し、事実の出どころを示すときだけ Jev（TypeSafe AI）・Kev（オープンソース）・OpenAI Decisions API の固有名詞を使います。
 
 主張は1つ：**判断だけを切り出すと、同じ水準の判断が桁違いに速く・安くなる（時間 25分の1・費用 75分の1）。ただし判断力は最先端の LLM に届かないので、確率で振り分けて「全件に置き、迷ったものだけ LLM と人へ」回す。**
 各スライドは「事実 → その読み方」の形にしてあり、日銀の声明文を「タカ・中立・ハト」に分類する例を通しで使います。
@@ -18,9 +18,9 @@
 |---|---|---|
 | 3. デモ | `assets/demo_llm_vs_kev.mp4` | 同じ日銀の声明文を、左：LLM ／ 右：Kev（社内環境）で分類する画面録画 |
 | 3. デモ | （本文の「◯.◯ 秒」2か所） | 実測値に書き換え。発表者ノートの「動画の条件」と「◯秒」も記入 |
-| 11. 補足（社内で使うには） | `assets/kev_inhouse.png` | 社内環境で Kev を呼んだ画面（リクエスト・レスポンス・応答時間が見えるもの） |
+| 12. 補足（社内で使うには） | `assets/kev_inhouse.png` | 社内環境で Kev を呼んだ画面（リクエスト・レスポンス・応答時間が見えるもの） |
 
-## 構成（本編10枚＋補足1枚・約12分）
+## 構成（本編11枚＋補足1枚・約14分）
 
 流れは「概要 → 説明 → すごいところ → 課題」。
 
@@ -32,11 +32,12 @@
 | 4 | 説明 | なぜ速いのか | 書く工程がないから。70〜500ms、入力のみ課金 |
 | 5 | 説明 | 確率の意味 | LLM＝選ばれる確率、Decision Model＝合っている確率。実例（迷惑メール）と確率での振り分け |
 | 6 | すごいところ | 10秒 → 0.4秒 | 最先端モデルとの一致率は同じ68%のまま25倍速い（費用も75分の1） |
-| 7 | すごいところ | 活用例 | 問いを書くだけでできる判断6つ（間違えても後ろで拾える判断） |
-| 8 | すごいところ | 他社モデルの登場 | 3週間で7つ：Jev・Kev・Laya・OpenAI・Cloudflare Clef・Perplexity Decider・AWS Strands Decider。画像が読めると動画を1秒ごとに判定 |
-| 9 | 課題 | Decision Model の課題 | 判断力は最先端に届かない（一致率 73% 対 68%）／公式が挙げる苦手（計算・日付の比較・書いたとおりに読む・選択肢の順番）／日本語／理由なし／外部 API |
-| 10 | ― | まとめ | 判断を全件に置き、迷ったものだけ LLM と人へ |
-| 11 | 補足 | 社内で使うには | Kev を 動かす・つなぐ・測る |
+| 7 | すごいところ | 4つの拡張 | 判断は昔からできた、新しいのはコストの桁。まれに→常に／代表だけ→全部／一律→一人ずつの基準／一つ→多数の視点 |
+| 8 | すごいところ | 活用例 | 問いを書くだけでできる判断6つ（間違えても後ろで拾える判断） |
+| 9 | すごいところ | 他社モデルの登場 | 3週間で7つ：Jev・Kev・Laya・OpenAI・Cloudflare Clef・Perplexity Decider・AWS Strands Decider。画像が読めると動画を1秒ごとに判定 |
+| 10 | 課題 | Decision Model の課題 | 判断力は最先端に届かない（一致率 73% 対 68%）／公式が挙げる苦手（計算・日付の比較・書いたとおりに読む・選択肢の順番）／日本語／理由なし／外部 API |
+| 11 | ― | まとめ | 判断を全件に置き、迷ったものだけ LLM と人へ |
+| 12 | 補足 | 社内で使うには | Kev を 動かす・つなぐ・測る |
 
 Structured Output との違い、BERT 等との違い、logprobs、40〜200倍の宣伝の読み方などは、各スライドの発表者ノート（想定質問）に置いてある。
 
@@ -44,5 +45,5 @@ Structured Output との違い、BERT 等との違い、logprobs、40〜200倍�
 
 TypeSafe AI（発表ブログ・公式ドキュメント）、O'Reilly Radar（2026-09-23）、InfoWorld、Opper（Jev と Kev の第三者比較）、Kev（GitHub / Hugging Face）、OpenAI DevDay 2026 の報道、Cloudflare（Clef）・Perplexity（pplx-decider）・AWS Strands Labs（Strands Decider）・Convai（Laya）の発表、The Register
 
-写真（8枚目・左）：Kurt Kaiser「Check out line.jpg」（CC0、Wikimedia Commons）
-写真（8枚目・右）：内閣官房内閣広報室「Kazuo Ueda on October 2, 2024.jpg」（CC BY 4.0、Wikimedia Commons）
+写真（9枚目・左）：Kurt Kaiser「Check out line.jpg」（CC0、Wikimedia Commons）
+写真（9枚目・右）：内閣官房内閣広報室「Kazuo Ueda on October 2, 2024.jpg」（CC BY 4.0、Wikimedia Commons）

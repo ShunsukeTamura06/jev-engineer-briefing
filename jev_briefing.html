@@ -722,6 +722,13 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 @media (max-width:900px){.ext{grid-template-columns:1fr;}}
 /* まとめ：最後の一言 */
 .closer .c4{margin-top:.7em;padding-top:.6em;border-top:1px solid #35353c;color:#7ab5f0;font-size:clamp(17px,min(1.8vw,3.05vh),31px);}
+
+/* 8枚目：答えの3つの型 */
+.types{margin:.1em 0 0;color:var(--ink-2);font-weight:600;font-size:clamp(14px,min(1.2vw,2.05vh),21px);display:flex;flex-wrap:wrap;align-items:center;gap:.4em;}
+.tp{display:inline-block;padding:0 .6em;border-radius:99px;font-weight:700;font-size:.88em;line-height:1.7;}
+.tp.choice{background:#e8f2fd;color:var(--blue);} .tp.noul{background:#e6f4ee;color:#00875a;} .tp.score{background:#f3ecfb;color:#6b3fa0;}
+.qs .qi{position:relative;}
+.qs .qi .tp{position:absolute;right:0;top:.55em;font-size:clamp(11px,min(.95vw,1.6vh),16px);}
 </style>
 </head>
 <body>
@@ -881,17 +888,18 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 8. 使い方 ============ -->
-<section id="uses" class="alt" data-note="<b>【約70秒】</b>日銀の例以外に何に使えるか。TypeSafe の公式ドキュメントに載っている使い方をもとに、社内での活用例にしてみました。<br>Decision Model でできる判断は、だいたい<b>6つの動詞</b>に分けられます。<br>上の段。<b>分岐する</b>：社内ヘルプデスクへの依頼を担当ごとに振り分ける。<b>選ぶ</b>：LLM への指示を見て、軽い仕事なら軽量モデルで低いエフォート、難しい仕事なら最上位モデルで高いエフォートを選ぶ。<b>ふるう</b>：社内文書検索の結果から、質問に関係ある段落だけ残す。<br>下の段。<b>照合する</b>：要約に書かれた記述が元資料にあるか。<b>測る</b>：問い合わせメールの不満の度合いを段階で測る。<b>検証する</b>：AI エージェントが実行しようとしている操作に、削除や送信が含まれるかを確認し、含まれていたら人に確認する。今ある権限設定に上乗せする確認です。<br>どれも、これまでなら LLM に文章で答えさせてパースするか、専用の分類モデルを学習させていたものです。それが<b>問いを書くだけ</b>でできます。<br>選び方のコツは、<b>間違えても後ろで拾える判断から始める</b>ことです。振り分けや絞り込みなら、外れても人や LLM が後で気づけます。<span class=qa>補足：元にした公式の使い方は Intent routing／RAG passage classification／Citation check／Function calling。モデル選択は、問いの判定結果で処理先を切り替える Intent routing・SDE cascade の応用（TypeSafe docs の Patterns・Cookbooks）。</span>">
+<section id="uses" class="alt" data-note="<b>【約70秒】</b>日銀の例以外に何に使えるか。TypeSafe の公式ドキュメントに載っている使い方をもとに、社内での活用例にしてみました。<br>答えの型は<b>3つ</b>しかありません。選択肢から1つ選ぶ <b>choice</b>、はい・いいえを0〜1で返す <b>noul</b>、段階で評価する <b>score</b> です。どれも確率つきで返ります。<br>この3つの型で、できる判断はだいたい<b>6つの動詞</b>に分けられます。各例の右上の色が、使っている型です。<br>上の段。<b>分岐する</b>：社内ヘルプデスクへの依頼を担当ごとに振り分ける。<b>選ぶ</b>：LLM への指示を見て、軽い仕事なら軽量モデルで低いエフォート、難しい仕事なら最上位モデルで高いエフォートを選ぶ。<b>ふるう</b>：社内文書検索の結果から、質問に関係ある段落だけ残す。<br>下の段。<b>照合する</b>：要約に書かれた記述が元資料にあるか。<b>測る</b>：問い合わせメールの不満の度合いを段階で測る。<b>検証する</b>：AI エージェントが実行しようとしている操作に、削除や送信が含まれるかを確認し、含まれていたら人に確認する。今ある権限設定に上乗せする確認です。<br>どれも、これまでなら LLM に文章で答えさせてパースするか、専用の分類モデルを学習させていたものです。それが<b>問いを書くだけ</b>でできます。<br>選び方のコツは、<b>間違えても後ろで拾える判断から始める</b>ことです。振り分けや絞り込みなら、外れても人や LLM が後で気づけます。<span class=qa>補足：元にした公式の使い方は Intent routing／RAG passage classification／Citation check／Function calling。モデル選択は、問いの判定結果で処理先を切り替える Intent routing・SDE cascade の応用（TypeSafe docs の Patterns・Cookbooks）。</span>">
   <div class="wrap">
     <p class="kicker">活用例 ― 6つの動詞</p>
     <h2>問いを書くだけで、<span class="pop">こんな判断ができる</span></h2>
+    <p class="types">答えの型は3つ　<span class="tp choice">選択肢から1つ</span><span class="tp noul">はい／いいえ</span><span class="tp score">段階評価</span>　どれも確率つきで返る</p>
     <div class="qs">
-      <div class="qi"><span class="ty">分岐する</span><p class="inp">社内ヘルプデスクへの依頼</p><p class="qq">担当は？</p><p class="op"><span><i></i>経理</span><span><i></i>情報システム</span><span><i></i>総務</span></p></div>
-      <div class="qi"><span class="ty">選ぶ</span><p class="inp">LLM への指示</p><p class="qq">どのモデルとエフォートで処理する？</p><p class="op"><span><i></i>軽量・低</span><span><i></i>標準・中</span><span><i></i>最上位・高</span></p></div>
-      <div class="qi"><span class="ty">ふるう</span><p class="inp">社内文書検索の結果</p><p class="qq">この段落は質問に関係ある？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
-      <div class="qi"><span class="ty">照合する</span><p class="inp">レポートの要約</p><p class="qq">この記述は元資料に書かれている？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
-      <div class="qi"><span class="ty">測る</span><p class="inp">問い合わせメール</p><p class="qq">お客様の不満の度合いは？</p><p class="op"><span><i></i>平静</span><span><i></i>不満</span><span><i></i>強い不満</span></p></div>
-      <div class="qi"><span class="ty">検証する</span><p class="inp">AI エージェントの操作</p><p class="qq">削除・送信を含む？</p><p class="op"><span><i></i>はい → 人に確認</span><span><i></i>いいえ</span></p></div>
+      <div class="qi"><span class="ty">分岐する</span><span class="tp choice">選択肢から1つ</span><p class="inp">社内ヘルプデスクへの依頼</p><p class="qq">担当は？</p><p class="op"><span><i></i>経理</span><span><i></i>情報システム</span><span><i></i>総務</span></p></div>
+      <div class="qi"><span class="ty">選ぶ</span><span class="tp choice">選択肢から1つ</span><p class="inp">LLM への指示</p><p class="qq">どのモデルとエフォートで処理する？</p><p class="op"><span><i></i>軽量・低</span><span><i></i>標準・中</span><span><i></i>最上位・高</span></p></div>
+      <div class="qi"><span class="ty">ふるう</span><span class="tp noul">はい／いいえ</span><p class="inp">社内文書検索の結果</p><p class="qq">この段落は質問に関係ある？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
+      <div class="qi"><span class="ty">照合する</span><span class="tp noul">はい／いいえ</span><p class="inp">レポートの要約</p><p class="qq">この記述は元資料に書かれている？</p><p class="op"><span><i></i>はい</span><span><i></i>いいえ</span></p></div>
+      <div class="qi"><span class="ty">測る</span><span class="tp score">段階評価</span><p class="inp">問い合わせメール</p><p class="qq">お客様の不満の度合いは？</p><p class="op"><span><i></i>平静</span><span><i></i>不満</span><span><i></i>強い不満</span></p></div>
+      <div class="qi"><span class="ty">検証する</span><span class="tp noul">はい／いいえ</span><p class="inp">AI エージェントの操作</p><p class="qq">削除・送信を含む？</p><p class="op"><span><i></i>はい → 人に確認</span><span><i></i>いいえ</span></p></div>
     </div>
     <p class="ask">どれも「問いを書くだけ」。<span class="pop">間違えても後ろで拾える判断</span>から始める</p>
     <p class="foot">TypeSafe 公式ドキュメント（Patterns・Cookbooks）に載っている使い方をもとに作成。</p>

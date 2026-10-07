@@ -746,6 +746,30 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 .tc .rd{margin:.45em 0 0;color:var(--ink-2);font-size:clamp(14px,min(1.2vw,2.05vh),21px);line-height:1.45;}
 .tc .rd b{color:var(--acc);}
 @media (max-width:900px){.ty3{grid-template-columns:1fr;}}
+
+/* 4つの拡張：カード＋小さな図で「これまで／これから」を見せる */
+.ext{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,2vh,22px) clamp(14px,2vw,30px);}
+.ex4>*{min-width:0;}
+.ex4{border-top:none;padding:clamp(12px,1.6vw,22px);background:#fff;border:1px solid var(--line);border-radius:16px;
+  box-shadow:0 6px 20px rgba(0,0,0,.05);display:grid;grid-template-columns:1fr;gap:clamp(8px,1.2vh,14px);align-content:space-between;}
+.ex4 .ft{font-size:clamp(18px,min(1.75vw,3vh),30px);flex-wrap:wrap;}
+.ex4 .ft span{color:#a1a1a6;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#d2d2d7;}
+.ex4 .ft span.to{text-decoration:none;}
+.ex4 .eg{font-size:clamp(14px,min(1.2vw,2.05vh),21px);}
+.viz{background:var(--bg-2);border-radius:12px;padding:.5em .8em;display:grid;grid-template-columns:1fr 1fr;gap:.4em 1.2em;}
+.viz p{margin:0;display:flex;align-items:center;gap:.7em;}
+.viz small{flex:none;width:auto;color:var(--ink-2);font-weight:700;font-size:clamp(11px,min(.9vw,1.55vh),15px);}
+.dots2{display:flex;flex-wrap:wrap;gap:4px;}
+.dots2 i{display:block;border-radius:50%;background:#dcdce1;}
+.dots2.tick{flex-wrap:nowrap;gap:3px;} .dots2.tick i{width:3px;height:18px;border-radius:2px;}
+.dots2.tick i.on{background:#9ea3ab;} .dots2.tick.blue i.on{background:var(--blue);}
+.dots2.grid{display:grid;grid-template-columns:repeat(12,.5em);gap:3px;} .dots2.grid i{width:.5em;height:.5em;}
+.dots2.grid i.on{background:#9ea3ab;} .dots2.grid.blue i.on{background:var(--blue);}
+.dots2.big{display:grid;grid-template-columns:repeat(12,.6em);gap:3px;} .dots2.big i{width:.6em;height:.6em;}
+.pills{display:flex;flex-wrap:wrap;gap:.3em;}
+.pills em{font-style:normal;font-weight:700;font-size:clamp(11px,min(.95vw,1.6vh),16px);padding:.05em .55em;border-radius:99px;background:#dcdce1;color:var(--ink-2);}
+.pills em.b{background:#e8f2fd;color:var(--blue);}
+@media (max-width:900px){.ex4{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -949,10 +973,22 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
     <h2>判断は昔からできた。<span class="pop">新しいのはコストの桁</span></h2>
     <p class="lead" style="margin-top:.1em">コストが消えると、判断の使い方が4つの方向に広がる</p>
     <div class="ext">
-      <div class="ex4"><p class="ft"><span>まれに</span><b>→</b><span class="to">常に</span></p><p class="eg">月1回の点検が、<b>1秒ごとの判定</b>に</p></div>
-      <div class="ex4"><p class="ft"><span>代表だけ</span><b>→</b><span class="to">全部</span></p><p class="eg">抜き取りが、<b>全件に流して確率で分ける</b>に</p></div>
-      <div class="ex4"><p class="ft"><span>一律の基準</span><b>→</b><span class="to">一人ずつの基準</span></p><p class="eg">基準は文章なので、<b>顧客・案件ごとに書き換えられる</b></p></div>
-      <div class="ex4"><p class="ft"><span>一つの視点</span><b>→</b><span class="to">多数の視点</span></p><p class="eg">1つの文書を<b>法務・リスク・広報の観点から一度に</b></p></div>
+      <div class="ex4">
+        <div class="ex4-t"><p class="ft"><span>まれに</span><b>→</b><span class="to">常に</span></p><p class="eg">月1回の点検が、<b>1秒ごとの判定</b>に</p></div>
+        <div class="viz"><p><small>これまで</small><span class="dots2 tick"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span></p><p><small>これから</small><span class="dots2 tick blue"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></p></div>
+      </div>
+      <div class="ex4">
+        <div class="ex4-t"><p class="ft"><span>代表だけ</span><b>→</b><span class="to">全部</span></p><p class="eg">抜き取りが、<b>全件に流して確率で分ける</b>に</p></div>
+        <div class="viz"><p><small>これまで</small><span class="dots2 grid"><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span></p><p><small>これから</small><span class="dots2 grid blue"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></p></div>
+      </div>
+      <div class="ex4">
+        <div class="ex4-t"><p class="ft"><span>一律の基準</span><b>→</b><span class="to">一人ずつの基準</span></p><p class="eg">基準は文章なので、<b>顧客・案件ごとに書き換えられる</b></p></div>
+        <div class="viz"><p><small>これまで</small><span class="dots2 big"><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i></span></p><p><small>これから</small><span class="dots2 big"><i class="on" style="background:#0066cc"></i><i class="on" style="background:#00875a"></i><i class="on" style="background:#6b3fa0"></i><i class="on" style="background:#b5540a"></i><i class="on" style="background:#2b9bd6"></i><i class="on" style="background:#c2417a"></i><i class="on" style="background:#0066cc"></i><i class="on" style="background:#00875a"></i><i class="on" style="background:#6b3fa0"></i><i class="on" style="background:#b5540a"></i><i class="on" style="background:#2b9bd6"></i><i class="on" style="background:#c2417a"></i></span></p></div>
+      </div>
+      <div class="ex4">
+        <div class="ex4-t"><p class="ft"><span>一つの視点</span><b>→</b><span class="to">多数の視点</span></p><p class="eg">1つの文書を<b>法務・リスク・広報の観点から一度に</b></p></div>
+        <div class="viz"><p><small>これまで</small><span class="pills"><em>担当者</em></span></p><p><small>これから</small><span class="pills"><em class="b">法務</em><em class="b">リスク</em><em class="b">広報</em><em class="b">IR</em></span></p></div>
+      </div>
     </div>
   </div>
 </section>

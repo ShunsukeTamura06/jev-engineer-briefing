@@ -804,6 +804,8 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 .vd.gone{background:#f3f3f5;color:#6e6e73;}
 .vd.same{background:#fdf9ef;color:#8a6d1f;}
 .vd.ok{background:#e6f4ee;color:#00875a;}
+.ex4 .bec{margin:.45em 0 0;font-size:clamp(12px,min(1.05vw,1.8vh),18px);color:var(--ink-2);font-weight:600;}
+.ex4 .bec b{display:inline-block;background:#e8f2fd;color:#0066cc;border-radius:99px;padding:.1em .7em;margin-left:.3em;}
 </style>
 </head>
 <body>
@@ -990,7 +992,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
       <table class="claims">
         <tr><th></th><th>TypeSafe の公式</th><th>実測・論文<small style="display:inline;margin-left:.4em">比較相手：軽量 LLM を思考なし・1トークンで</small></th><th></th></tr>
         <tr><td class="k">速さ</td><td class="off"><b>40〜200倍</b>速い<small>応答 70〜500ms</small></td><td class="real"><b>約2〜10倍</b>速い<small>Jev 0.09〜0.36秒 ／ 軽量 LLM 0.6〜1.1秒</small></td><td><span class="vd keep">縮むが残る</span></td></tr>
-        <tr><td class="k">費用</td><td class="off"><b>40〜400倍</b>安い<small>平均 75分の1（理由まで書かせる LLM と比較）</small></td><td class="real"><b>ほぼ同水準</b><small>通常料金なら最大 約2倍安い。Batch 料金なら同等〜短文は LLM が安い</small></td><td><span class="vd gone">ほぼ消える</span></td></tr>
+        <tr><td class="k">費用</td><td class="off"><b>40〜400倍</b>安い<small>平均 75分の1（理由まで書かせる LLM と比較）</small></td><td class="real"><b>桁の差は無い</b><small>リアルタイム（通常料金）なら最大 約2倍安い。Batch なら同等〜短文は LLM が安い</small></td><td><span class="vd gone">桁の差は消える</span></td></tr>
         <tr><td class="k">精度</td><td class="off">比べた LLM と<b>同じ一致率</b><small>68%（自社評価）</small></td><td class="real">軽量 LLM と<b>同等か近い</b><small>7つのタスクで比較（論文）</small></td><td><span class="vd same">同等</span></td></tr>
         <tr><td class="k">確率</td><td class="off"><b>当たる確率</b>になるよう学習<small>RLCD（会社の説明）</small></td><td class="real">LLM のトークン確率より<b>信頼できた</b><small>論文 ／ 迷惑メール 18,514通（6枚目）。任せられる件数は精度しだい</small></td><td><span class="vd ok">裏付けあり</span></td></tr>
       </table>
@@ -1000,26 +1002,26 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 4つの拡張 ============ -->
-<section id="expand" data-note="<b>【約80秒】</b>では、これで何が変わるのか。判断そのものは、昔から LLM にも人にもできました。<b>新しいのはコストの桁</b>です。比べているのは、LLM に文章で答えさせて判断していた頃です。前のページのとおり、1トークンだけ答えさせる工夫をした LLM とは同じくらいですが、Decision Model は特別な工夫なしに、最初からその速さと安さで、確率つきの判断が返ってきます。<br>判断はこれまで高かったので、<b>まれに・代表だけ・一律の基準で・一つの視点から</b>しか行えませんでした。それが4つの方向に広がります。<br>1つ目、<b>まれに → 常に</b>。月に1回の点検が、1秒ごとの判定になる。後で見る、動画を1秒ごとに判定する例がこれです。<br>2つ目、<b>代表だけ → 全部</b>。抜き取りや『重要そうなもの』だけだったのが、全件になる。6枚目の、全件に流して確率で分ける使い方です。<br>3つ目、<b>一律の基準 → 一人ずつの基準</b>。基準は文章の問いなので、顧客ごと、案件ごとに書き換えて回せます。<br>4つ目、<b>一つの視点 → 多数の視点</b>。1回の呼び出しに何問でも入れられ、入力文の課金も1回分で済むので、1つの文書を法務・リスク・広報の観点から一度に見られます。">
+<section id="expand" data-note="<b>【約80秒】</b>では、これで何が変わるのか。判断そのものは、昔から LLM にも人にもできました。前のページのとおり、工夫した LLM でも安く判断はできます。新しいのは、<b>判断が『部品』になったこと</b>です。速く、確率つきの判断を、工夫なしに API 1つで呼べる。<br>判断はこれまで手間も時間もかかったので、<b>まれに・代表だけ・一律の基準で・一つの視点から</b>しか行えませんでした。それが4つの方向に広がります。各カードの下に、どの性質が効いているかを書いています。<br>1つ目、<b>まれに → 常に</b>。月に1回の点検が、1秒ごとの判定になる。効いているのは<b>速さ</b>です。後で見る、動画を1秒ごとに判定する例がこれです。<br>2つ目、<b>代表だけ → 全部</b>。抜き取りや『重要そうなもの』だけだったのが、全件になる。効いているのは<b>確率が正直なこと</b>で、6枚目の、全件に流して確率で分ける使い方です。<br>3つ目、<b>一律の基準 → 一人ずつの基準</b>。基準は文章の問いなので、学習し直さずに、顧客ごと、案件ごとに書き換えて回せます。<br>4つ目、<b>一つの視点 → 多数の視点</b>。1回の呼び出しに何問でも入れられ、入力文の課金も1回分で済むので、1つの文書を法務・リスク・広報の観点から一度に見られます。">
   <div class="wrap">
     <p class="kicker">何が新しいのか</p>
-    <h2>判断は昔からできた。<span class="pop">新しいのはコストの桁</span></h2>
-    <p class="lead" style="margin-top:.1em">LLM に文章で判断させていた頃と比べて、コストが桁で下がると、判断の使い方が4つの方向に広がる</p>
+    <h2>判断は昔からできた。<span class="pop">新しいのは、判断が「部品」になったこと</span></h2>
+    <p class="lead" style="margin-top:.1em">速く・確率つきの判断を、工夫なしに API 1つで呼べる。判断の使い方が4つの方向に広がる</p>
     <div class="ext">
       <div class="ex4">
-        <div class="ex4-t"><p class="ft"><span>まれに</span><b>→</b><span class="to">常に</span></p><p class="eg">月1回の点検が、<b>1秒ごとの判定</b>に</p></div>
+        <div class="ex4-t"><p class="ft"><span>まれに</span><b>→</b><span class="to">常に</span></p><p class="eg">月1回の点検が、<b>1秒ごとの判定</b>に</p><p class="bec">効いているのは<b>速さ</b></p></div>
         <div class="viz"><p><small>これまで</small><span class="dots2 tick"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span></p><p><small>これから</small><span class="dots2 tick blue"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></p></div>
       </div>
       <div class="ex4">
-        <div class="ex4-t"><p class="ft"><span>代表だけ</span><b>→</b><span class="to">全部</span></p><p class="eg">抜き取りが、<b>全件に流して確率で分ける</b>に</p></div>
+        <div class="ex4-t"><p class="ft"><span>代表だけ</span><b>→</b><span class="to">全部</span></p><p class="eg">抜き取りが、<b>全件に流して確率で分ける</b>に</p><p class="bec">効いているのは<b>確率が正直</b></p></div>
         <div class="viz"><p><small>これまで</small><span class="dots2 grid"><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span></p><p><small>これから</small><span class="dots2 grid blue"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></p></div>
       </div>
       <div class="ex4">
-        <div class="ex4-t"><p class="ft"><span>一律の基準</span><b>→</b><span class="to">一人ずつの基準</span></p><p class="eg">基準は文章なので、<b>顧客・案件ごとに書き換えられる</b></p></div>
+        <div class="ex4-t"><p class="ft"><span>一律の基準</span><b>→</b><span class="to">一人ずつの基準</span></p><p class="eg">基準は文章なので、<b>顧客・案件ごとに書き換えられる</b></p><p class="bec">効いているのは<b>学習なしで問いを変えられる</b></p></div>
         <div class="viz"><p><small>これまで</small><span class="dots2 big"><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i><i class="on" style="background:#9ea3ab"></i></span></p><p><small>これから</small><span class="dots2 big"><i class="on" style="background:#0066cc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#9cc1ea"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#0066cc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#6aa0dc"></i><i class="on" style="background:#9cc1ea"></i><i class="on" style="background:#6aa0dc"></i></span></p></div>
       </div>
       <div class="ex4">
-        <div class="ex4-t"><p class="ft"><span>一つの視点</span><b>→</b><span class="to">多数の視点</span></p><p class="eg">1つの文書を<b>法務・リスク・広報の観点から一度に</b></p></div>
+        <div class="ex4-t"><p class="ft"><span>一つの視点</span><b>→</b><span class="to">多数の視点</span></p><p class="eg">1つの文書を<b>法務・リスク・広報の観点から一度に</b></p><p class="bec">効いているのは<b>1回で何問も聞ける</b></p></div>
         <div class="viz"><p><small>これまで</small><span class="pills"><em>担当者</em></span></p><p><small>これから</small><span class="pills"><em class="b">法務</em><em class="b">リスク</em><em class="b">広報</em><em class="b">IR</em></span></p></div>
       </div>
     </div>
@@ -1130,7 +1132,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 </section>
 
 <!-- ============ 13. まとめ ============ -->
-<section id="sum" data-note="<b>【約45秒】</b>まとめます。<br>Decision Model は、判断力そのものは最先端の LLM に届きません。<br>ただし、ずっと速くなります。さっきのデモでは、3.7秒が0.5秒、約8倍でした。費用は、公式には75分の1ですが、1トークンだけ答えさせる軽量 LLM と比べるとほぼ同水準でした（7枚目）。<br>だから、<b>判断を全件に置き、迷ったものだけ LLM と人に回す</b>。精度の不足は確率で補います。<br>上の2つの箱のとおり、選ぶ仕事は Decision Model、文章・要約・コード・理由の説明が要るものはこれまでどおり LLM です。<br>一言でいえば、<b>意味で書ける if 文を、文章で判断させていた頃より桁違いに安く、いくらでも回せるようになった</b>、ということです。本編は以上です。時間があれば、社内で使うための補足をします。">
+<section id="sum" data-note="<b>【約45秒】</b>まとめます。<br>Decision Model は、判断力そのものは最先端の LLM に届きません。<br>ただし、ずっと速くなります。さっきのデモでは、3.7秒が0.5秒、約8倍でした。費用は、公式には75分の1ですが、1トークンだけ答えさせる軽量 LLM と比べると桁の差は無く、リアルタイムで使うなら約2倍安い程度でした（7枚目）。<br>だから、<b>判断を全件に置き、迷ったものだけ LLM と人に回す</b>。精度の不足は確率で補います。<br>上の2つの箱のとおり、選ぶ仕事は Decision Model、文章・要約・コード・理由の説明が要るものはこれまでどおり LLM です。<br>一言でいえば、<b>意味で書ける if 文を、速く・確率つきで、API 1つで呼べるようになった</b>、ということです。本編は以上です。時間があれば、社内で使うための補足をします。">
   <div class="wrap">
     <p class="kicker">まとめ</p>
     <h2>判断を全件に置き、<span class="pop">迷ったものだけ LLM と人へ</span></h2>
@@ -1142,7 +1144,7 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
       <p class="c1">判断力　―　最先端の LLM には届かない</p>
       <p class="c2">その代わり、ずっと速い<span class="num">デモ 3.7秒 → 0.5秒（約8倍）</span></p>
       <p class="c3">精度の不足は確率で補い、強い LLM と人の時間は迷うものだけに</p>
-      <p class="c4">意味で書ける if 文を、文章で判断させていた頃より桁違いに安く回せるようになった</p>
+      <p class="c4">意味で書ける if 文を、速く・確率つきで、API 1つで呼べるようになった</p>
     </div>
   </div>
 </section>

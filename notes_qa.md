@@ -25,6 +25,8 @@
 
 ## 6. 同じ「82%」でも、意味が違う
 
+- 想定質問：LLM に「当たる確率も答えて」と頼めば同じでは？→ 頼めば数字は返るが、当たる確率になる保証はない。2026年の研究でも、ほとんどの答えに90〜100%と書くのに実際の正答率は低い（最も自信の高い帯で53〜60%の例）、回答の78〜92%が50・70・100のようなキリのいい数字に集中する、という結果が多い。一方、2023年の研究（Tian et al.）では GPT-4 や Claude で、頼んで書かせた確率の方が logprobs より正直だった。2026年にも、採点用途では頼む方式の方が安定するという研究がある。課題とモデルの世代で結果が変わり、GPT-6 Luna の「頼んだ確率」と Jev を直接比べたデータは見つからなかった。また数字を書かせると出力が数トークン増え、選んだ答え1つの確率しか取れないことが多い。
+- 出典：Large Language Models Are Overconfident in Their Own Responses（arXiv 2606.03437）、Calibrating Verbalized Confidence with Self…（ICLR 2026）、Clean Scores, Buried Evidence, and Confident Wrong（arXiv 2609.15319）、Rethinking Verbalized Confidence for LLM-as-a-Judge（arXiv 2609.10996）、Just Ask for Calibration（Tian et al., 2023）
 - 補足：LLM の確率は logprobs と呼ばれる。Decision Model の学習方法は RLCD（Reinforcement Learning for Calibrated Decisions、TypeSafe の説明）。『言った確率どおりに当たるか』を図にしたものを reliability diagram、ずれの大きさを ECE と呼ぶ。
 - 注意：迷惑メールは英語での1つの検証結果。しきい値は自分のデータで確かめて決める。
 

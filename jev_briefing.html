@@ -1228,6 +1228,8 @@ p,li,td,th,h2,h3,.caption,.foot,.lead{word-break:auto-phrase;}
 
   // キー操作（投影中の誤爆を防ぐため最小限）
   document.addEventListener('keydown', function(e){
+    // Ctrl／Cmd／Alt 付きはブラウザ側の操作（タブ切り替えなど）に任せる
+    if(e.ctrlKey||e.metaKey||e.altKey) return;
     var k = e.key;
     if(k==='ArrowDown'||k==='PageDown'||k===' '||k==='ArrowRight'){ e.preventDefault(); go(cur+1); }
     else if(k==='ArrowUp'||k==='PageUp'||k==='ArrowLeft'){ e.preventDefault(); go(cur-1); }
